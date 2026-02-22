@@ -1,0 +1,1169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NJ SKI HAUS — New Jersey's Premier Ski Club</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --red: #D9001A; --ice: #5BB8D4; --ice-dark: #2A7FA0;
+  --yellow: #F5C842; --black: #0E1217; --dark: #161D26;
+  --grey: #1E2733; --grey-mid: #263040; --white: #EEF2F5;
+  --text-dim: rgba(238,242,245,0.65); --green: #2ECC71;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--black);color:var(--white);font-family:'Barlow',sans-serif;overflow-x:hidden;cursor:crosshair}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;justify-content:space-between;align-items:center;padding:14px 48px;background:rgba(14,18,23,0.93);backdrop-filter:blur(12px);border-bottom:1px solid rgba(91,184,212,0.15)}
+.nav-logo{font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:5px;color:var(--white);text-decoration:none;display:flex;align-items:center}
+.nav-logo .nj{color:var(--ice)}
+.nav-logo .sep{width:6px;height:6px;background:var(--red);border-radius:50%;display:inline-block;margin:0 8px;position:relative;top:-5px}
+.nav-links{display:flex;gap:22px;list-style:none;align-items:center}
+.nav-links a{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;color:var(--white);text-decoration:none;opacity:0.6;transition:opacity 0.2s,color 0.2s}
+.nav-links a:hover{opacity:1;color:var(--ice)}
+.nav-cta{background:var(--red)!important;color:var(--white)!important;opacity:1!important;padding:9px 18px;clip-path:polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,8px 100%,0 calc(100% - 8px))}
+.nav-cta:hover{background:var(--ice)!important;color:var(--black)!important}
+
+/* HERO */
+.hero{min-height:100vh;position:relative;display:flex;align-items:center;overflow:hidden}
+.hero-bg{position:absolute;inset:0;background:linear-gradient(105deg,rgba(14,18,23,0.97) 0%,rgba(14,18,23,0.75) 40%,rgba(14,18,23,0.2) 100%),url('https://images.unsplash.com/photo-1551524559-8af4e6624178?w=1800&q=80') center/cover no-repeat;transform:scale(1.05);animation:slowZoom 24s ease-in-out infinite alternate}
+.hero-bg::before{content:'';position:absolute;top:0;left:0;width:5px;height:100%;background:linear-gradient(to bottom,var(--ice),var(--red))}
+.hero-bg::after{content:'';position:absolute;top:0;right:0;width:5px;height:100%;background:linear-gradient(to bottom,var(--red),var(--ice))}
+@keyframes slowZoom{from{transform:scale(1.05)}to{transform:scale(1.13)}}
+.hero-content{position:relative;z-index:2;padding:120px 60px 80px;max-width:1000px}
+.hero-kicker{display:inline-flex;align-items:center;gap:12px;background:rgba(91,184,212,0.1);border:1px solid rgba(91,184,212,0.25);padding:8px 18px;margin-bottom:28px;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:5px;text-transform:uppercase;color:var(--ice);animation:fadeUp 0.6s ease both}
+.hero-kicker .dot{width:5px;height:5px;background:var(--red);border-radius:50%;animation:pulse 1.5s infinite}
+.hero-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(72px,13vw,170px);line-height:0.87;letter-spacing:1px;animation:fadeUp 0.7s 0.1s ease both}
+.hero-title .t-ice{color:var(--ice)}.hero-title .t-outline{-webkit-text-stroke:2px rgba(238,242,245,0.7);color:transparent}.hero-title .t-red{color:var(--red)}
+.hero-divider{width:80px;height:3px;background:linear-gradient(to right,var(--red),var(--ice));margin:28px 0;animation:fadeUp 0.7s 0.2s ease both}
+.hero-sub{font-size:20px;font-weight:300;line-height:1.6;color:var(--text-dim);max-width:580px;animation:fadeUp 0.7s 0.3s ease both}
+.hero-sub strong{color:var(--white);font-weight:500}
+.hero-regions{display:flex;flex-wrap:wrap;gap:8px;margin-top:28px;animation:fadeUp 0.7s 0.35s ease both}
+.hero-region-tag{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:6px 14px;border:1px solid rgba(238,242,245,0.12);color:var(--text-dim);background:rgba(238,242,245,0.04)}
+.hero-region-tag.vt{border-color:rgba(91,184,212,0.4);color:var(--ice)}
+.hero-actions{display:flex;gap:14px;margin-top:40px;flex-wrap:wrap;animation:fadeUp 0.7s 0.45s ease both}
+.btn-primary{background:var(--red);color:var(--white);font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:3px;text-transform:uppercase;padding:18px 36px;text-decoration:none;display:inline-block;transition:background 0.2s,transform 0.15s;clip-path:polygon(0 0,calc(100% - 12px) 0,100% 12px,100% 100%,12px 100%,0 calc(100% - 12px))}
+.btn-primary:hover{background:var(--ice);color:var(--black);transform:translateY(-2px)}
+.btn-outline{border:2px solid rgba(91,184,212,0.4);color:var(--ice);font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:3px;text-transform:uppercase;padding:16px 36px;text-decoration:none;display:inline-block;transition:border-color 0.2s,color 0.2s,background 0.2s}
+.btn-outline:hover{border-color:var(--ice);color:var(--black);background:var(--ice)}
+.hero-stats{position:absolute;right:60px;bottom:80px;z-index:2;display:flex;flex-direction:column;gap:26px;animation:fadeUp 0.7s 0.55s ease both}
+.stat{text-align:right;border-right:3px solid var(--ice);padding-right:16px}
+.stat-num{font-family:'Bebas Neue',sans-serif;font-size:44px;line-height:1;color:var(--ice)}
+.stat-label{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:2px;text-transform:uppercase;opacity:0.5}
+.scroll-indicator{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;z-index:2;animation:fadeUp 1s 1s ease both}
+.scroll-indicator span{font-family:'Barlow Condensed',sans-serif;font-size:9px;letter-spacing:3px;text-transform:uppercase;opacity:0.4}
+.scroll-line{width:1px;height:44px;background:linear-gradient(to bottom,rgba(91,184,212,0.6),transparent);animation:scrollPulse 2s ease-in-out infinite}
+@keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(1.4)}}
+@keyframes scrollPulse{0%,100%{opacity:0.3}50%{opacity:1}}
+
+/* MARQUEE */
+.marquee-strip{background:linear-gradient(to right,var(--ice-dark),var(--ice),var(--ice-dark));padding:10px 0;overflow:hidden;white-space:nowrap}
+.marquee-inner{display:inline-block;animation:marquee 45s linear infinite}
+.marquee-item{display:inline-flex;flex-direction:column;margin:0 28px;vertical-align:middle}
+.marquee-state{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:rgba(14,18,23,0.5);line-height:1}
+.marquee-mountain{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:3px;color:var(--black);line-height:1.1}
+.marquee-sep{display:inline-block;color:var(--red);font-size:14px;margin:0 4px;vertical-align:middle}
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* SHARED */
+.section{padding:100px 60px}
+.section-label{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:5px;text-transform:uppercase;color:var(--ice);margin-bottom:18px}
+.section-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(48px,6vw,82px);line-height:0.93;margin-bottom:28px}
+.section-title em{font-style:normal;-webkit-text-stroke:1px var(--white);color:transparent}
+.section-body{font-size:16px;font-weight:300;line-height:1.8;color:var(--text-dim);margin-bottom:16px}
+
+/* ABOUT */
+.about{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+.about-visual{position:relative}
+.about-img{width:100%;aspect-ratio:3/4;object-fit:cover;display:block;filter:contrast(1.05) saturate(0.85)}
+.about-badge{position:absolute;bottom:-24px;left:-24px;background:var(--ice);color:var(--black);width:140px;height:140px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;font-family:'Bebas Neue',sans-serif;line-height:1.1}
+.about-badge .big{font-size:36px}.about-badge .small{font-size:12px;letter-spacing:1px}
+
+/* REGIONS */
+.regions-section{background:var(--dark)}
+.regions-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;margin-top:56px}
+.region-card{background:var(--grey);padding:36px 30px;border-top:3px solid var(--ice);transition:background 0.3s,transform 0.3s}
+.region-card:hover{background:var(--grey-mid);transform:translateY(-4px)}
+.region-flag{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:3px;text-transform:uppercase;margin-bottom:8px;opacity:0.4}
+.region-name{font-family:'Bebas Neue',sans-serif;font-size:36px;line-height:1;letter-spacing:2px;margin-bottom:6px}
+.region-sub{font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--text-dim);margin-bottom:22px}
+.region-mountains{list-style:none}
+.region-mountains li{font-size:13px;font-weight:300;color:var(--text-dim);padding:7px 0;border-bottom:1px solid rgba(238,242,245,0.06);display:flex;justify-content:space-between;align-items:center}
+.region-mountains li:last-child{border-bottom:none}
+.region-mountains li::before{content:'▸';font-size:9px;color:var(--ice);margin-right:8px;flex-shrink:0}
+.mountain-pass-tags{display:flex;gap:4px}
+.mpt{font-family:'Barlow Condensed',sans-serif;font-size:8px;font-weight:700;letter-spacing:1px;padding:2px 6px;border-radius:2px}
+.mpt.ikon{background:rgba(232,82,42,0.2);color:#E8865A}.mpt.epic{background:rgba(74,159,224,0.2);color:#4A9FE0}
+.mpt.col{background:rgba(125,194,66,0.18);color:#7DC242}.mpt.indy{background:rgba(245,200,66,0.15);color:var(--yellow)}
+.mpt.pa{background:rgba(174,100,220,0.18);color:#C47FE8}
+.region-drive{margin-top:20px;padding-top:16px;border-top:1px solid rgba(238,242,245,0.06);font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--text-dim)}
+.region-drive span{color:var(--ice);font-size:14px;font-family:'Bebas Neue',sans-serif;letter-spacing:1px}
+
+/* ── NE MAP SECTION ── */
+.map-section{background:var(--black);padding:80px 60px;overflow:hidden;position:relative}
+.map-layout{display:grid;grid-template-columns:1fr 1.8fr;gap:60px;align-items:start}
+.map-container{position:relative}
+canvas#mapCanvas{display:block;width:100%;max-width:700px;cursor:crosshair}
+.map-legend{margin-top:20px;display:flex;gap:16px;flex-wrap:wrap}
+.map-legend-item{display:flex;align-items:center;gap:6px;font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--text-dim)}
+.legend-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.map-info{padding:0 4px}
+.map-info .section-label{margin-bottom:14px}
+.map-pin-list{list-style:none;margin-top:24px;max-height:360px;overflow-y:auto}
+.map-pin-list::-webkit-scrollbar{width:3px}
+.map-pin-list::-webkit-scrollbar-track{background:rgba(238,242,245,0.05)}
+.map-pin-list::-webkit-scrollbar-thumb{background:var(--ice);border-radius:2px}
+.map-pin-list li{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid rgba(238,242,245,0.06);font-size:13px;font-weight:300;color:var(--text-dim);transition:color 0.2s;cursor:default}
+.map-pin-list li:hover{color:var(--white)}
+.map-pin-list li .ml-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.map-pin-list li .ml-name{flex:1}
+.map-pin-list li .ml-region{font-family:'Barlow Condensed',sans-serif;font-size:9px;letter-spacing:2px;text-transform:uppercase;opacity:0.4}
+.map-tooltip{position:fixed;background:var(--grey);border:1px solid rgba(91,184,212,0.35);padding:9px 14px;font-family:'Barlow Condensed',sans-serif;font-size:12px;letter-spacing:1px;pointer-events:none;z-index:500;display:none;white-space:nowrap;transform:translate(-50%,-110%)}
+.map-tooltip strong{display:block;color:var(--white);font-size:14px;letter-spacing:2px;margin-bottom:2px}
+.map-tooltip span{color:var(--ice);font-size:10px}
+
+/* ── PASSES ── */
+.passes-section{background:var(--dark)}
+.passes-intro{max-width:700px;margin-bottom:56px}
+.pass-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:3px}
+.pass-grid-2{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;margin-top:3px}
+.pass-card{background:var(--grey);padding:30px 24px;border-top:3px solid transparent;transition:border-color 0.3s,background 0.3s,transform 0.3s}
+.pass-card:hover{background:var(--grey-mid);transform:translateY(-4px)}
+.pass-card.ikon{border-top-color:#E8522A}.pass-card.epic{border-top-color:#4A9FE0}
+.pass-card.collective{border-top-color:#7DC242}.pass-card.indy{border-top-color:var(--yellow)}
+.pass-card.powder{border-top-color:#B27ED4}.pass-card.ikon-base{border-top-color:rgba(232,82,42,0.5)}
+.pass-logo{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:3px;margin-bottom:8px}
+.pass-card.ikon .pass-logo,.pass-card.ikon-base .pass-logo{color:#E8522A}
+.pass-card.epic .pass-logo{color:#4A9FE0}.pass-card.collective .pass-logo{color:#7DC242}
+.pass-card.indy .pass-logo{color:var(--yellow)}.pass-card.powder .pass-logo{color:#B27ED4}
+.pass-sub{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:2px;text-transform:uppercase;opacity:0.4;margin-bottom:14px}
+.pass-mountains{list-style:none}
+.pass-mountains li{font-size:12px;font-weight:300;color:var(--text-dim);padding:5px 0;border-bottom:1px solid rgba(238,242,245,0.05);display:flex;align-items:center;gap:6px}
+.pass-mountains li::before{content:'▸';font-size:8px;color:var(--ice);flex-shrink:0}
+.pass-mountains li.more{font-style:italic;opacity:0.35;border-bottom:none}
+.pass-mountains li.more::before,.pass-mountains li.sh::before{display:none}
+.pass-mountains li.sh{font-family:'Barlow Condensed',sans-serif;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--ice);opacity:0.7;border-bottom:none;padding-top:10px}
+.pass-cta-row{margin-top:48px;display:flex;align-items:center;gap:28px;flex-wrap:wrap}
+.pass-cta-text{font-size:15px;font-weight:300;color:var(--text-dim);max-width:500px}
+
+/* ── MOUNTAIN REPORT v2 — TECHNICAL ── */
+.report-section{background:var(--black)}
+.report-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:32px;flex-wrap:wrap;gap:20px}
+.report-live{display:flex;align-items:center;gap:8px;font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--text-dim)}
+.live-dot{width:8px;height:8px;background:var(--green);border-radius:50%;animation:pulse 2s infinite}
+.report-updated{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:2px;color:var(--text-dim);opacity:0.5;margin-top:4px}
+.report-tabs{display:flex;gap:2px;margin-bottom:24px;flex-wrap:wrap}
+.report-tab{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:10px 18px;background:var(--grey);color:var(--text-dim);border:none;cursor:pointer;transition:background 0.2s,color 0.2s}
+.report-tab.active,.report-tab:hover{background:var(--ice);color:var(--black)}
+
+/* Technical report card */
+.report-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:3px}
+.report-card{background:var(--grey);padding:0;overflow:hidden;transition:background 0.2s}
+.report-card:hover{background:var(--grey-mid)}
+.rc-header{padding:16px 20px 12px;border-bottom:1px solid rgba(238,242,245,0.07);display:flex;justify-content:space-between;align-items:flex-start}
+.rc-name-block{}
+.rc-mountain{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:2px;line-height:1}
+.rc-location{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--ice);margin-top:2px}
+.rc-status{text-align:right}
+.rc-badge{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:4px 10px;border-radius:2px}
+.rc-badge.great{background:rgba(91,184,212,0.2);color:var(--ice)}
+.rc-badge.good{background:rgba(46,204,113,0.15);color:var(--green)}
+.rc-badge.fair{background:rgba(245,200,66,0.15);color:var(--yellow)}
+.rc-badge.closed{background:rgba(217,0,26,0.15);color:#FF4455}
+.rc-pass-tag{font-family:'Barlow Condensed',sans-serif;font-size:9px;letter-spacing:1px;text-transform:uppercase;margin-top:4px;opacity:0.55}
+
+/* Primary stats row */
+.rc-stats-primary{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid rgba(238,242,245,0.07)}
+.rc-stat{padding:14px 16px;border-right:1px solid rgba(238,242,245,0.05)}
+.rc-stat:last-child{border-right:none}
+.rc-stat-val{font-family:'Bebas Neue',sans-serif;font-size:28px;line-height:1;color:var(--ice)}
+.rc-stat-val.snow{color:var(--white)}
+.rc-stat-val.temp{color:#81C9E8}
+.rc-stat-lbl{font-family:'Barlow Condensed',sans-serif;font-size:8px;letter-spacing:2px;text-transform:uppercase;opacity:0.4;margin-top:3px}
+
+/* Season total bar */
+.rc-season{padding:12px 20px;border-bottom:1px solid rgba(238,242,245,0.07)}
+.rc-season-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.rc-season-label{font-family:'Barlow Condensed',sans-serif;font-size:9px;letter-spacing:2px;text-transform:uppercase;opacity:0.5}
+.rc-season-val{font-family:'Bebas Neue',sans-serif;font-size:16px;color:var(--yellow);letter-spacing:1px}
+.rc-season-bar{height:4px;background:rgba(238,242,245,0.08);border-radius:2px;overflow:hidden}
+.rc-season-fill{height:100%;background:linear-gradient(to right,var(--ice-dark),var(--ice));border-radius:2px;transition:width 1s ease}
+
+/* Conditions footer */
+.rc-footer{padding:10px 20px;display:flex;justify-content:space-between;align-items:center}
+.rc-surface{font-size:11px;font-weight:300;color:var(--text-dim)}
+.rc-trails{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:1px;color:var(--text-dim);opacity:0.6}
+
+.report-disclaimer{margin-top:20px;font-size:11px;font-weight:300;color:var(--text-dim);opacity:0.4;font-style:italic}
+
+/* ── MEMBER PERKS ── */
+.perks-section{background:var(--dark)}
+.perks-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;margin-top:56px}
+.perk-card{background:var(--grey);padding:36px 30px;border-top:3px solid transparent;transition:background 0.3s,transform 0.3s,border-color 0.3s;position:relative;overflow:hidden}
+.perk-card:hover{background:var(--grey-mid);transform:translateY(-5px);border-top-color:var(--ice)}
+.perk-icon{font-size:36px;margin-bottom:18px;display:block}
+.perk-title{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:2px;margin-bottom:10px}
+.perk-desc{font-size:14px;font-weight:300;color:var(--text-dim);line-height:1.75;margin-bottom:18px}
+.perk-tag{display:inline-block;font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:4px 10px;background:rgba(91,184,212,0.12);color:var(--ice);border-radius:2px}
+.perk-card.featured-perk{background:var(--grey-mid);border-top-color:var(--yellow)}
+.perk-card.featured-perk .perk-title{color:var(--yellow)}
+.perk-card.featured-perk .perk-tag{background:rgba(245,200,66,0.15);color:var(--yellow)}
+
+.swag-perk-card{grid-column:1/-1;background:var(--grey-mid);padding:30px 36px;border-top:3px solid var(--red);display:flex;align-items:center;gap:40px;transition:background 0.3s}
+.swag-perk-card:hover{background:var(--grey)}
+.swag-perk-icon{font-size:52px;flex-shrink:0}
+.swag-perk-body{flex:1}
+.swag-perk-body .perk-title{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:2px;color:var(--red);margin-bottom:6px}
+.swag-perk-body .perk-desc{font-size:13px;font-weight:300;color:var(--text-dim);line-height:1.7;margin-bottom:14px;max-width:540px}
+.swag-perk-body .perk-tag{display:inline-block;font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:4px 10px;background:rgba(217,0,26,0.12);color:var(--red);border-radius:2px}
+.swag-items-row{display:flex;gap:10px;flex-wrap:wrap;flex-shrink:0}
+.swag-chip{background:var(--dark);border:1px solid rgba(238,242,245,0.08);padding:10px 14px;display:flex;flex-direction:column;align-items:center;gap:5px;min-width:72px;transition:border-color 0.2s}
+.swag-chip:hover{border-color:rgba(217,0,26,0.4)}
+.swag-chip-icon{font-size:20px}
+.swag-chip-name{font-family:'Barlow Condensed',sans-serif;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text-dim)}
+
+/* ── CALENDAR ── */
+.calendar-section{background:var(--black)}
+.calendar-table{width:100%;border-collapse:collapse;margin-top:48px;font-size:14px}
+.calendar-table th{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--ice);padding:14px 20px;text-align:left;border-bottom:1px solid rgba(91,184,212,0.18)}
+.calendar-table td{padding:15px 20px;border-bottom:1px solid rgba(238,242,245,0.05);font-weight:300;color:var(--text-dim);vertical-align:middle}
+.calendar-table tr:hover td{background:rgba(91,184,212,0.04)}
+.cal-mountain{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:600;color:var(--white);letter-spacing:1px}
+.cal-pass{display:inline-block;font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;border-radius:2px;margin-left:6px}
+.cal-pass.ikon{background:rgba(232,82,42,0.18);color:#E8865A}.cal-pass.epic{background:rgba(74,159,224,0.18);color:#4A9FE0}
+.cal-pass.indy{background:rgba(245,200,66,0.15);color:var(--yellow)}.cal-pass.multi{background:rgba(91,184,212,0.15);color:var(--ice)}
+.cal-spots{display:inline-block;padding:4px 12px;font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:1px;border-radius:2px}
+.cal-spots.open{background:rgba(46,204,113,0.12);color:var(--green)}.cal-spots.filling{background:rgba(245,200,66,0.12);color:var(--yellow)}
+.cal-spots.tba{background:rgba(91,184,212,0.1);color:var(--ice)}
+
+/* ── MEMBERSHIP ── */
+.membership{background:var(--grey)}
+.plans{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;margin-top:56px}
+.plan{background:var(--dark);padding:44px 32px;position:relative;border-top:3px solid transparent;transition:transform 0.3s,border-color 0.3s}
+.plan:hover{transform:translateY(-5px);border-top-color:var(--ice)}
+.plan.featured{background:var(--red);border-top-color:var(--yellow)}.plan.featured:hover{border-top-color:var(--yellow)}
+.plan-tier{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:2px;margin-bottom:8px}
+.plan-coming{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--ice);margin-bottom:28px;padding:8px 0;border-bottom:1px solid rgba(91,184,212,0.2)}
+.plan.featured .plan-coming{color:var(--yellow);border-bottom-color:rgba(245,200,66,0.3)}
+.plan-features{list-style:none;margin-bottom:34px}
+.plan-features li{font-size:14px;font-weight:300;padding:10px 0;border-bottom:1px solid rgba(238,242,245,0.07);display:flex;gap:10px;align-items:flex-start;line-height:1.4}
+.plan-features li::before{content:'→';color:var(--ice);font-size:11px;flex-shrink:0;margin-top:2px}
+.plan.featured .plan-features li{border-bottom-color:rgba(238,242,245,0.18)}.plan.featured .plan-features li::before{color:var(--yellow)}
+.plan-cta{display:block;text-align:center;padding:15px;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:3px;text-transform:uppercase;text-decoration:none;background:rgba(91,184,212,0.08);color:var(--ice);border:1px solid rgba(91,184,212,0.2);transition:background 0.2s,color 0.2s}
+.plan-cta:hover{background:var(--ice);color:var(--black)}
+.plan.featured .plan-cta{background:var(--black);border-color:var(--black);color:var(--white)}.plan.featured .plan-cta:hover{background:var(--yellow);color:var(--black)}
+.plan-badge{position:absolute;top:18px;right:18px;background:var(--yellow);color:var(--black);font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:4px 10px}
+
+/* ── GALLERY ── */
+.gallery-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:3px;margin-top:56px}
+.gallery-item{overflow:hidden;aspect-ratio:1}
+.gallery-item:first-child{grid-column:span 2;grid-row:span 2;aspect-ratio:auto}
+.gallery-item img{width:100%;height:100%;object-fit:cover;transition:transform 0.5s,filter 0.5s;filter:saturate(0.6)}
+.gallery-item:hover img{transform:scale(1.05);filter:saturate(1.1)}
+
+/* ── NEWSLETTER ── */
+.newsletter-section{background:var(--dark);text-align:center;padding:100px 60px;position:relative;overflow:hidden}
+.newsletter-section::before{content:'SHRED';position:absolute;font-family:'Bebas Neue',sans-serif;font-size:280px;color:rgba(91,184,212,0.03);left:50%;top:50%;transform:translate(-50%,-50%);white-space:nowrap;pointer-events:none}
+.newsletter-form{display:flex;max-width:560px;margin:40px auto 0}
+.newsletter-input{flex:1;background:var(--grey);border:1px solid rgba(91,184,212,0.18);border-right:none;color:var(--white);font-family:'Barlow',sans-serif;font-size:15px;padding:18px 24px;outline:none}
+.newsletter-input::placeholder{opacity:0.35}
+.newsletter-submit{background:var(--red);color:var(--white);border:none;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:3px;text-transform:uppercase;padding:18px 26px;cursor:pointer;transition:background 0.2s}
+.newsletter-submit:hover{background:var(--ice);color:var(--black)}
+.newsletter-fine{font-size:11px;opacity:0.35;margin-top:14px;font-weight:300}
+
+/* ── SUPPORT / PAYMENT ── */
+.support-section{background:var(--black);padding:90px 60px}
+.support-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:3px;margin-top:56px}
+.support-card{background:var(--grey);padding:36px 30px;border-top:3px solid transparent;text-align:center;transition:background 0.3s,transform 0.3s}
+.support-card:hover{background:var(--grey-mid);transform:translateY(-4px)}
+.support-card.btc{border-top-color:#F7931A}
+.support-card.venmo{border-top-color:#3D95CE}
+.support-card.paypal{border-top-color:#003087}
+.support-icon{font-size:40px;margin-bottom:16px;display:block}
+.support-name{font-family:'Bebas Neue',sans-serif;font-size:30px;letter-spacing:3px;margin-bottom:6px}
+.support-card.btc .support-name{color:#F7931A}
+.support-card.venmo .support-name{color:#3D95CE}
+.support-card.paypal .support-name{color:#0079C1}
+.support-handle{font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:2px;color:var(--text-dim);margin-bottom:16px;word-break:break-all;line-height:1.5}
+.support-copy-btn{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:10px 20px;background:rgba(238,242,245,0.06);border:1px solid rgba(238,242,245,0.12);color:var(--text-dim);cursor:pointer;transition:all 0.2s;display:inline-block;text-decoration:none}
+.support-copy-btn:hover,.support-card.btc .support-copy-btn:hover{background:rgba(247,147,26,0.15);border-color:#F7931A;color:#F7931A}
+.support-card.venmo .support-copy-btn:hover{background:rgba(61,149,206,0.15);border-color:#3D95CE;color:#3D95CE}
+.support-card.paypal .support-copy-btn:hover{background:rgba(0,121,193,0.15);border-color:#0079C1;color:#0079C1}
+.support-desc{font-size:12px;font-weight:300;color:var(--text-dim);line-height:1.65;margin-top:14px;opacity:0.65}
+.support-note{margin-top:40px;padding:24px 30px;background:var(--grey);border-left:3px solid var(--ice);font-size:14px;font-weight:300;color:var(--text-dim);line-height:1.75}
+.support-note strong{color:var(--white)}
+
+/* ── FAQ + CONTACT ── */
+.faq-section{background:var(--dark)}
+.faq-contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;margin-top:56px}
+.faq-item{border-bottom:1px solid rgba(238,242,245,0.07);overflow:hidden}
+.faq-question{width:100%;background:none;border:none;color:var(--white);font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:600;letter-spacing:1px;text-align:left;padding:20px 0;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:16px;transition:color 0.2s}
+.faq-question:hover{color:var(--ice)}
+.faq-arrow{font-size:20px;transition:transform 0.3s;color:var(--ice);flex-shrink:0}
+.faq-item.open .faq-arrow{transform:rotate(45deg)}
+.faq-answer{font-size:14px;font-weight:300;line-height:1.75;color:var(--text-dim);max-height:0;overflow:hidden;transition:max-height 0.35s ease,padding 0.35s ease}
+.faq-item.open .faq-answer{max-height:220px;padding-bottom:20px}
+.contact-box{background:var(--grey);padding:44px 36px;border-top:3px solid var(--ice)}
+.contact-box h3{font-family:'Bebas Neue',sans-serif;font-size:36px;letter-spacing:2px;margin-bottom:12px}
+.contact-box p{font-size:15px;font-weight:300;color:var(--text-dim);line-height:1.7;margin-bottom:28px}
+.contact-form{display:flex;flex-direction:column;gap:12px}
+.contact-input{background:var(--dark);border:1px solid rgba(91,184,212,0.12);color:var(--white);font-family:'Barlow',sans-serif;font-size:14px;padding:14px 18px;outline:none;transition:border-color 0.2s}
+.contact-input:focus{border-color:var(--ice)}.contact-input::placeholder{opacity:0.35}
+textarea.contact-input{resize:vertical;min-height:100px}
+
+/* FOOTER */
+footer{background:var(--grey);padding:60px 60px 36px;display:grid;grid-template-columns:2fr 1fr 1fr;gap:60px;border-top:1px solid rgba(91,184,212,0.12)}
+.footer-logo{font-family:'Bebas Neue',sans-serif;font-size:44px;letter-spacing:5px;margin-bottom:14px}
+.footer-logo .nj{color:var(--ice)}
+.footer-tagline{font-size:13px;font-weight:300;opacity:0.4;line-height:1.65;max-width:280px}
+.footer-col h4{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--ice);margin-bottom:18px}
+.footer-col ul{list-style:none}
+.footer-col ul li{margin-bottom:9px}
+.footer-col ul a{font-size:13px;font-weight:300;color:var(--text-dim);text-decoration:none;transition:color 0.2s}
+.footer-col ul a:hover{color:var(--white)}
+.footer-bottom{grid-column:1/-1;border-top:1px solid rgba(238,242,245,0.07);padding-top:22px;display:flex;justify-content:space-between;align-items:center}
+.footer-bottom p{font-size:11px;opacity:0.3;font-weight:300}
+.social-links{display:flex;gap:18px}
+.social-links a{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--text-dim);text-decoration:none;transition:color 0.2s}
+.social-links a:hover{color:var(--ice)}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#"><span class="nj">NJ</span><span class="sep"></span>SKI HAUS</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#regions">Mountains</a></li>
+    <li><a href="#passes">Passes</a></li>
+    <li><a href="#report">Conditions</a></li>
+    <li><a href="#perks">Perks</a></li>
+    <li><a href="#calendar">Trips</a></li>
+    <li><a href="#membership">Membership</a></li>
+    <li><a href="#support">Support</a></li>
+    <li><a href="#newsletter" class="nav-cta">JOIN THE CLUB</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <div class="hero-kicker"><span class="dot"></span>Old Bridge, NJ · Est. 2025 · Northeast's Crew</div>
+    <h1 class="hero-title">
+      <span class="t-ice">RIDE</span><br>
+      <span class="t-outline">EVERY</span><br>
+      <span class="t-red">MOUNTAIN.</span>
+    </h1>
+    <div class="hero-divider"></div>
+    <p class="hero-sub"><strong>NJ Ski Haus</strong> is New Jersey's premier ski & snowboard club. Group trips to the best mountains across the entire Northeast — from the Poconos to Vermont, the Adirondacks to Canada. Show up. Shred. Repeat.</p>
+    <div class="hero-regions">
+      <span class="hero-region-tag vt">Vermont ⭑ Home Base</span>
+      <span class="hero-region-tag">Catskills & Adirondacks</span>
+      <span class="hero-region-tag">Eastern PA / Poconos</span>
+      <span class="hero-region-tag">NH & Maine</span>
+      <span class="hero-region-tag">Canada</span>
+    </div>
+    <div class="hero-actions">
+      <a href="#newsletter" class="btn-primary">JOIN THE WAITLIST</a>
+      <a href="#map" class="btn-outline">EXPLORE MOUNTAINS</a>
+    </div>
+  </div>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num">25+</div><div class="stat-label">Mountains</div></div>
+    <div class="stat"><div class="stat-num">5</div><div class="stat-label">Major Passes</div></div>
+    <div class="stat"><div class="stat-num">NJ</div><div class="stat-label">Roots</div></div>
+  </div>
+  <div class="scroll-indicator"><span>Scroll</span><div class="scroll-line"></div></div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-strip">
+  <div class="marquee-inner">
+    <div class="marquee-item"><span class="marquee-state">Vermont</span><span class="marquee-mountain">KILLINGTON</span></div><span class="marquee-sep">✦</span>
+    <div class="marquee-item"><span class="marquee-state">Vermont</span><span class="marquee-mountain">STRATTON</span></div><span class="marquee-sep">✦</span>
+    <div class="marquee-item"><span class="marquee-state">Vermont</span><span class="marquee-mountain">STOWE</span></div><span class="marquee-sep">✦</span>
+    <div class="marquee-item"><span class="marquee-state">New York</span><span class="marquee-mountain">HUNTER MTN</span></div><span class="marquee-sep">✦</span>
+    <div class="marquee-item"><span class="marquee-state">New York</span><span class="marquee-mountain">WHITEFACE</span></div><span class="marquee-sep">✦</span>
+    <div class="marquee-item"><span class="marquee-state">Pennsylvania</span><span class="marquee-mountain">CAMELBACK</span></div><span class="marquee-sep">✦</span>
+    <div class="marquee-item"><span class="marquee-state">Vermont</span><span class="marquee-mountain">SUGARBUSH</span></div><span class="marquee-sep">✦</span>
+    <div class="marquee-item"><span class="marquee-state">New Hampshire</span><span class="marquee-mountain">LOON MTN</span></div><span class="marquee-sep">✦</span>
+    <div class="marquee-item"><span class="marquee-state">Maine</span><span class="marquee-mountain">SUNDAY RIVER</span></div><span class="marquee-sep">✦</span>
+    <div class="marquee-item"><span class="marquee-state">Canada · QC</span><span class="marquee-mountain">TREMBLANT</span></div><span class="marquee-sep">✦</span>
+    <div class="marquee-item"><span class="marquee-state">Maine</span><span class="marquee-mountain">SUGARLOAF</span></div><span class="marquee-sep">✦</span>
+    <div class="marquee-item"><span class="marquee-state">Pennsylvania</span><span class="marquee-mountain">BLUE MTN</span></div><span class="marquee-sep">✦</span>
+    <div class="marquee-item"><span class="marquee-state">Vermont</span><span class="marquee-mountain">KILLINGTON</span></div><span class="marquee-sep">✦</span>
+    <div class="marquee-item"><span class="marquee-state">Vermont</span><span class="marquee-mountain">STRATTON</span></div><span class="marquee-sep">✦</span>
+    <div class="marquee-item"><span class="marquee-state">Vermont</span><span class="marquee-mountain">STOWE</span></div><span class="marquee-sep">✦</span>
+    <div class="marquee-item"><span class="marquee-state">New York</span><span class="marquee-mountain">HUNTER MTN</span></div><span class="marquee-sep">✦</span>
+    <div class="marquee-item"><span class="marquee-state">New York</span><span class="marquee-mountain">WHITEFACE</span></div><span class="marquee-sep">✦</span>
+    <div class="marquee-item"><span class="marquee-state">Pennsylvania</span><span class="marquee-mountain">CAMELBACK</span></div><span class="marquee-sep">✦</span>
+    <div class="marquee-item"><span class="marquee-state">Vermont</span><span class="marquee-mountain">SUGARBUSH</span></div><span class="marquee-sep">✦</span>
+    <div class="marquee-item"><span class="marquee-state">New Hampshire</span><span class="marquee-mountain">LOON MTN</span></div><span class="marquee-sep">✦</span>
+    <div class="marquee-item"><span class="marquee-state">Maine</span><span class="marquee-mountain">SUNDAY RIVER</span></div><span class="marquee-sep">✦</span>
+    <div class="marquee-item"><span class="marquee-state">Canada · QC</span><span class="marquee-mountain">TREMBLANT</span></div><span class="marquee-sep">✦</span>
+    <div class="marquee-item"><span class="marquee-state">Maine</span><span class="marquee-mountain">SUGARLOAF</span></div><span class="marquee-sep">✦</span>
+    <div class="marquee-item"><span class="marquee-state">Pennsylvania</span><span class="marquee-mountain">BLUE MTN</span></div><span class="marquee-sep">✦</span>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section class="section" id="about">
+  <div class="about">
+    <div>
+      <div class="section-label">Who We Are</div>
+      <h2 class="section-title">Born in <em>Jersey.</em><br>Built for the<br>Mountain.</h2>
+      <p class="section-body">NJ Ski Haus started with a simple idea: New Jersey deserves a real ski community. No more solo missions, no more scrambling for last-minute lodging, no more missing out because you couldn't find a crew. We fix all of that.</p>
+      <p class="section-body">We organize group trips across the entire Northeast — and we're just getting started. The long-term vision is a lodge cabin in Vermont, where the Haus crew always has a spot waiting. But first — we build the community.</p>
+      <a href="#map" class="btn-primary" style="margin-top:18px;display:inline-block">SEE OUR MOUNTAINS</a>
+    </div>
+    <div class="about-visual">
+      <img class="about-img" src="https://images.unsplash.com/photo-1548777123-e216912df7d8?w=800&q=80" alt="Mountain skiing">
+      <div class="about-badge"><span class="big">EST</span><span class="small">2025<br>OLD BRIDGE NJ</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- REGIONS -->
+<section class="section regions-section" id="regions">
+  <div class="section-label">Our Mountains</div>
+  <h2 class="section-title">The Whole<br><em>Northeast</em><br>is Yours.</h2>
+  <p class="section-body" style="max-width:680px">From the Poconos in your backyard to the peaks of Canada. If it's within driving distance of Old Bridge, NJ, it's on our radar.</p>
+  <div class="regions-grid">
+    <div class="region-card" style="border-top-color:var(--ice)">
+      <div class="region-flag">Primary Destination · 4–5 hrs</div>
+      <div class="region-name" style="color:var(--ice)">VERMONT</div>
+      <div class="region-sub">The Haus Home Base</div>
+      <ul class="region-mountains">
+        <li>Killington<div class="mountain-pass-tags"><span class="mpt ikon">Ikon</span></div></li>
+        <li>Stratton<div class="mountain-pass-tags"><span class="mpt ikon">Ikon</span></div></li>
+        <li>Stowe<div class="mountain-pass-tags"><span class="mpt epic">Epic</span></div></li>
+        <li>Sugarbush<div class="mountain-pass-tags"><span class="mpt ikon">Ikon</span><span class="mpt col">Col</span></div></li>
+        <li>Okemo<div class="mountain-pass-tags"><span class="mpt epic">Epic</span></div></li>
+        <li>Mount Snow<div class="mountain-pass-tags"><span class="mpt epic">Epic</span></div></li>
+        <li>Mad River Glen<div class="mountain-pass-tags"><span class="mpt indy">Indy</span></div></li>
+        <li>Burke Mountain<div class="mountain-pass-tags"><span class="mpt indy">Indy</span></div></li>
+      </ul>
+      <div class="region-drive">Drive from Old Bridge: <span>4–5 HRS</span></div>
+    </div>
+    <div class="region-card" style="border-top-color:#4A9FE0">
+      <div class="region-flag">Closest Mountains · 2–3 hrs</div>
+      <div class="region-name" style="color:#4A9FE0">NEW YORK</div>
+      <div class="region-sub">Catskills & Adirondacks</div>
+      <ul class="region-mountains">
+        <li>Hunter Mountain<div class="mountain-pass-tags"><span class="mpt epic">Epic</span></div></li>
+        <li>Whiteface<div class="mountain-pass-tags"><span class="mpt epic">Epic</span><span class="mpt col">Col</span></div></li>
+        <li>Gore Mountain<div class="mountain-pass-tags"><span class="mpt epic">Epic</span></div></li>
+        <li>Windham Mountain<div class="mountain-pass-tags"><span class="mpt ikon">Ikon</span></div></li>
+        <li>Belleayre<div class="mountain-pass-tags"><span class="mpt indy">Indy</span></div></li>
+        <li>Plattekill<div class="mountain-pass-tags"><span class="mpt indy">Indy</span></div></li>
+      </ul>
+      <div class="region-drive">Drive from Old Bridge: <span>2–3 HRS</span></div>
+    </div>
+    <div class="region-card" style="border-top-color:var(--yellow)">
+      <div class="region-flag">Closest Snow · 1.5–2 hrs</div>
+      <div class="region-name" style="color:var(--yellow)">EASTERN PA</div>
+      <div class="region-sub">Pocono Mountains</div>
+      <ul class="region-mountains">
+        <li>Camelback Mountain<div class="mountain-pass-tags"><span class="mpt indy">Indy</span></div></li>
+        <li>Blue Mountain<div class="mountain-pass-tags"><span class="mpt indy">Indy</span></div></li>
+        <li>Shawnee Mountain<div class="mountain-pass-tags"><span class="mpt indy">Indy</span></div></li>
+        <li>Jack Frost / Big Boulder<div class="mountain-pass-tags"></div></li>
+        <li>Ski Big Bear<div class="mountain-pass-tags"><span class="mpt indy">Indy</span></div></li>
+      </ul>
+      <div class="region-drive">Drive from Old Bridge: <span>1.5–2 HRS</span></div>
+    </div>
+    <div class="region-card" style="border-top-color:#E8522A">
+      <div class="region-flag">Deep New England · 6–7 hrs</div>
+      <div class="region-name" style="color:#E8522A">NH & MAINE</div>
+      <div class="region-sub">New England's Best Kept Secret</div>
+      <ul class="region-mountains">
+        <li>Loon Mountain, NH<div class="mountain-pass-tags"><span class="mpt ikon">Ikon</span></div></li>
+        <li>Attitash, NH<div class="mountain-pass-tags"><span class="mpt epic">Epic</span></div></li>
+        <li>Wildcat, NH<div class="mountain-pass-tags"><span class="mpt epic">Epic</span></div></li>
+        <li>Cranmore, NH<div class="mountain-pass-tags"><span class="mpt indy">Indy</span></div></li>
+        <li>Sunday River, ME<div class="mountain-pass-tags"><span class="mpt ikon">Ikon</span><span class="mpt col">Col</span></div></li>
+        <li>Sugarloaf, ME<div class="mountain-pass-tags"><span class="mpt ikon">Ikon</span><span class="mpt col">Col</span></div></li>
+      </ul>
+      <div class="region-drive">Drive from Old Bridge: <span>6–7 HRS</span></div>
+    </div>
+    <div class="region-card" style="border-top-color:#B27ED4">
+      <div class="region-flag">Bucket List · 8–14 hrs</div>
+      <div class="region-name" style="color:#B27ED4">CANADA</div>
+      <div class="region-sub">Québec & Ontario</div>
+      <ul class="region-mountains">
+        <li>Mont-Tremblant, QC<div class="mountain-pass-tags"><span class="mpt ikon">Ikon</span></div></li>
+        <li>Le Massif de Charlevoix, QC<div class="mountain-pass-tags"><span class="mpt ikon">Ikon</span></div></li>
+        <li>Bromont, QC<div class="mountain-pass-tags"><span class="mpt col">Col</span></div></li>
+        <li>Mont-Sainte-Anne, QC<div class="mountain-pass-tags"></div></li>
+        <li>Blue Mountain, ON<div class="mountain-pass-tags"><span class="mpt pa">P.Alliance</span></div></li>
+        <li>Stoneham, QC<div class="mountain-pass-tags"></div></li>
+      </ul>
+      <div class="region-drive">Drive from Old Bridge: <span>8–14 HRS</span></div>
+    </div>
+    <div class="region-card" style="border-top-color:#E67E22">
+      <div class="region-flag">Quick Day Trips · 2–3 hrs</div>
+      <div class="region-name" style="color:#E67E22">CT & MASS</div>
+      <div class="region-sub">Close to Home Shredding</div>
+      <ul class="region-mountains">
+        <li>Berkshire East, MA<div class="mountain-pass-tags"><span class="mpt indy">Indy</span></div></li>
+        <li>Wachusett Mountain, MA<div class="mountain-pass-tags"><span class="mpt indy">Indy</span></div></li>
+        <li>Jiminy Peak, MA<div class="mountain-pass-tags"><span class="mpt indy">Indy</span></div></li>
+        <li>Mohawk Mountain, CT<div class="mountain-pass-tags"><span class="mpt indy">Indy</span></div></li>
+      </ul>
+      <div class="region-drive">Drive from Old Bridge: <span>2–3 HRS</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- NE MAP SECTION -->
+<section class="map-section" id="map">
+  <div class="map-layout">
+    <div class="map-info">
+      <div class="section-label">Northeast Mountain Map</div>
+      <h2 class="section-title">Every<br><em>Mountain.</em><br>One Crew.</h2>
+      <p class="section-body">Every pin is a mountain on our radar. The ⭑ star marks home — Old Bridge, NJ. Hover any pin for details.</p>
+      <ul class="map-pin-list" id="mapPinList"></ul>
+    </div>
+    <div class="map-container">
+      <canvas id="mapCanvas" width="700" height="460"></canvas>
+      <div class="map-tooltip" id="mapTooltip"></div>
+      <div class="map-legend">
+        <div class="map-legend-item"><div class="legend-dot" style="background:#D9001A"></div>Home Base</div>
+        <div class="map-legend-item"><div class="legend-dot" style="background:#5BB8D4"></div>Vermont</div>
+        <div class="map-legend-item"><div class="legend-dot" style="background:#4A9FE0"></div>New York</div>
+        <div class="map-legend-item"><div class="legend-dot" style="background:#F5C842"></div>PA · MA · CT</div>
+        <div class="map-legend-item"><div class="legend-dot" style="background:#E8522A"></div>NH & Maine</div>
+        <div class="map-legend-item"><div class="legend-dot" style="background:#B27ED4"></div>Canada</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PASSES -->
+<section class="section passes-section" id="passes">
+  <div class="passes-intro">
+    <div class="section-label">Season Pass Holders</div>
+    <h2 class="section-title">Got a Pass?<br>You're <em>Already</em><br>Halfway In.</h2>
+    <p class="section-body">Ikon, Epic, Mountain Collective, Indy, or Powder Alliance — you already have keys to dozens of Northeast mountains. NJ Ski Haus organizes the crew, handles logistics, and multiplies what your pass is worth. We also welcome members without passes on day trips.</p>
+  </div>
+  <div class="pass-grid">
+    <div class="pass-card ikon"><div class="pass-logo">IKON PASS</div><div class="pass-sub">Unlimited access · 18 resorts no blackouts · 50+ worldwide</div><ul class="pass-mountains"><li class="sh">— Vermont —</li><li>Killington</li><li>Stratton</li><li>Sugarbush</li><li class="sh">— New York —</li><li>Windham Mountain</li><li class="sh">— NH & Maine —</li><li>Loon Mountain, NH</li><li>Sunday River, ME</li><li>Sugarloaf, ME</li><li class="sh">— Canada —</li><li>Mont-Tremblant, QC</li><li>Le Massif de Charlevoix, QC</li><li class="more">+ 50+ resorts worldwide</li></ul></div>
+    <div class="pass-card epic"><div class="pass-logo">EPIC PASS</div><div class="pass-sub">Unlimited access · 40+ North American resorts</div><ul class="pass-mountains"><li class="sh">— Vermont —</li><li>Stowe</li><li>Okemo</li><li>Mount Snow</li><li class="sh">— New York —</li><li>Hunter Mountain</li><li>Whiteface</li><li>Gore Mountain</li><li class="sh">— New Hampshire —</li><li>Attitash</li><li>Wildcat</li><li>Crotched Mountain</li><li class="more">+ 40+ resorts worldwide</li></ul></div>
+    <div class="pass-card collective"><div class="pass-logo">MTN COLLECTIVE</div><div class="pass-sub">2 days each · 26 resorts · No blackout dates</div><ul class="pass-mountains"><li class="sh">— Vermont —</li><li>Sugarbush (2 days)</li><li class="sh">— New York —</li><li>Whiteface (2 days)</li><li class="sh">— Maine —</li><li>Sunday River (2 days)</li><li>Sugarloaf (2 days)</li><li class="sh">— Canada —</li><li>Bromont, QC (2 days)</li><li class="more">+ 50% off all additional days</li></ul></div>
+  </div>
+  <div class="pass-grid-2">
+    <div class="pass-card indy"><div class="pass-logo">INDY PASS</div><div class="pass-sub">2 days each · 270+ indie resorts · Best value</div><ul class="pass-mountains"><li class="sh">— Vermont —</li><li>Mad River Glen, Burke Mtn, Bromley</li><li class="sh">— New York —</li><li>Belleayre, Plattekill</li><li class="sh">— PA, CT, MA —</li><li>Camelback, Blue Mtn, Shawnee</li><li>Berkshire East, Wachusett, Jiminy Peak</li><li class="sh">— NH —</li><li>Cranmore, Bretton Woods, Tenney Mtn</li><li class="sh">— Canada —</li><li>Mont Sutton, QC · Owl's Head, QC</li><li class="more">+ 270+ resorts across North America</li></ul></div>
+    <div class="pass-card powder"><div class="pass-logo">POWDER ALLIANCE</div><div class="pass-sub">3 free days at each of 17 partner resorts</div><ul class="pass-mountains"><li class="sh">— How It Works —</li><li>Own a full season pass at a partner resort</li><li>Get 3 free days each at all 17 partners</li><li class="sh">— Northeast Partners —</li><li>Jay Peak, VT</li><li>Magic Mountain, VT</li><li>Saddleback, ME</li><li>Blue Mountain, ON (Canada)</li><li class="more">+ 17 total partner mountains</li></ul></div>
+    <div class="pass-card ikon-base"><div class="pass-logo">IKON BASE PASS</div><div class="pass-sub">Budget Ikon option · Blackout dates apply</div><ul class="pass-mountains"><li class="sh">— Same Mountains as Ikon —</li><li>Killington, Stratton, Sugarbush</li><li>Loon Mountain, NH</li><li>Sunday River + Sugarloaf, ME</li><li>Mont-Tremblant, QC</li><li class="sh">— Key Difference —</li><li>Blackout dates during peak holiday weeks</li><li>5–7 days at select resorts vs. unlimited</li><li class="more">Best for flexible, non-holiday skiers</li></ul></div>
+  </div>
+  <div class="pass-cta-row">
+    <a href="#newsletter" class="btn-primary">JOIN AS A PASS HOLDER</a>
+    <p class="pass-cta-text">No pass yet? No problem. Day trip memberships are available too. But pass holders get priority access and first dibs when we negotiate group rates and forge resort partnerships.</p>
+  </div>
+</section>
+
+<!-- MOUNTAIN REPORT — TECHNICAL DAILY -->
+<section class="section report-section" id="report">
+  <div class="report-header">
+    <div>
+      <div class="section-label">Daily Mountain Report</div>
+      <h2 class="section-title">Northeast<br><em>Conditions</em></h2>
+      <div class="report-updated" id="reportDate">Loading conditions...</div>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px">
+      <div class="report-live"><div class="live-dot"></div>Updated Daily</div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:2px;color:var(--text-dim);opacity:0.5;text-transform:uppercase">Season Snowfall Tracked</div>
+    </div>
+  </div>
+  <div class="report-tabs">
+    <button class="report-tab active" onclick="filterReport('all',this)">All Regions</button>
+    <button class="report-tab" onclick="filterReport('vt',this)">Vermont</button>
+    <button class="report-tab" onclick="filterReport('ny',this)">New York</button>
+    <button class="report-tab" onclick="filterReport('pa',this)">Eastern PA</button>
+    <button class="report-tab" onclick="filterReport('ne',this)">NH & Maine</button>
+    <button class="report-tab" onclick="filterReport('ca',this)">Canada</button>
+  </div>
+  <div class="report-grid" id="reportGrid"></div>
+  <p class="report-disclaimer">★ Conditions shown are curated weekly estimates for trip planning. Season snowfall totals are cumulative from Nov 1. Always verify with official resort snow reports. NJ Ski Haus members receive real-time powder alerts via the newsletter.</p>
+</section>
+
+<!-- MEMBER PERKS -->
+<section class="section perks-section" id="perks">
+  <div class="section-label">Member Benefits</div>
+  <h2 class="section-title">HAUS<br><em>Perks</em></h2>
+  <p class="section-body" style="max-width:680px">Membership isn't just about the trips — it's about the whole lifestyle. We're actively sourcing partnerships and deals so our members get rewarded just for being part of the crew. Here's what we're building.</p>
+
+  <div class="perks-grid">
+    <div class="perk-card">
+      <span class="perk-icon">🎿</span>
+      <div class="perk-title">Gear Discounts</div>
+      <p class="perk-desc">We're sourcing exclusive discounts on ski and snowboard gear from regional shops and national vendors. Skis, boards, bindings, helmets, goggles — members save on the gear that matters.</p>
+      <span class="perk-tag">Coming Soon · In Negotiation</span>
+    </div>
+    <div class="perk-card featured-perk">
+      <span class="perk-icon">🎟️</span>
+      <div class="perk-title">Lift Ticket Deals</div>
+      <p class="perk-desc">Group buying power means lower lift ticket prices. We're working to lock in reduced-rate tickets at key Northeast mountains for members who don't hold a season pass — or want to branch out.</p>
+      <span class="perk-tag">Priority Perk · Members First</span>
+    </div>
+    <div class="perk-card">
+      <span class="perk-icon">👕</span>
+      <div class="perk-title">Apparel & Clothing</div>
+      <p class="perk-desc">Ski jackets, base layers, gloves, and winter apparel — we're partnering with brands to bring members exclusive access to gear that performs on the mountain and looks sharp off it.</p>
+      <span class="perk-tag">Coming Soon · In Sourcing</span>
+    </div>
+    <div class="perk-card">
+      <span class="perk-icon">🛷</span>
+      <div class="perk-title">Rental Deals</div>
+      <p class="perk-desc">New to skiing or don't want to travel with gear? NJ Ski Haus is building relationships with rental shops at key mountains so our members get priority access and member pricing on rentals.</p>
+      <span class="perk-tag">Coming Soon · In Sourcing</span>
+    </div>
+    <div class="perk-card featured-perk">
+      <span class="perk-icon">🍻</span>
+      <div class="perk-title">Après-Ski Perks</div>
+      <p class="perk-desc">The mountain doesn't end when the lifts close. We're connecting with lodge bars, mountain restaurants, and local après-ski spots to secure group rates and member discounts for the whole crew.</p>
+      <span class="perk-tag">Building Partnerships Now</span>
+    </div>
+    <div class="perk-card">
+      <span class="perk-icon">🧳</span>
+      <div class="perk-title">Trip Logistics</div>
+      <p class="perk-desc">Group-rate lodging, charter buses from Old Bridge and Woodbridge, shared transport costs — members pay less per trip than going solo, every single time. That's the whole point of the crew.</p>
+      <span class="perk-tag">Active Benefit · All Members</span>
+    </div>
+  </div>
+
+  <!-- SWAG STRIP -->
+    <div class="swag-perk-card">
+      <span class="swag-perk-icon">🏷️</span>
+      <div class="swag-perk-body">
+        <div class="perk-title">NJ Ski Haus Swag</div>
+        <div class="perk-desc">Rep the Haus on and off the mountain. We're dropping official NJ Ski Haus branded gear for members — limited runs, exclusive designs, mountain-tested quality. Hats, beanies, stickers, patches, and more. Sign up to get notified when the first drop lands.</div>
+        <span class="perk-tag">Member Drop Coming Soon · Sign Up to Get Notified</span>
+      </div>
+      <div class="swag-items-row">
+        <div class="swag-chip"><span class="swag-chip-icon">🧢</span><span class="swag-chip-name">Snapback</span></div>
+        <div class="swag-chip"><span class="swag-chip-icon">🧣</span><span class="swag-chip-name">Beanie</span></div>
+        <div class="swag-chip"><span class="swag-chip-icon">🏷️</span><span class="swag-chip-name">Stickers</span></div>
+        <div class="swag-chip"><span class="swag-chip-icon">🧥</span><span class="swag-chip-name">Patch</span></div>
+        <div class="swag-chip"><span class="swag-chip-icon">🎿</span><span class="swag-chip-name">Ski Tag</span></div>
+        <div class="swag-chip"><span class="swag-chip-icon">🧤</span><span class="swag-chip-name">Glove Patch</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRIP CALENDAR -->
+<section class="section calendar-section" id="calendar">
+  <div class="section-label">Trip Calendar</div>
+  <h2 class="section-title">2025–26<br><em>Season</em><br>Lineup</h2>
+  <table class="calendar-table">
+    <thead><tr><th>Date</th><th>Mountain</th><th>Region</th><th>Pass</th><th>Pickup</th><th>Spots</th></tr></thead>
+    <tbody>
+      <tr><td>Jan 10–12</td><td><span class="cal-mountain">Killington</span>, VT</td><td>Vermont</td><td><span class="cal-pass ikon">Ikon</span></td><td>Old Bridge, NJ</td><td><span class="cal-spots filling">6 Left</span></td></tr>
+      <tr><td>Jan 25</td><td><span class="cal-mountain">Hunter Mountain</span>, NY</td><td>Catskills</td><td><span class="cal-pass epic">Epic</span></td><td>Old Bridge + Woodbridge</td><td><span class="cal-spots open">Open</span></td></tr>
+      <tr><td>Feb 1</td><td><span class="cal-mountain">Camelback</span>, PA</td><td>Poconos</td><td><span class="cal-pass indy">Indy</span></td><td>Old Bridge, NJ</td><td><span class="cal-spots open">Open</span></td></tr>
+      <tr><td>Feb 7–9</td><td><span class="cal-mountain">Stratton</span>, VT</td><td>Vermont</td><td><span class="cal-pass ikon">Ikon</span></td><td>Old Bridge, NJ</td><td><span class="cal-spots open">Open</span></td></tr>
+      <tr><td>Feb 14–16</td><td><span class="cal-mountain">Stowe</span>, VT</td><td>Vermont</td><td><span class="cal-pass epic">Epic</span></td><td>Old Bridge, NJ</td><td><span class="cal-spots filling">4 Left</span></td></tr>
+      <tr><td>Feb 28</td><td><span class="cal-mountain">Sugarbush</span>, VT</td><td>Vermont</td><td><span class="cal-pass multi">Ikon + Col</span></td><td>Old Bridge + Princeton</td><td><span class="cal-spots open">Open</span></td></tr>
+      <tr><td>Mar 7–9</td><td><span class="cal-mountain">Sunday River</span>, ME</td><td>Maine</td><td><span class="cal-pass multi">Ikon + Col</span></td><td>Old Bridge, NJ</td><td><span class="cal-spots open">Open</span></td></tr>
+      <tr><td>Mar 21–23</td><td><span class="cal-mountain">Killington</span>, VT</td><td>Vermont</td><td><span class="cal-pass ikon">Ikon</span></td><td>Old Bridge + Woodbridge</td><td><span class="cal-spots open">Open</span></td></tr>
+      <tr><td>Apr TBD</td><td><span class="cal-mountain">Mont-Tremblant</span>, QC</td><td>Canada</td><td><span class="cal-pass ikon">Ikon</span></td><td>Old Bridge, NJ</td><td><span class="cal-spots tba">TBA</span></td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- MEMBERSHIP -->
+<section class="section membership" id="membership">
+  <div class="section-label">Membership Tiers</div>
+  <h2 class="section-title">Pick Your<br><em>Level</em></h2>
+  <p class="section-body" style="max-width:600px">Membership pricing is coming soon. Join the waitlist now to lock in founding member rates and be first in line when spots open.</p>
+  <div class="plans">
+    <div class="plan">
+      <div class="plan-tier">Day Tripper</div>
+      <div class="plan-coming">Pricing Coming Soon</div>
+      <ul class="plan-features">
+        <li>Access to all group day trips</li>
+        <li>Member pricing on bus transport</li>
+        <li>NJ Ski Haus Discord community</li>
+        <li>Daily mountain conditions newsletter</li>
+        <li>Gear & rental partner discounts</li>
+        <li>Priority pickup — Old Bridge & Woodbridge</li>
+      </ul>
+      <a href="#newsletter" class="plan-cta">JOIN WAITLIST</a>
+    </div>
+    <div class="plan featured">
+      <div class="plan-badge">MOST POPULAR</div>
+      <div class="plan-tier">Full Member</div>
+      <div class="plan-coming">Pricing Coming Soon</div>
+      <ul class="plan-features">
+        <li>Everything in Day Tripper</li>
+        <li>Priority booking on all overnight trips</li>
+        <li>Après-ski events & member meetups</li>
+        <li>Vote on seasonal trip destinations</li>
+        <li>Exclusive lift ticket + gear deals</li>
+        <li>NJ Ski Haus swag pack on joining</li>
+        <li>Future lodge cabin priority access</li>
+      </ul>
+      <a href="#newsletter" class="plan-cta">JOIN WAITLIST</a>
+    </div>
+    <div class="plan">
+      <div class="plan-tier">Lodge Founding Member</div>
+      <div class="plan-coming">Pricing Coming Soon</div>
+      <ul class="plan-features">
+        <li>Everything in Full Member — forever</li>
+        <li>Founding member plaque at the lodge</li>
+        <li>Vote on lodge location & decisions</li>
+        <li>First dibs on lodge weekends always</li>
+        <li>Premium swag pack + name on the wall</li>
+        <li>Annual founding member retreat</li>
+      </ul>
+      <a href="#newsletter" class="plan-cta">JOIN WAITLIST</a>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section class="section" id="gallery" style="background:var(--grey);padding-top:80px">
+  <div class="section-label">From the Mountain</div>
+  <h2 class="section-title">The<br><em>Haus</em><br>Gallery</h2>
+  <div class="gallery-grid">
+    <div class="gallery-item"><img src="https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800&q=80" alt="Mountain"></div>
+    <div class="gallery-item"><img src="https://images.unsplash.com/photo-1547234935-80c7145ec969?w=800&q=80" alt="Ski"></div>
+    <div class="gallery-item"><img src="https://images.unsplash.com/photo-1565992441121-4367b2138e6f?w=800&q=80" alt="Snow"></div>
+    <div class="gallery-item"><img src="https://images.unsplash.com/photo-1600456548090-7d2cde782584?w=800&q=80" alt="Slopes"></div>
+    <div class="gallery-item"><img src="https://images.unsplash.com/photo-1453090927415-5f45085b65c0?w=800&q=80" alt="Powder"></div>
+    <div class="gallery-item"><img src="https://images.unsplash.com/photo-1580654842329-c2ad2d4f30cb?w=800&q=80" alt="Mountain view"></div>
+  </div>
+</section>
+
+<!-- NEWSLETTER -->
+<section class="newsletter-section" id="newsletter">
+  <div class="section-label">Stay In The Loop</div>
+  <h2 class="section-title" style="font-size:clamp(48px,7vw,90px)">Don't Miss<br>A Single<br><em>Drop</em></h2>
+  <p class="section-body" style="max-width:460px;margin:0 auto;text-align:center">Daily mountain conditions, weekly trip announcements, powder alerts, swag drops, and first access to membership spots.</p>
+  <form class="newsletter-form" onsubmit="return false;">
+    <input class="newsletter-input" type="email" placeholder="your@email.com">
+    <button class="newsletter-submit">SEND IT →</button>
+  </form>
+  <p class="newsletter-fine">No spam. Just mountains. Unsubscribe anytime.</p>
+</section>
+
+<!-- SUPPORT / DONATE -->
+<section class="support-section" id="support">
+  <div class="section-label">Support The Haus</div>
+  <h2 class="section-title">Help Us<br>Build <em>This</em><br>Thing.</h2>
+  <p class="section-body" style="max-width:680px">NJ Ski Haus is built by the community, for the community. Every dollar goes directly toward bus deposits, trip planning, lodge fund, and member perks. No membership fees yet — but if you want to throw in early and help us grow, we're grateful. Every contribution counts toward that Vermont lodge.</p>
+
+  <div class="support-grid">
+    <div class="support-card btc">
+      <span class="support-icon">₿</span>
+      <div class="support-name">BITCOIN</div>
+      <div class="support-handle">bc1qnjskihaus000000000000example</div>
+      <button class="support-copy-btn" onclick="copyToClipboard('bc1qnjskihaus000000000000example', this)">COPY ADDRESS</button>
+      <p class="support-desc">Send BTC directly to our wallet. All contributions go to the lodge fund and trip deposits. We track it all transparently.</p>
+    </div>
+    <div class="support-card venmo">
+      <span class="support-icon">💜</span>
+      <div class="support-name">VENMO</div>
+      <div class="support-handle">@NJSkiHaus</div>
+      <a href="https://venmo.com/NJSkiHaus" class="support-copy-btn" target="_blank">OPEN VENMO</a>
+      <p class="support-desc">Quick and easy. Send any amount via Venmo — include a note like "Lodge Fund" or "Trip Deposit" so we can track it.</p>
+    </div>
+    <div class="support-card paypal">
+      <span class="support-icon">🅿️</span>
+      <div class="support-name">PAYPAL</div>
+      <div class="support-handle">paypal.me/NJSkiHaus</div>
+      <a href="https://paypal.me/NJSkiHaus" class="support-copy-btn" target="_blank">OPEN PAYPAL</a>
+      <p class="support-desc">Prefer PayPal? Works for us. Goods & services or friends & family — just leave a note so we know what it's for.</p>
+    </div>
+  </div>
+
+  <div class="support-note">
+    <strong>🏔️ Where does the money go?</strong> Every contribution is tracked openly and applied to four categories: <strong>Bus & Transport Deposits</strong> (getting the crew to the mountain), <strong>Lodging Fund</strong> (booking group accommodations), <strong>Vermont Lodge Fund</strong> (the long game — our own cabin), and <strong>Member Perks</strong> (negotiating gear discounts and swag). We'll publish a regular update in the newsletter.
+  </div>
+</section>
+
+<!-- FAQ + CONTACT -->
+<section class="section faq-section" id="contact">
+  <div class="section-label">Got Questions</div>
+  <h2 class="section-title">FAQ &<br><em>Contact</em></h2>
+  <div class="faq-contact-grid">
+    <div class="faq-list">
+      <div class="faq-item"><button class="faq-question" onclick="toggleFaq(this)">Do I need a season pass to join?<span class="faq-arrow">+</span></button><div class="faq-answer">No — but we strongly encourage it! Pass holders get priority access and the most trip options. Members without passes can still join day trips and pay lift tickets separately. Our long-term goal is to negotiate group passes for all members.</div></div>
+      <div class="faq-item"><button class="faq-question" onclick="toggleFaq(this)">Where do trips depart from?<span class="faq-arrow">+</span></button><div class="faq-answer">Primary pickup is Old Bridge, NJ with a second stop in Woodbridge for most trips. Additional stops may be added as membership grows. We're built around Central Jersey.</div></div>
+      <div class="faq-item"><button class="faq-question" onclick="toggleFaq(this)">What's included in trip costs?<span class="faq-arrow">+</span></button><div class="faq-answer">Trip costs cover the chartered bus and lodging for overnight trips. Lift tickets are separate — that's where your pass comes in. We coordinate group dinners and find rental deals for members who need them.</div></div>
+      <div class="faq-item"><button class="faq-question" onclick="toggleFaq(this)">When is pricing announced?<span class="faq-arrow">+</span></button><div class="faq-answer">We're finalizing membership pricing now. Get on the waitlist — founding members lock in the best rates and get first pick on all trips. Pricing announced via email before anyone else.</div></div>
+      <div class="faq-item"><button class="faq-question" onclick="toggleFaq(this)">What's the lodge cabin plan?<span class="faq-arrow">+</span></button><div class="faq-answer">The long game: a shared lodge property in Vermont near Killington and Stratton. Lodge Founding Members vote on location, hold permanent first-dibs on booking weekends, and get their name on the wall. Think collective ski house, built by the community.</div></div>
+      <div class="faq-item"><button class="faq-question" onclick="toggleFaq(this)">All skill levels welcome?<span class="faq-arrow">+</span></button><div class="faq-answer">100%. First-timers to park rats — everyone belongs here. The vibe is crew-first, always. Groups naturally find their pace and no one gets left behind.</div></div>
+      <div class="faq-item"><button class="faq-question" onclick="toggleFaq(this)">How are member perks sourced?<span class="faq-arrow">+</span></button><div class="faq-answer">We're actively reaching out to regional gear shops, mountain rental partners, apparel brands, and après-ski venues to negotiate group deals. As membership grows, so does our bargaining power. Members will be the first to know when new deals are locked in.</div></div>
+    </div>
+    <div class="contact-box">
+      <h3>GET IN TOUCH</h3>
+      <p>Questions about membership, trip logistics, or partnership opportunities? We're real people from New Jersey. Reach out and we'll get back to you fast.</p>
+      <div class="contact-form">
+        <input class="contact-input" type="text" placeholder="Your Name">
+        <input class="contact-input" type="email" placeholder="Email Address">
+        <input class="contact-input" type="text" placeholder="Subject (Trip info, Partnership, Gear deal, etc.)">
+        <textarea class="contact-input" placeholder="Your message..."></textarea>
+        <a href="#" class="btn-primary" style="text-align:center">SEND MESSAGE</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div>
+    <div class="footer-logo"><span class="nj">NJ</span> SKI HAUS</div>
+    <p class="footer-tagline">New Jersey's premier ski & snowboard club. Vermont bound, Northeast obsessed. Every mountain. Every season.</p>
+  </div>
+  <div class="footer-col">
+    <h4>Navigate</h4>
+    <ul>
+      <li><a href="#about">About</a></li>
+      <li><a href="#regions">Mountains</a></li>
+      <li><a href="#passes">Season Passes</a></li>
+      <li><a href="#report">Daily Conditions</a></li>
+      <li><a href="#perks">Member Perks</a></li>
+      <li><a href="#calendar">Trip Calendar</a></li>
+      <li><a href="#membership">Membership</a></li>
+      <li><a href="#support">Support the Haus</a></li>
+    </ul>
+  </div>
+  <div class="footer-col">
+    <h4>Connect</h4>
+    <ul>
+      <li><a href="#">Instagram</a></li>
+      <li><a href="#">Discord</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li><a href="#newsletter">Newsletter</a></li>
+      <li><a href="#support">Donate / Support</a></li>
+    </ul>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 NJ Ski Haus — njskihaus.com — New Jersey's Premier Ski & Snowboard Club</p>
+    <div class="social-links">
+      <a href="#">Instagram</a>
+      <a href="#">Discord</a>
+      <a href="#contact">Email</a>
+      <a href="#support">Support</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ── DATE ──
+const now = new Date();
+document.getElementById('reportDate').textContent =
+  'Last updated: ' + now.toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+
+// ── MOUNTAIN DATA ──
+const mountains = [
+  {name:'KILLINGTON',loc:'Vermont',region:'vt',pass:'Ikon',base:58,newSnow:12,trails:142,open:116,temp:22,surface:'Groomed + Natural Pack',season:198,seasonMax:250,status:'great'},
+  {name:'STOWE',loc:'Vermont',region:'vt',pass:'Epic',base:72,newSnow:18,trails:116,open:98,temp:18,surface:'Powder + Packed Powder',season:222,seasonMax:250,status:'great'},
+  {name:'STRATTON',loc:'Vermont',region:'vt',pass:'Ikon',base:42,newSnow:6,trails:99,open:94,temp:27,surface:'Machine Groomed',season:165,seasonMax:250,status:'good'},
+  {name:'SUGARBUSH',loc:'Vermont',region:'vt',pass:'Ikon / Collective',base:52,newSnow:9,trails:111,open:102,temp:24,surface:'Natural Pack + Groomed',season:184,seasonMax:250,status:'great'},
+  {name:'OKEMO',loc:'Vermont',region:'vt',pass:'Epic',base:45,newSnow:4,trails:121,open:88,temp:26,surface:'Packed Powder',season:155,seasonMax:250,status:'good'},
+  {name:'HUNTER MTN',loc:'New York',region:'ny',pass:'Epic',base:36,newSnow:3,trails:67,open:58,temp:29,surface:'Packed Powder',season:122,seasonMax:200,status:'good'},
+  {name:'WHITEFACE',loc:'New York',region:'ny',pass:'Epic / Collective',base:44,newSnow:8,trails:87,open:72,temp:21,surface:'Groomed + Natural',season:168,seasonMax:200,status:'great'},
+  {name:'CAMELBACK',loc:'Pennsylvania',region:'pa',pass:'Indy',base:24,newSnow:0,trails:34,open:33,temp:32,surface:'Machine Made + Groomed',season:88,seasonMax:150,status:'fair'},
+  {name:'SUNDAY RIVER',loc:'Maine',region:'ne',pass:'Ikon / Collective',base:55,newSnow:10,trails:135,open:128,temp:20,surface:'Natural + Groomed',season:192,seasonMax:250,status:'great'},
+  {name:'LOON MTN',loc:'New Hampshire',region:'ne',pass:'Ikon',base:48,newSnow:8,trails:61,open:60,temp:23,surface:'Groomed Hardpack',season:175,seasonMax:250,status:'good'},
+  {name:'MONT-TREMBLANT',loc:'Québec, Canada',region:'ca',pass:'Ikon',base:64,newSnow:15,trails:102,open:102,temp:14,surface:'Powder + Packed Powder',season:210,seasonMax:300,status:'great'},
+  {name:'BLUE MTN',loc:'Pennsylvania',region:'pa',pass:'Indy',base:20,newSnow:0,trails:40,open:28,temp:33,surface:'Packed Powder + Ice',season:72,seasonMax:150,status:'fair'},
+];
+
+function renderReportCards(filter){
+  const grid = document.getElementById('reportGrid');
+  grid.innerHTML = '';
+  const filtered = filter === 'all' ? mountains : mountains.filter(m => m.region === filter);
+  filtered.forEach(m => {
+    const pct = Math.round((m.season / m.seasonMax) * 100);
+    const statusLabel = m.status === 'great' ? 'GREAT ❄️' : m.status === 'good' ? 'GOOD ✓' : 'FAIR ⚠';
+    const tempColor = m.temp <= 20 ? 'var(--ice)' : m.temp <= 30 ? '#81C9E8' : 'var(--yellow)';
+    grid.innerHTML += `
+    <div class="report-card">
+      <div class="rc-header">
+        <div class="rc-name-block">
+          <div class="rc-mountain">${m.name}</div>
+          <div class="rc-location">${m.loc}</div>
+        </div>
+        <div class="rc-status">
+          <div class="rc-badge ${m.status}">${statusLabel}</div>
+          <div class="rc-pass-tag">${m.pass}</div>
+        </div>
+      </div>
+      <div class="rc-stats-primary">
+        <div class="rc-stat"><div class="rc-stat-val snow">${m.base}"</div><div class="rc-stat-lbl">Base Depth</div></div>
+        <div class="rc-stat"><div class="rc-stat-val snow" style="color:#A8E6FF">+${m.newSnow}"</div><div class="rc-stat-lbl">New Snow (48hr)</div></div>
+        <div class="rc-stat"><div class="rc-stat-val">${m.open}/${m.trails}</div><div class="rc-stat-lbl">Trails Open</div></div>
+        <div class="rc-stat"><div class="rc-stat-val" style="color:${tempColor}">${m.temp}°F</div><div class="rc-stat-lbl">Summit Temp</div></div>
+      </div>
+      <div class="rc-season">
+        <div class="rc-season-row">
+          <span class="rc-season-label">📊 Season Snowfall Total</span>
+          <span class="rc-season-val">${m.season}" this season</span>
+        </div>
+        <div class="rc-season-bar"><div class="rc-season-fill" style="width:${pct}%"></div></div>
+      </div>
+      <div class="rc-footer">
+        <span class="rc-surface">${m.surface}</span>
+        <span class="rc-trails">${pct}% of avg season</span>
+      </div>
+    </div>`;
+  });
+}
+renderReportCards('all');
+
+function filterReport(region, btn){
+  document.querySelectorAll('.report-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  renderReportCards(region);
+  // animate season bars after render
+  setTimeout(() => {
+    document.querySelectorAll('.rc-season-fill').forEach(el => {
+      const w = el.style.width; el.style.width = '0';
+      setTimeout(() => el.style.width = w, 50);
+    });
+  }, 50);
+}
+
+// ── NORTHEAST MAP ──
+// Lat/lon bounds for the Northeast
+const MAP_W = 700, MAP_H = 460;
+const LAT_MIN = 38.5, LAT_MAX = 47.8, LON_MIN = -80.5, LON_MAX = -66.0;
+const PAD = 28;
+function toXY(lat, lon) {
+  const x = PAD + (lon - LON_MIN) / (LON_MAX - LON_MIN) * (MAP_W - PAD*2);
+  const y = PAD + (LAT_MAX - lat) / (LAT_MAX - LAT_MIN) * (MAP_H - PAD*2);
+  return [x, y];
+}
+
+// Simplified state polygons [lon, lat] pairs
+const states = [
+  { name:'Québec (partial)', fill:'rgba(178,126,212,0.07)', stroke:'rgba(178,126,212,0.18)',
+    pts:[[-80,47.8],[-66,47.8],[-66,45.0],[-71.5,45.0],[-73.4,45.0],[-74.7,45.0],[-79.8,45.0]] },
+  { name:'Pennsylvania', fill:'rgba(91,184,212,0.06)', stroke:'rgba(91,184,212,0.2)',
+    pts:[[-80.5,42.3],[-74.7,42.3],[-74.7,41.4],[-75.3,39.7],[-80.5,39.7]] },
+  { name:'New Jersey', fill:'rgba(217,0,26,0.1)', stroke:'rgba(217,0,26,0.4)',
+    pts:[[-75.6,39.8],[-74.7,41.4],[-73.9,41.4],[-73.9,40.9],[-74.0,40.1],[-74.9,38.9],[-75.6,39.2]] },
+  { name:'New York', fill:'rgba(91,184,212,0.06)', stroke:'rgba(91,184,212,0.2)',
+    pts:[[-79.8,42.3],[-76.0,43.2],[-76.0,43.9],[-74.0,44.7],[-73.4,45.0],[-71.5,45.0],[-72.5,42.7],[-73.4,42.7],[-73.5,42.0],[-73.9,41.4],[-74.7,41.4],[-74.7,42.3]] },
+  { name:'Connecticut', fill:'rgba(91,184,212,0.06)', stroke:'rgba(91,184,212,0.18)',
+    pts:[[-73.7,42.1],[-71.8,42.1],[-71.8,41.0],[-73.7,41.0]] },
+  { name:'Rhode Island', fill:'rgba(91,184,212,0.06)', stroke:'rgba(91,184,212,0.18)',
+    pts:[[-71.8,42.1],[-71.2,42.1],[-71.2,41.2],[-71.8,41.2]] },
+  { name:'Massachusetts', fill:'rgba(91,184,212,0.07)', stroke:'rgba(91,184,212,0.22)',
+    pts:[[-73.5,42.9],[-70.6,42.9],[-70.0,41.7],[-71.8,41.2],[-71.8,42.1],[-73.5,42.1]] },
+  { name:'Vermont', fill:'rgba(91,184,212,0.09)', stroke:'rgba(91,184,212,0.3)',
+    pts:[[-73.4,42.7],[-73.4,45.0],[-71.5,45.0],[-72.5,42.7]] },
+  { name:'New Hampshire', fill:'rgba(232,82,42,0.07)', stroke:'rgba(232,82,42,0.22)',
+    pts:[[-72.5,42.7],[-71.5,45.3],[-71.1,45.2],[-70.6,43.1],[-71.0,42.7]] },
+  { name:'Maine', fill:'rgba(232,82,42,0.07)', stroke:'rgba(232,82,42,0.22)',
+    pts:[[-71.1,44.0],[-71.5,45.3],[-70.7,47.4],[-67.0,47.4],[-66.9,44.8],[-67.5,44.0],[-70.7,43.1]] },
+];
+
+// Mountain pins
+const mapMountains = [
+  {name:'Old Bridge, NJ',lat:40.38,lon:-74.34,color:'#D9001A',home:true,pass:'Home Base',region:'Home Base'},
+  {name:'Killington',lat:43.67,lon:-72.78,color:'#5BB8D4',pass:'Ikon',region:'Vermont'},
+  {name:'Stowe',lat:44.53,lon:-72.78,color:'#5BB8D4',pass:'Epic',region:'Vermont'},
+  {name:'Stratton',lat:43.11,lon:-72.91,color:'#5BB8D4',pass:'Ikon',region:'Vermont'},
+  {name:'Sugarbush',lat:44.14,lon:-72.90,color:'#5BB8D4',pass:'Ikon/Col',region:'Vermont'},
+  {name:'Okemo',lat:43.40,lon:-72.73,color:'#5BB8D4',pass:'Epic',region:'Vermont'},
+  {name:'Mad River Glen',lat:44.19,lon:-72.88,color:'#5BB8D4',pass:'Indy',region:'Vermont'},
+  {name:'Burke Mountain',lat:44.60,lon:-71.87,color:'#5BB8D4',pass:'Indy',region:'Vermont'},
+  {name:'Mount Snow',lat:42.96,lon:-72.92,color:'#5BB8D4',pass:'Epic',region:'Vermont'},
+  {name:'Hunter Mountain',lat:42.18,lon:-74.22,color:'#4A9FE0',pass:'Epic',region:'New York'},
+  {name:'Whiteface',lat:44.36,lon:-73.90,color:'#4A9FE0',pass:'Epic/Col',region:'New York'},
+  {name:'Gore Mountain',lat:43.67,lon:-74.00,color:'#4A9FE0',pass:'Epic',region:'New York'},
+  {name:'Windham Mtn',lat:42.30,lon:-74.25,color:'#4A9FE0',pass:'Ikon',region:'New York'},
+  {name:'Camelback',lat:41.05,lon:-75.34,color:'#F5C842',pass:'Indy',region:'Pennsylvania'},
+  {name:'Blue Mountain',lat:40.89,lon:-75.52,color:'#F5C842',pass:'Indy',region:'Pennsylvania'},
+  {name:'Sunday River',lat:44.47,lon:-70.85,color:'#E8522A',pass:'Ikon/Col',region:'Maine'},
+  {name:'Sugarloaf',lat:45.03,lon:-70.31,color:'#E8522A',pass:'Ikon/Col',region:'Maine'},
+  {name:'Loon Mountain',lat:44.03,lon:-71.62,color:'#E8522A',pass:'Ikon',region:'New Hampshire'},
+  {name:'Attitash',lat:44.07,lon:-71.22,color:'#E8522A',pass:'Epic',region:'New Hampshire'},
+  {name:'Cranmore',lat:44.05,lon:-71.00,color:'#E8522A',pass:'Indy',region:'New Hampshire'},
+  {name:'Berkshire East',lat:42.46,lon:-72.90,color:'#F5C842',pass:'Indy',region:'Massachusetts'},
+  {name:'Wachusett',lat:42.49,lon:-71.89,color:'#F5C842',pass:'Indy',region:'Massachusetts'},
+  {name:'Mont-Tremblant',lat:46.12,lon:-74.59,color:'#B27ED4',pass:'Ikon',region:'Canada (QC)'},
+  {name:'Le Massif',lat:47.25,lon:-70.78,color:'#B27ED4',pass:'Ikon',region:'Canada (QC)'},
+];
+
+// Populate side list
+const mapList = document.getElementById('mapPinList');
+mapMountains.filter(m => !m.home).forEach(m => {
+  const li = document.createElement('li');
+  li.innerHTML = `<div class="ml-dot" style="background:${m.color}"></div><span class="ml-name">${m.name}</span><span class="ml-region">${m.region}</span>`;
+  mapList.appendChild(li);
+});
+
+const mapCanvas = document.getElementById('mapCanvas');
+const mCtx = mapCanvas.getContext('2d');
+const mapTooltip = document.getElementById('mapTooltip');
+
+function drawState(pts, fill, stroke) {
+  mCtx.beginPath();
+  pts.forEach((p, i) => {
+    const [x, y] = toXY(p[1], p[0]);
+    i === 0 ? mCtx.moveTo(x, y) : mCtx.lineTo(x, y);
+  });
+  mCtx.closePath();
+  mCtx.fillStyle = fill; mCtx.fill();
+  mCtx.strokeStyle = stroke; mCtx.lineWidth = 1.2; mCtx.stroke();
+}
+
+function drawMapStar(x, y, r, color) {
+  const spikes = 5, outerR = r, innerR = r * 0.42;
+  let rot = -Math.PI / 2;
+  const step = Math.PI / spikes;
+  mCtx.beginPath(); mCtx.moveTo(x + Math.cos(rot)*outerR, y + Math.sin(rot)*outerR);
+  for (let i = 0; i < spikes; i++) {
+    rot += step; mCtx.lineTo(x + Math.cos(rot)*innerR, y + Math.sin(rot)*innerR);
+    rot += step; mCtx.lineTo(x + Math.cos(rot)*outerR, y + Math.sin(rot)*outerR);
+  }
+  mCtx.closePath();
+  mCtx.fillStyle = color; mCtx.shadowColor = color; mCtx.shadowBlur = 18; mCtx.fill();
+  mCtx.shadowBlur = 0;
+}
+
+let hoveredMapPin = null;
+let mapMouseX = -999, mapMouseY = -999;
+
+function drawMap() {
+  mCtx.clearRect(0, 0, MAP_W, MAP_H);
+
+  // Background
+  mCtx.fillStyle = '#0E1217';
+  mCtx.fillRect(0, 0, MAP_W, MAP_H);
+
+  // Subtle grid
+  mCtx.strokeStyle = 'rgba(91,184,212,0.05)';
+  mCtx.lineWidth = 0.5;
+  for (let lat = 39; lat <= 48; lat++) {
+    const [,y] = toXY(lat, LON_MIN);
+    mCtx.beginPath(); mCtx.moveTo(PAD, y); mCtx.lineTo(MAP_W-PAD, y); mCtx.stroke();
+  }
+  for (let lon = -80; lon <= -66; lon += 2) {
+    const [x] = toXY(LAT_MIN, lon);
+    mCtx.beginPath(); mCtx.moveTo(x, PAD); mCtx.lineTo(x, MAP_H-PAD); mCtx.stroke();
+  }
+
+  // Draw states
+  states.forEach(s => drawState(s.pts, s.fill, s.stroke));
+
+  // State labels
+  mCtx.font = 'bold 9px Barlow Condensed, sans-serif';
+  mCtx.letterSpacing = '2px';
+  mCtx.textAlign = 'center';
+  const stateLabels = [
+    {t:'VT', lat:44.0, lon:-72.7}, {t:'NH', lat:43.8, lon:-71.5},
+    {t:'ME', lat:45.0, lon:-69.2}, {t:'MA', lat:42.4, lon:-71.8},
+    {t:'NY', lat:43.0, lon:-76.5}, {t:'PA', lat:41.2, lon:-77.5},
+    {t:'NJ', lat:40.1, lon:-74.5}, {t:'CT', lat:41.6, lon:-72.7},
+    {t:'QC', lat:47.0, lon:-73.0},
+  ];
+  stateLabels.forEach(l => {
+    const [x, y] = toXY(l.lat, l.lon);
+    mCtx.fillStyle = 'rgba(238,242,245,0.22)';
+    mCtx.fillText(l.t, x, y);
+  });
+
+  // Pins
+  hoveredMapPin = null;
+  mapMountains.forEach(m => {
+    const [px, py] = toXY(m.lat, m.lon);
+    const dist = Math.hypot(mapMouseX - px, mapMouseY - py);
+    const isHover = dist < 12;
+    if (isHover) hoveredMapPin = {m, px, py};
+
+    if (m.home) {
+      drawMapStar(px, py, isHover ? 11 : 9, '#D9001A');
+    } else {
+      const r = isHover ? 7 : 5;
+      mCtx.beginPath(); mCtx.arc(px, py, r, 0, Math.PI*2);
+      mCtx.fillStyle = isHover ? m.color : m.color+'BB';
+      mCtx.shadowColor = m.color; mCtx.shadowBlur = isHover ? 18 : 8;
+      mCtx.fill(); mCtx.shadowBlur = 0;
+      // Pin outline
+      mCtx.strokeStyle = 'rgba(14,18,23,0.6)'; mCtx.lineWidth = 1;
+      mCtx.stroke();
+    }
+  });
+
+  // Tooltip
+  if (hoveredMapPin) {
+    const {m, px, py} = hoveredMapPin;
+    const rect = mapCanvas.getBoundingClientRect();
+    const scaleX = rect.width / MAP_W;
+    mapTooltip.style.display = 'block';
+    mapTooltip.style.left = (rect.left + px * scaleX) + 'px';
+    mapTooltip.style.top = (rect.top + py * scaleX - 14 + window.scrollY) + 'px';
+    mapTooltip.style.transform = 'translate(-50%, -100%)';
+    mapTooltip.innerHTML = `<strong>${m.name}</strong><span>${m.region} · ${m.pass}</span>`;
+    mapCanvas.style.cursor = 'pointer';
+  } else {
+    mapTooltip.style.display = 'none';
+    mapCanvas.style.cursor = 'crosshair';
+  }
+}
+
+mapCanvas.addEventListener('mousemove', e => {
+  const rect = mapCanvas.getBoundingClientRect();
+  const scaleX = MAP_W / rect.width;
+  mapMouseX = (e.clientX - rect.left) * scaleX;
+  mapMouseY = (e.clientY - rect.top) * scaleX;
+  drawMap();
+});
+mapCanvas.addEventListener('mouseleave', () => {
+  mapMouseX = -999; mapMouseY = -999;
+  mapTooltip.style.display = 'none';
+  drawMap();
+});
+
+drawMap();
+
+// FAQ
+function toggleFaq(btn) {
+  const item = btn.parentElement;
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+  if (!isOpen) item.classList.add('open');
+}
+
+// Copy BTC address
+function copyToClipboard(text, btn) {
+  navigator.clipboard.writeText(text).then(() => {
+    const orig = btn.textContent;
+    btn.textContent = 'COPIED ✓';
+    btn.style.background = 'rgba(247,147,26,0.2)';
+    btn.style.borderColor = '#F7931A';
+    btn.style.color = '#F7931A';
+    setTimeout(() => { btn.textContent = orig; btn.style = ''; }, 2000);
+  });
+}
+
+// Animate season bars on scroll
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.querySelectorAll('.rc-season-fill').forEach(el => {
+        const w = el.style.width; el.style.width = '0';
+        setTimeout(() => el.style.width = w, 100);
+      });
+    }
+  });
+}, {threshold: 0.1});
+const rg = document.getElementById('reportGrid');
+if (rg) observer.observe(rg);
+</script>
+</body>
+</html>
