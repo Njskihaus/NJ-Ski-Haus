@@ -148,6 +148,30 @@ canvas#mapCanvas{display:block;width:100%;max-width:700px;cursor:crosshair}
 .pass-mountains li.more{font-style:italic;opacity:0.35;border-bottom:none}
 .pass-mountains li.more::before,.pass-mountains li.sh::before{display:none}
 .pass-mountains li.sh{font-family:'Barlow Condensed',sans-serif;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--ice);opacity:0.7;border-bottom:none;padding-top:10px}
+.pat{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:2px 7px;background:rgba(91,184,212,0.15);color:var(--ice);border-radius:2px;margin-left:auto;flex-shrink:0}
+
+/* ── DESTINATION TRIPS ── */
+.destinations-section{background:var(--black);padding:100px 60px}
+.dest-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:3px;margin-top:56px}
+.dest-card{position:relative;overflow:hidden;min-height:520px;display:flex;flex-direction:column;justify-content:flex-end;cursor:pointer}
+.dest-card-bg{position:absolute;inset:0;background-size:cover;background-position:center;transition:transform 0.6s ease;filter:saturate(0.7) contrast(1.1)}
+.dest-card:hover .dest-card-bg{transform:scale(1.07);filter:saturate(1.1) contrast(1.05)}
+.dest-card-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(14,18,23,0.97) 0%,rgba(14,18,23,0.6) 55%,rgba(14,18,23,0.1) 100%)}
+.dest-card-content{position:relative;z-index:2;padding:22px 22px 28px}
+.dest-badge{display:inline-block;font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;padding:4px 10px;margin-bottom:10px;border-radius:2px}
+.dest-badge.bucket{background:rgba(245,200,66,0.2);color:var(--yellow);border:1px solid rgba(245,200,66,0.3)}
+.dest-badge.featured{background:rgba(91,184,212,0.2);color:var(--ice);border:1px solid rgba(91,184,212,0.3)}
+.dest-badge.japan{background:rgba(255,70,80,0.2);color:#FF4655;border:1px solid rgba(255,70,80,0.4)}
+.dest-region{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--text-dim);margin-bottom:5px}
+.dest-name{font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:2px;line-height:1;margin-bottom:8px}
+.dest-tagline{font-size:12px;font-weight:300;color:var(--text-dim);line-height:1.65;margin-bottom:14px}
+.dest-mountains{list-style:none;margin-bottom:14px}
+.dest-mountains li{font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:0.5px;color:var(--text-dim);padding:3px 0;border-bottom:1px solid rgba(238,242,245,0.06);display:flex;align-items:center;gap:6px}
+.dest-mountains li::before{content:'▸';font-size:7px;flex-shrink:0;opacity:0.5}
+.dest-pill{display:inline-flex;align-items:center;gap:6px;font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:7px 14px;border:1px solid rgba(238,242,245,0.12);color:var(--text-dim);transition:all 0.2s}
+.dest-card:hover .dest-pill{border-color:var(--ice);color:var(--ice)}
+@media(max-width:1100px){.dest-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:640px){.dest-grid{grid-template-columns:1fr}}
 .pass-cta-row{margin-top:48px;display:flex;align-items:center;gap:28px;flex-wrap:wrap}
 .pass-cta-text{font-size:15px;font-weight:300;color:var(--text-dim);max-width:500px}
 
@@ -464,6 +488,7 @@ footer{background:var(--grey);padding:60px 60px 36px;display:grid;grid-template-
   <ul class="nav-links">
     <li><a href="#about">About</a></li>
     <li><a href="#regions">Mountains</a></li>
+    <li><a href="#destinations">Destinations</a></li>
     <li><a href="#passes">Passes</a></li>
     <li><a href="#report">Conditions</a></li>
     <li><a href="#perks">Perks</a></li>
@@ -481,8 +506,8 @@ footer{background:var(--grey);padding:60px 60px 36px;display:grid;grid-template-
     <div class="hero-kicker"><span class="dot"></span>Old Bridge, NJ · Est. 2025 · Northeast's Crew</div>
     <h1 class="hero-title">
       <span class="t-ice">RIDE</span><br>
-      <span class="t-outline">EVERY</span><br>
-      <span class="t-red">MOUNTAIN.</span>
+      <span class="t-outline">THE</span><br>
+      <span class="t-red">EAST.</span>
     </h1>
     <div class="hero-divider"></div>
     <p class="hero-sub"><strong>NJ Ski Haus</strong> is New Jersey's premier ski & snowboard club. Group trips to the best mountains across the entire Northeast — from the Poconos to Vermont, the Adirondacks to Canada. Show up. Shred. Repeat.</p>
@@ -492,6 +517,7 @@ footer{background:var(--grey);padding:60px 60px 36px;display:grid;grid-template-
       <span class="hero-region-tag">Eastern PA / Poconos</span>
       <span class="hero-region-tag">NH & Maine</span>
       <span class="hero-region-tag">Canada</span>
+      <span class="hero-region-tag" style="border-color:rgba(245,200,66,0.4);color:var(--yellow)">✈ Destination Trips</span>
     </div>
     <div class="hero-actions">
       <a href="#newsletter" class="btn-primary">JOIN THE WAITLIST</a>
@@ -509,6 +535,7 @@ footer{background:var(--grey);padding:60px 60px 36px;display:grid;grid-template-
 <!-- MARQUEE -->
 <div class="marquee-strip">
   <div class="marquee-inner">
+    <div class="marquee-item"><span class="marquee-state">New Jersey ⭑</span><span class="marquee-mountain">MOUNTAIN CREEK</span></div><span class="marquee-sep">✦</span>
     <div class="marquee-item"><span class="marquee-state">Vermont</span><span class="marquee-mountain">KILLINGTON</span></div><span class="marquee-sep">✦</span>
     <div class="marquee-item"><span class="marquee-state">Vermont</span><span class="marquee-mountain">STRATTON</span></div><span class="marquee-sep">✦</span>
     <div class="marquee-item"><span class="marquee-state">Vermont</span><span class="marquee-mountain">STOWE</span></div><span class="marquee-sep">✦</span>
@@ -557,23 +584,36 @@ footer{background:var(--grey);padding:60px 60px 36px;display:grid;grid-template-
 <section class="section regions-section" id="regions">
   <div class="section-label">Our Mountains</div>
   <h2 class="section-title">The Whole<br><em>Northeast</em><br>is Yours.</h2>
-  <p class="section-body" style="max-width:680px">From the Poconos in your backyard to the peaks of Canada. If it's within driving distance of Old Bridge, NJ, it's on our radar.</p>
+  <p class="section-body" style="max-width:680px">From our own backyard in New Jersey to the peaks of Québec. If you can drive there from home base, it's on our radar.</p>
   <div class="regions-grid">
+    <div class="region-card" style="border-top-color:#D9001A">
+      <div class="region-flag">Home State · ~1 hr</div>
+      <div class="region-name" style="color:#D9001A">NEW JERSEY</div>
+      <div class="region-sub">Right in Our Backyard</div>
+      <ul class="region-mountains">
+        <li>Mountain Creek<div class="mountain-pass-tags"><span class="mpt indy">Indy</span></div></li>
+      </ul>
+      <div class="region-drive">Drive from Home Base: <span>~1 HR</span></div>
+    </div>
     <div class="region-card" style="border-top-color:var(--ice)">
       <div class="region-flag">Primary Destination · 4–5 hrs</div>
       <div class="region-name" style="color:var(--ice)">VERMONT</div>
-      <div class="region-sub">The Haus Home Base</div>
+      <div class="region-sub">The Haus Favorite</div>
       <ul class="region-mountains">
         <li>Killington<div class="mountain-pass-tags"><span class="mpt ikon">Ikon</span></div></li>
         <li>Stratton<div class="mountain-pass-tags"><span class="mpt ikon">Ikon</span></div></li>
-        <li>Stowe<div class="mountain-pass-tags"><span class="mpt epic">Epic</span></div></li>
         <li>Sugarbush<div class="mountain-pass-tags"><span class="mpt ikon">Ikon</span><span class="mpt col">Col</span></div></li>
+        <li>Pico Mountain<div class="mountain-pass-tags"><span class="mpt ikon">Ikon</span></div></li>
+        <li>Stowe<div class="mountain-pass-tags"><span class="mpt epic">Epic</span></div></li>
         <li>Okemo<div class="mountain-pass-tags"><span class="mpt epic">Epic</span></div></li>
         <li>Mount Snow<div class="mountain-pass-tags"><span class="mpt epic">Epic</span></div></li>
-        <li>Mad River Glen<div class="mountain-pass-tags"><span class="mpt indy">Indy</span></div></li>
+        <li>Jay Peak<div class="mountain-pass-tags"><span class="mpt indy">Indy</span><span class="mpt pa">P.Alliance</span></div></li>
         <li>Burke Mountain<div class="mountain-pass-tags"><span class="mpt indy">Indy</span></div></li>
+        <li>Bolton Valley<div class="mountain-pass-tags"><span class="mpt indy">Indy</span></div></li>
+        <li>Magic Mountain<div class="mountain-pass-tags"><span class="mpt indy">Indy</span><span class="mpt pa">P.Alliance</span></div></li>
+        <li>Middlebury Snowbowl<div class="mountain-pass-tags"><span class="mpt indy">Indy</span></div></li>
       </ul>
-      <div class="region-drive">Drive from Old Bridge: <span>4–5 HRS</span></div>
+      <div class="region-drive">Drive from Home Base: <span>4–5 HRS</span></div>
     </div>
     <div class="region-card" style="border-top-color:#4A9FE0">
       <div class="region-flag">Closest Mountains · 2–3 hrs</div>
@@ -581,26 +621,31 @@ footer{background:var(--grey);padding:60px 60px 36px;display:grid;grid-template-
       <div class="region-sub">Catskills & Adirondacks</div>
       <ul class="region-mountains">
         <li>Hunter Mountain<div class="mountain-pass-tags"><span class="mpt epic">Epic</span></div></li>
-        <li>Whiteface<div class="mountain-pass-tags"><span class="mpt epic">Epic</span><span class="mpt col">Col</span></div></li>
-        <li>Gore Mountain<div class="mountain-pass-tags"><span class="mpt epic">Epic</span></div></li>
-        <li>Windham Mountain<div class="mountain-pass-tags"><span class="mpt ikon">Ikon</span></div></li>
-        <li>Belleayre<div class="mountain-pass-tags"><span class="mpt indy">Indy</span></div></li>
-        <li>Plattekill<div class="mountain-pass-tags"><span class="mpt indy">Indy</span></div></li>
+        <li>Whiteface<div class="mountain-pass-tags"><span class="mpt col">Col</span></div></li>
+        <li>Gore Mountain<div class="mountain-pass-tags"></div></li>
+        <li>Belleayre<div class="mountain-pass-tags"></div></li>
+        <li>Catamount<div class="mountain-pass-tags"><span class="mpt indy">Indy</span></div></li>
+        <li>Greek Peak<div class="mountain-pass-tags"><span class="mpt indy">Indy</span></div></li>
+        <li>West Mountain<div class="mountain-pass-tags"><span class="mpt indy">Indy</span></div></li>
+        <li>Titus Mountain<div class="mountain-pass-tags"><span class="mpt indy">Indy</span></div></li>
+        <li>Snow Ridge<div class="mountain-pass-tags"><span class="mpt indy">Indy</span></div></li>
       </ul>
-      <div class="region-drive">Drive from Old Bridge: <span>2–3 HRS</span></div>
+      <div class="region-drive">Drive from Home Base: <span>2–3 HRS</span></div>
     </div>
     <div class="region-card" style="border-top-color:var(--yellow)">
       <div class="region-flag">Closest Snow · 1.5–2 hrs</div>
       <div class="region-name" style="color:var(--yellow)">EASTERN PA</div>
       <div class="region-sub">Pocono Mountains</div>
       <ul class="region-mountains">
-        <li>Camelback Mountain<div class="mountain-pass-tags"><span class="mpt indy">Indy</span></div></li>
-        <li>Blue Mountain<div class="mountain-pass-tags"><span class="mpt indy">Indy</span></div></li>
+        <li>Camelback Mountain<div class="mountain-pass-tags"></div></li>
+        <li>Blue Mountain<div class="mountain-pass-tags"></div></li>
         <li>Shawnee Mountain<div class="mountain-pass-tags"><span class="mpt indy">Indy</span></div></li>
         <li>Jack Frost / Big Boulder<div class="mountain-pass-tags"></div></li>
         <li>Ski Big Bear<div class="mountain-pass-tags"><span class="mpt indy">Indy</span></div></li>
+        <li>Montage Mountain<div class="mountain-pass-tags"><span class="mpt indy">Indy</span></div></li>
+        <li>Blue Knob<div class="mountain-pass-tags"><span class="mpt indy">Indy</span></div></li>
       </ul>
-      <div class="region-drive">Drive from Old Bridge: <span>1.5–2 HRS</span></div>
+      <div class="region-drive">Drive from Home Base: <span>1.5–2 HRS</span></div>
     </div>
     <div class="region-card" style="border-top-color:#E8522A">
       <div class="region-flag">Deep New England · 6–7 hrs</div>
@@ -610,11 +655,20 @@ footer{background:var(--grey);padding:60px 60px 36px;display:grid;grid-template-
         <li>Loon Mountain, NH<div class="mountain-pass-tags"><span class="mpt ikon">Ikon</span></div></li>
         <li>Attitash, NH<div class="mountain-pass-tags"><span class="mpt epic">Epic</span></div></li>
         <li>Wildcat, NH<div class="mountain-pass-tags"><span class="mpt epic">Epic</span></div></li>
-        <li>Cranmore, NH<div class="mountain-pass-tags"><span class="mpt indy">Indy</span></div></li>
+        <li>Crotched Mtn, NH<div class="mountain-pass-tags"><span class="mpt epic">Epic</span></div></li>
+        <li>Mt. Sunapee, NH<div class="mountain-pass-tags"><span class="mpt epic">Epic</span></div></li>
+        <li>Cranmore, NH<div class="mountain-pass-tags"><span class="mpt ikon">Ikon</span><span class="mpt indy">Indy</span></div></li>
+        <li>Cannon Mtn, NH<div class="mountain-pass-tags"><span class="mpt indy">Indy</span></div></li>
+        <li>Waterville Valley, NH<div class="mountain-pass-tags"><span class="mpt indy">Indy</span></div></li>
+        <li>Pat's Peak, NH<div class="mountain-pass-tags"><span class="mpt indy">Indy</span></div></li>
+        <li>Black Mtn, NH<div class="mountain-pass-tags"><span class="mpt indy">Indy</span></div></li>
+        <li>Tenney Mtn, NH<div class="mountain-pass-tags"><span class="mpt indy">Indy</span></div></li>
         <li>Sunday River, ME<div class="mountain-pass-tags"><span class="mpt ikon">Ikon</span><span class="mpt col">Col</span></div></li>
         <li>Sugarloaf, ME<div class="mountain-pass-tags"><span class="mpt ikon">Ikon</span><span class="mpt col">Col</span></div></li>
+        <li>Saddleback, ME<div class="mountain-pass-tags"><span class="mpt indy">Indy</span><span class="mpt pa">P.Alliance</span></div></li>
+        <li>Big Rock Mtn, ME<div class="mountain-pass-tags"><span class="mpt indy">Indy</span></div></li>
       </ul>
-      <div class="region-drive">Drive from Old Bridge: <span>6–7 HRS</span></div>
+      <div class="region-drive">Drive from Home Base: <span>6–7 HRS</span></div>
     </div>
     <div class="region-card" style="border-top-color:#B27ED4">
       <div class="region-flag">Bucket List · 8–14 hrs</div>
@@ -622,13 +676,15 @@ footer{background:var(--grey);padding:60px 60px 36px;display:grid;grid-template-
       <div class="region-sub">Québec & Ontario</div>
       <ul class="region-mountains">
         <li>Mont-Tremblant, QC<div class="mountain-pass-tags"><span class="mpt ikon">Ikon</span></div></li>
-        <li>Le Massif de Charlevoix, QC<div class="mountain-pass-tags"><span class="mpt ikon">Ikon</span></div></li>
+        <li>Le Massif de Charlevoix, QC<div class="mountain-pass-tags"><span class="mpt ikon">Ikon</span><span class="mpt col">Col</span></div></li>
         <li>Bromont, QC<div class="mountain-pass-tags"><span class="mpt col">Col</span></div></li>
-        <li>Mont-Sainte-Anne, QC<div class="mountain-pass-tags"></div></li>
+        <li>Mont-Sainte-Anne, QC<div class="mountain-pass-tags"><span class="mpt epic">Epic</span></div></li>
+        <li>Stoneham, QC<div class="mountain-pass-tags"><span class="mpt epic">Epic</span></div></li>
+        <li>Mont Sutton, QC<div class="mountain-pass-tags"><span class="mpt indy">Indy</span></div></li>
+        <li>Owl's Head, QC<div class="mountain-pass-tags"><span class="mpt indy">Indy</span></div></li>
         <li>Blue Mountain, ON<div class="mountain-pass-tags"><span class="mpt pa">P.Alliance</span></div></li>
-        <li>Stoneham, QC<div class="mountain-pass-tags"></div></li>
       </ul>
-      <div class="region-drive">Drive from Old Bridge: <span>8–14 HRS</span></div>
+      <div class="region-drive">Drive from Home Base: <span>8–14 HRS</span></div>
     </div>
     <div class="region-card" style="border-top-color:#E67E22">
       <div class="region-flag">Quick Day Trips · 2–3 hrs</div>
@@ -636,11 +692,12 @@ footer{background:var(--grey);padding:60px 60px 36px;display:grid;grid-template-
       <div class="region-sub">Close to Home Shredding</div>
       <ul class="region-mountains">
         <li>Berkshire East, MA<div class="mountain-pass-tags"><span class="mpt indy">Indy</span></div></li>
-        <li>Wachusett Mountain, MA<div class="mountain-pass-tags"><span class="mpt indy">Indy</span></div></li>
-        <li>Jiminy Peak, MA<div class="mountain-pass-tags"><span class="mpt indy">Indy</span></div></li>
+        <li>Bousquet Mtn, MA<div class="mountain-pass-tags"><span class="mpt indy">Indy</span></div></li>
+        <li>Jiminy Peak, MA<div class="mountain-pass-tags"><span class="mpt ikon">Ikon</span><span class="mpt indy">Indy</span></div></li>
+        <li>Butternut, MA<div class="mountain-pass-tags"><span class="mpt ikon">Ikon</span></div></li>
         <li>Mohawk Mountain, CT<div class="mountain-pass-tags"><span class="mpt indy">Indy</span></div></li>
       </ul>
-      <div class="region-drive">Drive from Old Bridge: <span>2–3 HRS</span></div>
+      <div class="region-drive">Drive from Home Base: <span>2–3 HRS</span></div>
     </div>
   </div>
 </section>
@@ -669,27 +726,287 @@ footer{background:var(--grey);padding:60px 60px 36px;display:grid;grid-template-
   </div>
 </section>
 
+<!-- DESTINATION TRIPS -->
+<section class="section destinations-section" id="destinations">
+  <div class="section-label">Beyond the East</div>
+  <h2 class="section-title">Ride the<br><em>World.</em></h2>
+  <p class="section-body" style="max-width:700px">The East is home. But every serious skier has a bucket list. NJ Ski Haus is building toward destination trips — Japan, the Alps, the Rockies, and the Canadian Rockies. When we have the membership to make it happen, we go. Start planning now.</p>
+  <div class="dest-grid">
+
+    <div class="dest-card">
+      <div class="dest-card-bg" style="background-image:url('https://images.unsplash.com/photo-1542831371-29b0f74f9713?w=800&q=80');background-position:center top"></div>
+      <div class="dest-card-overlay"></div>
+      <div class="dest-card-content">
+        <span class="dest-badge japan">✈ Dream Destination</span>
+        <div class="dest-region">Hokkaido · Nagano · Japan</div>
+        <div class="dest-name" style="color:#FF4655">JAPAN</div>
+        <p class="dest-tagline">JAPOW. The lightest, driest powder on the planet. Ancient culture, world-class onsens, and skiing that ruins you for everywhere else. Niseko alone gets 50+ feet of snow a year.</p>
+        <ul class="dest-mountains">
+          <li style="color:#FF4655">Niseko United, Hokkaido <span style="opacity:0.45;font-size:9px">· Mtn Collective</span></li>
+          <li>Hakuba Valley, Nagano <span style="opacity:0.45;font-size:9px">· 10 linked resorts</span></li>
+          <li>Nozawa Onsen, Nagano</li>
+          <li>Furano, Hokkaido</li>
+          <li>Rusutsu, Hokkaido</li>
+          <li>Myoko Kogen, Niigata</li>
+        </ul>
+        <span class="dest-pill">🎌 Bucket List · The JAPOW Dream</span>
+      </div>
+    </div>
+
+    <div class="dest-card">
+      <div class="dest-card-bg" style="background-image:url('https://images.unsplash.com/photo-1586348943529-beaae6c28db9?w=800&q=80')"></div>
+      <div class="dest-card-overlay"></div>
+      <div class="dest-card-content">
+        <span class="dest-badge bucket">✈ Destination Trip</span>
+        <div class="dest-region">France · Switzerland · Austria</div>
+        <div class="dest-name" style="color:var(--ice)">THE ALPS</div>
+        <p class="dest-tagline">The original mountain playground. Ancient villages, legendary vertical, and snow culture unlike anything in North America. Chamonix to Zermatt — a different world entirely.</p>
+        <ul class="dest-mountains">
+          <li style="color:var(--ice)">Chamonix-Mont-Blanc, France <span style="opacity:0.45;font-size:9px">· Mtn Collective</span></li>
+          <li>Zermatt / Matterhorn, Switzerland</li>
+          <li>Val d'Isère – Tignes, France</li>
+          <li>St. Anton am Arlberg, Austria</li>
+          <li>Portes du Soleil <span style="opacity:0.45;font-size:9px">· Indy Pass</span></li>
+          <li>Megève, France <span style="opacity:0.45;font-size:9px">· Mtn Collective</span></li>
+        </ul>
+        <span class="dest-pill">🏔️ Bucket List · Planning Ahead</span>
+      </div>
+    </div>
+
+    <div class="dest-card">
+      <div class="dest-card-bg" style="background-image:url('https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800&q=80')"></div>
+      <div class="dest-card-overlay"></div>
+      <div class="dest-card-content">
+        <span class="dest-badge featured">🎿 On the Radar</span>
+        <div class="dest-region">Colorado · Utah · Wyoming</div>
+        <div class="dest-name" style="color:var(--yellow)">ROCKY MOUNTAINS</div>
+        <p class="dest-tagline">Champagne powder, massive vertical, and world-class terrain. The best part — our passes already open the door to the biggest names in the Rockies.</p>
+        <ul class="dest-mountains">
+          <li style="color:var(--yellow)">Vail, CO <span style="opacity:0.45;font-size:9px">· Epic Pass</span></li>
+          <li>Breckenridge, CO <span style="opacity:0.45;font-size:9px">· Epic Pass</span></li>
+          <li>Park City, UT <span style="opacity:0.45;font-size:9px">· Epic Pass</span></li>
+          <li>Jackson Hole, WY <span style="opacity:0.45;font-size:9px">· Ikon · Mtn Collective</span></li>
+          <li>Snowbird, UT <span style="opacity:0.45;font-size:9px">· Ikon · Mtn Collective</span></li>
+          <li>Aspen Snowmass, CO <span style="opacity:0.45;font-size:9px">· Ikon · Mtn Collective</span></li>
+        </ul>
+        <span class="dest-pill">✈ Fly-In Trip · In Planning</span>
+      </div>
+    </div>
+
+    <div class="dest-card">
+      <div class="dest-card-bg" style="background-image:url('https://images.unsplash.com/photo-1455156218388-5e61b526818b?w=800&q=80')"></div>
+      <div class="dest-card-overlay"></div>
+      <div class="dest-card-content">
+        <span class="dest-badge bucket">✈ Destination Trip</span>
+        <div class="dest-region">British Columbia · Alberta · Canada</div>
+        <div class="dest-name" style="color:#B27ED4">CANADIAN ROCKIES</div>
+        <p class="dest-tagline">The biggest vertical in North America, legendary snowpack, and wilderness that makes Vermont look like a bunny hill. Whistler. Lake Louise. Revelstoke. Worth every mile.</p>
+        <ul class="dest-mountains">
+          <li style="color:#B27ED4">Whistler Blackcomb, BC <span style="opacity:0.45;font-size:9px">· Epic Pass</span></li>
+          <li>Lake Louise, AB <span style="opacity:0.45;font-size:9px">· Epic · Mtn Collective</span></li>
+          <li>Banff Sunshine, AB <span style="opacity:0.45;font-size:9px">· Ikon · Mtn Collective</span></li>
+          <li>Revelstoke Mtn, BC <span style="opacity:0.45;font-size:9px">· Mtn Collective</span></li>
+          <li>Big White, BC <span style="opacity:0.45;font-size:9px">· Ikon Base</span></li>
+        </ul>
+        <span class="dest-pill">🏔️ Bucket List · Dream Big</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
 <!-- PASSES -->
+
 <section class="section passes-section" id="passes">
   <div class="passes-intro">
-    <div class="section-label">Season Pass Holders</div>
+    <div class="section-label">Season Pass Holders · 2025–26</div>
     <h2 class="section-title">Got a Pass?<br>You're <em>Already</em><br>Halfway In.</h2>
-    <p class="section-body">Ikon, Epic, Mountain Collective, Indy, or Powder Alliance — you already have keys to dozens of Northeast mountains. NJ Ski Haus organizes the crew, handles logistics, and multiplies what your pass is worth. We also welcome members without passes on day trips.</p>
+    <p class="section-body">Ikon, Epic, Mountain Collective, Indy, or Powder Alliance — you already have keys to more Northeast mountains than you know. Every list below is verified for the 2025–26 season. NJ Ski Haus organizes the crew, handles the logistics, and multiplies what your pass is worth.</p>
   </div>
   <div class="pass-grid">
-    <div class="pass-card ikon"><div class="pass-logo">IKON PASS</div><div class="pass-sub">Unlimited access · 18 resorts no blackouts · 50+ worldwide</div><ul class="pass-mountains"><li class="sh">— Vermont —</li><li>Killington</li><li>Stratton</li><li>Sugarbush</li><li class="sh">— New York —</li><li>Windham Mountain</li><li class="sh">— NH & Maine —</li><li>Loon Mountain, NH</li><li>Sunday River, ME</li><li>Sugarloaf, ME</li><li class="sh">— Canada —</li><li>Mont-Tremblant, QC</li><li>Le Massif de Charlevoix, QC</li><li class="more">+ 50+ resorts worldwide</li></ul></div>
-    <div class="pass-card epic"><div class="pass-logo">EPIC PASS</div><div class="pass-sub">Unlimited access · 40+ North American resorts</div><ul class="pass-mountains"><li class="sh">— Vermont —</li><li>Stowe</li><li>Okemo</li><li>Mount Snow</li><li class="sh">— New York —</li><li>Hunter Mountain</li><li>Whiteface</li><li>Gore Mountain</li><li class="sh">— New Hampshire —</li><li>Attitash</li><li>Wildcat</li><li>Crotched Mountain</li><li class="more">+ 40+ resorts worldwide</li></ul></div>
-    <div class="pass-card collective"><div class="pass-logo">MTN COLLECTIVE</div><div class="pass-sub">2 days each · 26 resorts · No blackout dates</div><ul class="pass-mountains"><li class="sh">— Vermont —</li><li>Sugarbush (2 days)</li><li class="sh">— New York —</li><li>Whiteface (2 days)</li><li class="sh">— Maine —</li><li>Sunday River (2 days)</li><li>Sugarloaf (2 days)</li><li class="sh">— Canada —</li><li>Bromont, QC (2 days)</li><li class="more">+ 50% off all additional days</li></ul></div>
+
+    <!-- IKON -->
+    <div class="pass-card ikon">
+      <div class="pass-logo">IKON PASS</div>
+      <div class="pass-sub">Northeast access · 61 destinations worldwide · 2025–26</div>
+      <ul class="pass-mountains">
+        <li class="sh">— Vermont · Unlimited —</li>
+        <li>Stratton Mountain</li>
+        <li>Sugarbush Resort</li>
+        <li class="sh">— Vermont · Up to 7 days —</li>
+        <li>Killington Resort</li>
+        <li>Pico Mountain</li>
+        <li class="sh">— New Hampshire —</li>
+        <li>Loon Mountain <span class="pat">7 days</span></li>
+        <li>Cranmore Mtn Resort <span class="pat">2 bonus days</span></li>
+        <li class="sh">— Maine · Up to 7 days —</li>
+        <li>Sunday River</li>
+        <li>Sugarloaf</li>
+        <li class="sh">— Massachusetts · 2 bonus days —</li>
+        <li>Jiminy Peak</li>
+        <li>Butternut</li>
+        <li class="sh">— Canada · Unlimited —</li>
+        <li>Mont-Tremblant, QC</li>
+        <li class="sh">— Canada · Up to 7 days —</li>
+        <li>Le Massif de Charlevoix, QC</li>
+        <li class="more">⚠ Windham Mountain removed from Ikon 2025–26</li>
+      </ul>
+    </div>
+
+    <!-- EPIC -->
+    <div class="pass-card epic">
+      <div class="pass-logo">EPIC PASS</div>
+      <div class="pass-sub">Northeast access · 40+ North American resorts · 2025–26</div>
+      <ul class="pass-mountains">
+        <li class="sh">— Vermont · Unlimited —</li>
+        <li>Stowe Mountain Resort</li>
+        <li>Okemo Mountain Resort</li>
+        <li>Mount Snow</li>
+        <li class="sh">— New York · Unlimited —</li>
+        <li>Hunter Mountain</li>
+        <li class="sh">— New Hampshire · Unlimited —</li>
+        <li>Attitash Mountain</li>
+        <li>Wildcat Mountain</li>
+        <li>Crotched Mountain</li>
+        <li>Mount Sunapee</li>
+        <li class="sh">— Canada · 5–7 days —</li>
+        <li>Mont-Sainte-Anne, QC</li>
+        <li>Stoneham Mountain Resort, QC</li>
+        <li class="more">⚠ Whiteface + Gore moved to Mtn Collective 2025–26</li>
+      </ul>
+    </div>
+
+    <!-- MOUNTAIN COLLECTIVE -->
+    <div class="pass-card collective">
+      <div class="pass-logo">MTN COLLECTIVE</div>
+      <div class="pass-sub">2 days each · 27 world-class resorts · No blackouts · 2025–26</div>
+      <ul class="pass-mountains">
+        <li class="sh">— New York · NEW 2025–26 —</li>
+        <li>Whiteface Mountain ⭑ New</li>
+        <li class="sh">— Maine —</li>
+        <li>Sunday River</li>
+        <li>Sugarloaf</li>
+        <li class="sh">— Canada —</li>
+        <li>Le Massif de Charlevoix, QC</li>
+        <li>Bromont, QC</li>
+        <li class="sh">— 50% off all additional days —</li>
+        <li>No blackout dates ever</li>
+        <li class="sh">— Also on the pass —</li>
+        <li>Niseko United, Japan</li>
+        <li>Chamonix, France</li>
+        <li>Jackson Hole · Alta · Snowbird</li>
+        <li>Revelstoke, BC · Banff, AB</li>
+        <li class="more">27 total resorts on 6 continents</li>
+      </ul>
+    </div>
   </div>
+
   <div class="pass-grid-2">
-    <div class="pass-card indy"><div class="pass-logo">INDY PASS</div><div class="pass-sub">2 days each · 270+ indie resorts · Best value</div><ul class="pass-mountains"><li class="sh">— Vermont —</li><li>Mad River Glen, Burke Mtn, Bromley</li><li class="sh">— New York —</li><li>Belleayre, Plattekill</li><li class="sh">— PA, CT, MA —</li><li>Camelback, Blue Mtn, Shawnee</li><li>Berkshire East, Wachusett, Jiminy Peak</li><li class="sh">— NH —</li><li>Cranmore, Bretton Woods, Tenney Mtn</li><li class="sh">— Canada —</li><li>Mont Sutton, QC · Owl's Head, QC</li><li class="more">+ 270+ resorts across North America</li></ul></div>
-    <div class="pass-card powder"><div class="pass-logo">POWDER ALLIANCE</div><div class="pass-sub">3 free days at each of 17 partner resorts</div><ul class="pass-mountains"><li class="sh">— How It Works —</li><li>Own a full season pass at a partner resort</li><li>Get 3 free days each at all 17 partners</li><li class="sh">— Northeast Partners —</li><li>Jay Peak, VT</li><li>Magic Mountain, VT</li><li>Saddleback, ME</li><li>Blue Mountain, ON (Canada)</li><li class="more">+ 17 total partner mountains</li></ul></div>
-    <div class="pass-card ikon-base"><div class="pass-logo">IKON BASE PASS</div><div class="pass-sub">Budget Ikon option · Blackout dates apply</div><ul class="pass-mountains"><li class="sh">— Same Mountains as Ikon —</li><li>Killington, Stratton, Sugarbush</li><li>Loon Mountain, NH</li><li>Sunday River + Sugarloaf, ME</li><li>Mont-Tremblant, QC</li><li class="sh">— Key Difference —</li><li>Blackout dates during peak holiday weeks</li><li>5–7 days at select resorts vs. unlimited</li><li class="more">Best for flexible, non-holiday skiers</li></ul></div>
+
+    <!-- INDY -->
+    <div class="pass-card indy" style="grid-column:span 2">
+      <div class="pass-logo">INDY PASS</div>
+      <div class="pass-sub">2 days each · 270+ independent resorts worldwide · Best value in skiing · 2025–26</div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0 24px;margin-top:12px">
+        <ul class="pass-mountains">
+          <li class="sh">— Vermont —</li>
+          <li>Jay Peak</li>
+          <li>Burke Mountain</li>
+          <li>Bolton Valley</li>
+          <li>Magic Mountain</li>
+          <li>Middlebury Snowbowl</li>
+          <li>Saskadena Six</li>
+          <li class="sh">— New York —</li>
+          <li>Catamount</li>
+          <li>Greek Peak</li>
+          <li>West Mountain</li>
+          <li>Titus Mountain</li>
+          <li>Snow Ridge</li>
+          <li>Hunt Hollow</li>
+          <li>Swain Resort</li>
+          <li>Maple Ski Ridge</li>
+          <li>Buffalo Ski Club</li>
+          <li>Dry Hill</li>
+        </ul>
+        <ul class="pass-mountains">
+          <li class="sh">— New Hampshire —</li>
+          <li>Cannon Mountain</li>
+          <li>Waterville Valley</li>
+          <li>Pat's Peak</li>
+          <li>Black Mountain</li>
+          <li>Tenney Mountain</li>
+          <li>Ragged Mountain</li>
+          <li>McIntyre Ski Area</li>
+          <li>Dartmouth Skiway</li>
+          <li>Whaleback Mountain</li>
+          <li class="sh">— Maine —</li>
+          <li>Saddleback Mountain</li>
+          <li>Big Rock Mountain</li>
+          <li>Mt. Abrams</li>
+          <li class="sh">— Massachusetts —</li>
+          <li>Berkshire East</li>
+          <li>Bousquet Mountain</li>
+          <li class="sh">— Connecticut —</li>
+          <li>Mohawk Mountain</li>
+        </ul>
+        <ul class="pass-mountains">
+          <li class="sh">— Pennsylvania —</li>
+          <li>Shawnee Mountain</li>
+          <li>Ski Big Bear at Masthope</li>
+          <li>Blue Knob</li>
+          <li>Montage Mountain</li>
+          <li class="sh">— Québec, Canada —</li>
+          <li>Mont Sutton</li>
+          <li>Owl's Head</li>
+          <li>Centre Vorlage</li>
+          <li>Massif du Sud</li>
+          <li class="sh">— Also Japan —</li>
+          <li>Geto Kogen</li>
+          <li>Okunaakayama Kogen</li>
+          <li>Shimokura</li>
+          <li>Tazawako</li>
+        </ul>
+        <ul class="pass-mountains">
+          <li class="sh">— + Europe —</li>
+          <li>Portes du Soleil (12 resorts)</li>
+          <li>SkiWelt, Austria (9 villages)</li>
+          <li>Innsbruck Resorts (12 areas)</li>
+          <li>Rauriser, Austria</li>
+          <li>Pila, Italy</li>
+          <li>Glencoe, Scotland</li>
+          <li>Baqueira Beret, Spain</li>
+          <li class="sh">— South America —</li>
+          <li>Corralco, Chile</li>
+          <li class="more">270+ resorts · growing every year</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- POWDER ALLIANCE -->
+    <div class="pass-card powder">
+      <div class="pass-logo">POWDER ALLIANCE</div>
+      <div class="pass-sub">3 free days at 17 partner resorts · Own a partner season pass</div>
+      <ul class="pass-mountains">
+        <li class="sh">— How It Works —</li>
+        <li>Buy a full season pass at any partner resort</li>
+        <li>Get 3 free days each at all 17 partners</li>
+        <li class="sh">— Northeast Partners —</li>
+        <li>Jay Peak, VT</li>
+        <li>Magic Mountain, VT</li>
+        <li>Saddleback, ME</li>
+        <li>Blue Mountain, ON (Canada)</li>
+        <li class="more">+ 13 western & international partners</li>
+      </ul>
+    </div>
+
   </div>
+
   <div class="pass-cta-row">
     <a href="#newsletter" class="btn-primary">JOIN AS A PASS HOLDER</a>
-    <p class="pass-cta-text">No pass yet? No problem. Day trip memberships are available too. But pass holders get priority access and first dibs when we negotiate group rates and forge resort partnerships.</p>
+    <p class="pass-cta-text">No pass yet? No problem — day trip memberships are available. But pass holders get priority booking, first dibs on overnight trips, and the best group rates when we lock in resort partnerships.</p>
   </div>
+</section>
+
 </section>
 
 <!-- MOUNTAIN REPORT — TECHNICAL DAILY -->
@@ -707,6 +1024,7 @@ footer{background:var(--grey);padding:60px 60px 36px;display:grid;grid-template-
   </div>
   <div class="report-tabs">
     <button class="report-tab active" onclick="filterReport('all',this)">All Regions</button>
+    <button class="report-tab" onclick="filterReport('nj',this)">New Jersey</button>
     <button class="report-tab" onclick="filterReport('vt',this)">Vermont</button>
     <button class="report-tab" onclick="filterReport('ny',this)">New York</button>
     <button class="report-tab" onclick="filterReport('pa',this)">Eastern PA</button>
@@ -714,7 +1032,7 @@ footer{background:var(--grey);padding:60px 60px 36px;display:grid;grid-template-
     <button class="report-tab" onclick="filterReport('ca',this)">Canada</button>
   </div>
   <div class="report-grid" id="reportGrid"></div>
-  <p class="report-disclaimer">★ Conditions shown are curated weekly estimates for trip planning. Season snowfall totals are cumulative from Nov 1. Always verify with official resort snow reports. NJ Ski Haus members receive real-time powder alerts via the newsletter.</p>
+  <p class="report-disclaimer">★ Conditions are updated daily via the GitHub deploy pipeline — push updates to the repo and the site redeploys automatically. Season snowfall totals are cumulative from Nov 1. Always verify with official resort snow reports before hitting the road. NJ Ski Haus members receive real-time powder alerts via the newsletter.</p>
 </section>
 
 <!-- MEMBER PERKS -->
@@ -945,13 +1263,14 @@ footer{background:var(--grey);padding:60px 60px 36px;display:grid;grid-template-
 <footer>
   <div>
     <div class="footer-logo"><span class="nj">NJ</span> SKI HAUS</div>
-    <p class="footer-tagline">New Jersey's premier ski & snowboard club. Vermont bound, Northeast obsessed. Every mountain. Every season.</p>
+    <p class="footer-tagline">New Jersey's premier ski & snowboard club. Ride the East — from Mountain Creek to Maine, the Catskills to Québec. And when the crew is ready: Japan, the Alps, and beyond.</p>
   </div>
   <div class="footer-col">
     <h4>Navigate</h4>
     <ul>
       <li><a href="#about">About</a></li>
       <li><a href="#regions">Mountains</a></li>
+      <li><a href="#destinations">Destination Trips</a></li>
       <li><a href="#passes">Season Passes</a></li>
       <li><a href="#report">Daily Conditions</a></li>
       <li><a href="#perks">Member Perks</a></li>
@@ -988,7 +1307,9 @@ document.getElementById('reportDate').textContent =
   'Last updated: ' + now.toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
 
 // ── MOUNTAIN DATA ──
+// Update values below and push to GitHub — the site redeploys automatically each day.
 const mountains = [
+  {name:'MOUNTAIN CREEK',loc:'New Jersey',region:'nj',pass:'Indy',base:18,newSnow:0,trails:46,open:32,temp:35,surface:'Machine Made + Groomed',season:58,seasonMax:120,status:'fair'},
   {name:'KILLINGTON',loc:'Vermont',region:'vt',pass:'Ikon',base:58,newSnow:12,trails:142,open:116,temp:22,surface:'Groomed + Natural Pack',season:198,seasonMax:250,status:'great'},
   {name:'STOWE',loc:'Vermont',region:'vt',pass:'Epic',base:72,newSnow:18,trails:116,open:98,temp:18,surface:'Powder + Packed Powder',season:222,seasonMax:250,status:'great'},
   {name:'STRATTON',loc:'Vermont',region:'vt',pass:'Ikon',base:42,newSnow:6,trails:99,open:94,temp:27,surface:'Machine Groomed',season:165,seasonMax:250,status:'good'},
@@ -1058,200 +1379,216 @@ function filterReport(region, btn){
   }, 50);
 }
 
-// ── NORTHEAST MAP ──
-// Lat/lon bounds for the Northeast
-const MAP_W = 700, MAP_H = 460;
-const LAT_MIN = 38.5, LAT_MAX = 47.8, LON_MIN = -80.5, LON_MAX = -66.0;
-const PAD = 28;
+// ── NORTHEAST MAP — PER-STATE COLOR CODED ──
+const MAP_W = 700, MAP_H = 500;
+const LAT_MIN = 38.8, LAT_MAX = 47.8, LON_MIN = -80.5, LON_MAX = -66.5;
+const PAD = 32;
 function toXY(lat, lon) {
   const x = PAD + (lon - LON_MIN) / (LON_MAX - LON_MIN) * (MAP_W - PAD*2);
   const y = PAD + (LAT_MAX - lat) / (LAT_MAX - LAT_MIN) * (MAP_H - PAD*2);
   return [x, y];
 }
 
-// Simplified state polygons [lon, lat] pairs
+const STATE_COLORS = {
+  NJ:  { fill:'rgba(217,0,26,0.18)',    stroke:'rgba(217,0,26,0.7)',    pin:'#FF4455' },
+  VT:  { fill:'rgba(91,184,212,0.14)',  stroke:'rgba(91,184,212,0.7)',  pin:'#5BB8D4' },
+  NY:  { fill:'rgba(74,159,224,0.12)',  stroke:'rgba(74,159,224,0.65)', pin:'#4A9FE0' },
+  PA:  { fill:'rgba(245,200,66,0.12)',  stroke:'rgba(245,200,66,0.55)', pin:'#F5C842' },
+  NH:  { fill:'rgba(232,130,42,0.12)',  stroke:'rgba(232,130,42,0.6)',  pin:'#E8822A' },
+  ME:  { fill:'rgba(125,194,66,0.12)',  stroke:'rgba(125,194,66,0.6)',  pin:'#7DC242' },
+  MA:  { fill:'rgba(230,126,34,0.12)',  stroke:'rgba(230,126,34,0.55)', pin:'#E67E22' },
+  CT:  { fill:'rgba(196,127,232,0.12)', stroke:'rgba(196,127,232,0.5)', pin:'#C47FE8' },
+  RI:  { fill:'rgba(196,127,232,0.10)', stroke:'rgba(196,127,232,0.4)', pin:'#C47FE8' },
+  QC:  { fill:'rgba(178,126,212,0.09)', stroke:'rgba(178,126,212,0.4)', pin:'#B27ED4' },
+};
+
 const states = [
-  { name:'Québec (partial)', fill:'rgba(178,126,212,0.07)', stroke:'rgba(178,126,212,0.18)',
-    pts:[[-80,47.8],[-66,47.8],[-66,45.0],[-71.5,45.0],[-73.4,45.0],[-74.7,45.0],[-79.8,45.0]] },
-  { name:'Pennsylvania', fill:'rgba(91,184,212,0.06)', stroke:'rgba(91,184,212,0.2)',
-    pts:[[-80.5,42.3],[-74.7,42.3],[-74.7,41.4],[-75.3,39.7],[-80.5,39.7]] },
-  { name:'New Jersey', fill:'rgba(217,0,26,0.1)', stroke:'rgba(217,0,26,0.4)',
-    pts:[[-75.6,39.8],[-74.7,41.4],[-73.9,41.4],[-73.9,40.9],[-74.0,40.1],[-74.9,38.9],[-75.6,39.2]] },
-  { name:'New York', fill:'rgba(91,184,212,0.06)', stroke:'rgba(91,184,212,0.2)',
-    pts:[[-79.8,42.3],[-76.0,43.2],[-76.0,43.9],[-74.0,44.7],[-73.4,45.0],[-71.5,45.0],[-72.5,42.7],[-73.4,42.7],[-73.5,42.0],[-73.9,41.4],[-74.7,41.4],[-74.7,42.3]] },
-  { name:'Connecticut', fill:'rgba(91,184,212,0.06)', stroke:'rgba(91,184,212,0.18)',
-    pts:[[-73.7,42.1],[-71.8,42.1],[-71.8,41.0],[-73.7,41.0]] },
-  { name:'Rhode Island', fill:'rgba(91,184,212,0.06)', stroke:'rgba(91,184,212,0.18)',
-    pts:[[-71.8,42.1],[-71.2,42.1],[-71.2,41.2],[-71.8,41.2]] },
-  { name:'Massachusetts', fill:'rgba(91,184,212,0.07)', stroke:'rgba(91,184,212,0.22)',
-    pts:[[-73.5,42.9],[-70.6,42.9],[-70.0,41.7],[-71.8,41.2],[-71.8,42.1],[-73.5,42.1]] },
-  { name:'Vermont', fill:'rgba(91,184,212,0.09)', stroke:'rgba(91,184,212,0.3)',
-    pts:[[-73.4,42.7],[-73.4,45.0],[-71.5,45.0],[-72.5,42.7]] },
-  { name:'New Hampshire', fill:'rgba(232,82,42,0.07)', stroke:'rgba(232,82,42,0.22)',
-    pts:[[-72.5,42.7],[-71.5,45.3],[-71.1,45.2],[-70.6,43.1],[-71.0,42.7]] },
-  { name:'Maine', fill:'rgba(232,82,42,0.07)', stroke:'rgba(232,82,42,0.22)',
-    pts:[[-71.1,44.0],[-71.5,45.3],[-70.7,47.4],[-67.0,47.4],[-66.9,44.8],[-67.5,44.0],[-70.7,43.1]] },
+  { id:'QC', pts:[[-79.8,45.0],[-76.5,45.0],[-75.0,45.0],[-74.7,45.0],[-73.4,45.0],[-72.5,45.0],[-71.5,45.0],[-70.7,45.3],[-70.2,45.5],[-69.0,47.4],[-68.0,47.5],[-67.2,47.1],[-66.6,44.8],[-67.5,44.0],[-67.8,44.0],[-68.5,44.3],[-69.5,44.0],[-70.0,43.5],[-70.7,43.1],[-71.0,44.0],[-71.1,45.3],[-72.5,45.0],[-73.4,45.0],[-74.0,44.7],[-74.2,44.0],[-75.0,44.7],[-76.0,43.9],[-76.2,43.5],[-76.5,43.2],[-77.0,43.4],[-79.0,43.6],[-79.8,43.8],[-79.8,45.0]]},
+  { id:'ME', pts:[[-71.1,44.0],[-70.7,43.1],[-70.5,43.1],[-70.2,43.4],[-70.0,43.7],[-69.8,44.0],[-69.6,43.9],[-69.3,43.8],[-69.0,43.9],[-68.7,44.1],[-68.4,44.2],[-68.1,44.2],[-67.8,44.3],[-67.5,44.0],[-66.9,44.8],[-67.2,47.1],[-68.0,47.5],[-69.0,47.4],[-70.2,45.5],[-70.7,45.3],[-71.5,45.0],[-71.1,45.3],[-71.0,44.0]]},
+  { id:'NH', pts:[[-72.5,42.7],[-71.3,42.7],[-71.0,42.7],[-70.9,43.1],[-70.7,43.1],[-71.0,44.0],[-71.1,45.3],[-72.5,45.0],[-72.5,42.7]]},
+  { id:'VT', pts:[[-73.4,42.7],[-72.5,42.7],[-72.5,45.0],[-73.2,45.0],[-73.4,44.5],[-73.4,44.0],[-73.35,43.6],[-73.4,43.0],[-73.4,42.7]]},
+  { id:'MA', pts:[[-73.5,42.0],[-73.5,42.7],[-72.5,42.7],[-71.3,42.7],[-71.0,42.7],[-71.0,42.4],[-70.9,42.6],[-70.6,42.9],[-70.2,42.7],[-70.0,42.1],[-70.6,41.5],[-71.1,41.5],[-71.8,41.3],[-71.8,42.0],[-73.5,42.0]]},
+  { id:'RI', pts:[[-71.8,41.3],[-71.1,41.5],[-71.1,42.0],[-71.8,42.0],[-71.8,41.3]]},
+  { id:'CT', pts:[[-73.7,41.1],[-73.7,42.0],[-73.5,42.0],[-71.8,42.0],[-71.8,41.3],[-71.8,41.0],[-73.7,41.1]]},
+  { id:'NY', pts:[[-79.8,42.3],[-79.8,43.8],[-79.0,43.6],[-77.0,43.4],[-76.5,43.2],[-76.2,43.5],[-76.0,43.9],[-75.0,44.7],[-74.2,44.0],[-74.0,44.7],[-73.4,45.0],[-73.2,45.0],[-73.4,44.5],[-73.4,44.0],[-73.35,43.6],[-73.4,43.0],[-73.4,42.7],[-73.5,42.7],[-73.5,42.0],[-73.7,42.0],[-73.7,41.1],[-74.0,40.9],[-74.3,40.6],[-74.7,41.4],[-74.7,42.3],[-79.8,42.3]]},
+  { id:'NJ', pts:[[-75.6,39.7],[-75.6,39.3],[-75.1,38.9],[-74.6,39.0],[-74.0,39.3],[-73.9,40.0],[-73.9,40.9],[-74.0,40.9],[-74.3,40.6],[-74.7,41.4],[-75.1,41.4],[-75.6,39.7]]},
+  { id:'PA', pts:[[-80.5,42.3],[-79.8,42.3],[-74.7,42.3],[-74.7,41.9],[-75.1,41.4],[-74.7,41.4],[-74.3,40.6],[-74.0,40.9],[-73.9,40.9],[-75.1,39.8],[-75.6,39.7],[-76.5,39.7],[-80.5,39.7],[-80.5,42.3]]},
 ];
 
-// Mountain pins
 const mapMountains = [
-  {name:'Old Bridge, NJ',lat:40.38,lon:-74.34,color:'#D9001A',home:true,pass:'Home Base',region:'Home Base'},
-  {name:'Killington',lat:43.67,lon:-72.78,color:'#5BB8D4',pass:'Ikon',region:'Vermont'},
-  {name:'Stowe',lat:44.53,lon:-72.78,color:'#5BB8D4',pass:'Epic',region:'Vermont'},
-  {name:'Stratton',lat:43.11,lon:-72.91,color:'#5BB8D4',pass:'Ikon',region:'Vermont'},
-  {name:'Sugarbush',lat:44.14,lon:-72.90,color:'#5BB8D4',pass:'Ikon/Col',region:'Vermont'},
-  {name:'Okemo',lat:43.40,lon:-72.73,color:'#5BB8D4',pass:'Epic',region:'Vermont'},
-  {name:'Mad River Glen',lat:44.19,lon:-72.88,color:'#5BB8D4',pass:'Indy',region:'Vermont'},
-  {name:'Burke Mountain',lat:44.60,lon:-71.87,color:'#5BB8D4',pass:'Indy',region:'Vermont'},
-  {name:'Mount Snow',lat:42.96,lon:-72.92,color:'#5BB8D4',pass:'Epic',region:'Vermont'},
-  {name:'Hunter Mountain',lat:42.18,lon:-74.22,color:'#4A9FE0',pass:'Epic',region:'New York'},
-  {name:'Whiteface',lat:44.36,lon:-73.90,color:'#4A9FE0',pass:'Epic/Col',region:'New York'},
-  {name:'Gore Mountain',lat:43.67,lon:-74.00,color:'#4A9FE0',pass:'Epic',region:'New York'},
-  {name:'Windham Mtn',lat:42.30,lon:-74.25,color:'#4A9FE0',pass:'Ikon',region:'New York'},
-  {name:'Camelback',lat:41.05,lon:-75.34,color:'#F5C842',pass:'Indy',region:'Pennsylvania'},
-  {name:'Blue Mountain',lat:40.89,lon:-75.52,color:'#F5C842',pass:'Indy',region:'Pennsylvania'},
-  {name:'Sunday River',lat:44.47,lon:-70.85,color:'#E8522A',pass:'Ikon/Col',region:'Maine'},
-  {name:'Sugarloaf',lat:45.03,lon:-70.31,color:'#E8522A',pass:'Ikon/Col',region:'Maine'},
-  {name:'Loon Mountain',lat:44.03,lon:-71.62,color:'#E8522A',pass:'Ikon',region:'New Hampshire'},
-  {name:'Attitash',lat:44.07,lon:-71.22,color:'#E8522A',pass:'Epic',region:'New Hampshire'},
-  {name:'Cranmore',lat:44.05,lon:-71.00,color:'#E8522A',pass:'Indy',region:'New Hampshire'},
-  {name:'Berkshire East',lat:42.46,lon:-72.90,color:'#F5C842',pass:'Indy',region:'Massachusetts'},
-  {name:'Wachusett',lat:42.49,lon:-71.89,color:'#F5C842',pass:'Indy',region:'Massachusetts'},
-  {name:'Mont-Tremblant',lat:46.12,lon:-74.59,color:'#B27ED4',pass:'Ikon',region:'Canada (QC)'},
-  {name:'Le Massif',lat:47.25,lon:-70.78,color:'#B27ED4',pass:'Ikon',region:'Canada (QC)'},
+  {name:'Home Base · Old Bridge NJ', lat:40.38, lon:-74.34, color:'#D9001A', home:true,  pass:'NJ Ski Haus HQ',    state:'NJ'},
+  {name:'Mountain Creek',            lat:41.19, lon:-74.49, color:'#FF4455',  pass:'Indy',                          state:'NJ'},
+  {name:'Killington',                lat:43.67, lon:-72.78, color:'#5BB8D4',  pass:'Ikon · 7 days',                 state:'VT'},
+  {name:'Stratton',                  lat:43.11, lon:-72.91, color:'#5BB8D4',  pass:'Ikon Unlimited',                state:'VT'},
+  {name:'Sugarbush',                 lat:44.14, lon:-72.90, color:'#5BB8D4',  pass:'Ikon Unlimited · Col',          state:'VT'},
+  {name:'Pico Mountain',             lat:43.66, lon:-72.83, color:'#5BB8D4',  pass:'Ikon · 7 days',                 state:'VT'},
+  {name:'Stowe',                     lat:44.53, lon:-72.78, color:'#5BB8D4',  pass:'Epic Unlimited',                state:'VT'},
+  {name:'Okemo',                     lat:43.40, lon:-72.73, color:'#5BB8D4',  pass:'Epic Unlimited',                state:'VT'},
+  {name:'Mount Snow',                lat:42.96, lon:-72.92, color:'#5BB8D4',  pass:'Epic Unlimited',                state:'VT'},
+  {name:'Jay Peak',                  lat:44.92, lon:-72.52, color:'#5BB8D4',  pass:'Indy · Powder Alliance',        state:'VT'},
+  {name:'Burke Mountain',            lat:44.60, lon:-71.87, color:'#5BB8D4',  pass:'Indy',                          state:'VT'},
+  {name:'Bolton Valley',             lat:44.40, lon:-72.87, color:'#5BB8D4',  pass:'Indy',                          state:'VT'},
+  {name:'Magic Mountain',            lat:43.35, lon:-72.76, color:'#5BB8D4',  pass:'Indy · Powder Alliance',        state:'VT'},
+  {name:'Hunter Mountain',           lat:42.18, lon:-74.22, color:'#4A9FE0',  pass:'Epic Unlimited',                state:'NY'},
+  {name:'Whiteface',                 lat:44.36, lon:-73.90, color:'#4A9FE0',  pass:'Mtn Collective · 2 days',       state:'NY'},
+  {name:'Gore Mountain',             lat:43.67, lon:-74.00, color:'#4A9FE0',  pass:'No major pass',                 state:'NY'},
+  {name:'Belleayre',                 lat:42.14, lon:-74.50, color:'#4A9FE0',  pass:'No major pass',                 state:'NY'},
+  {name:'Catamount',                 lat:42.10, lon:-73.43, color:'#4A9FE0',  pass:'Indy',                          state:'NY'},
+  {name:'Greek Peak',                lat:42.54, lon:-76.16, color:'#4A9FE0',  pass:'Indy',                          state:'NY'},
+  {name:'West Mountain',             lat:43.36, lon:-73.72, color:'#4A9FE0',  pass:'Indy',                          state:'NY'},
+  {name:'Camelback',                 lat:41.05, lon:-75.34, color:'#F5C842',  pass:'No major pass',                 state:'PA'},
+  {name:'Blue Mountain PA',          lat:40.89, lon:-75.52, color:'#F5C842',  pass:'No major pass',                 state:'PA'},
+  {name:'Shawnee Mountain',          lat:41.02, lon:-75.09, color:'#F5C842',  pass:'Indy',                          state:'PA'},
+  {name:'Montage Mountain',          lat:41.33, lon:-75.74, color:'#F5C842',  pass:'Indy',                          state:'PA'},
+  {name:'Blue Knob',                 lat:40.27, lon:-78.58, color:'#F5C842',  pass:'Indy',                          state:'PA'},
+  {name:'Sunday River',              lat:44.47, lon:-70.85, color:'#7DC242',  pass:'Ikon · 7 days · Col',           state:'ME'},
+  {name:'Sugarloaf',                 lat:45.03, lon:-70.31, color:'#7DC242',  pass:'Ikon · 7 days · Col',           state:'ME'},
+  {name:'Saddleback',                lat:44.86, lon:-70.45, color:'#7DC242',  pass:'Indy · Powder Alliance',        state:'ME'},
+  {name:'Big Rock Mountain',         lat:47.05, lon:-68.41, color:'#7DC242',  pass:'Indy',                          state:'ME'},
+  {name:'Loon Mountain',             lat:44.03, lon:-71.62, color:'#E8822A',  pass:'Ikon · 7 days',                 state:'NH'},
+  {name:'Attitash',                  lat:44.07, lon:-71.22, color:'#E8822A',  pass:'Epic Unlimited',                state:'NH'},
+  {name:'Wildcat',                   lat:44.26, lon:-71.24, color:'#E8822A',  pass:'Epic Unlimited',                state:'NH'},
+  {name:'Crotched Mountain',         lat:43.00, lon:-71.92, color:'#E8822A',  pass:'Epic Unlimited',                state:'NH'},
+  {name:'Mount Sunapee',             lat:43.34, lon:-72.07, color:'#E8822A',  pass:'Epic Unlimited',                state:'NH'},
+  {name:'Cranmore',                  lat:44.05, lon:-71.00, color:'#E8822A',  pass:'Ikon 2 bonus days · Indy',      state:'NH'},
+  {name:'Cannon Mountain',           lat:44.16, lon:-71.70, color:'#E8822A',  pass:'Indy',                          state:'NH'},
+  {name:'Waterville Valley',         lat:43.97, lon:-71.52, color:'#E8822A',  pass:'Indy',                          state:'NH'},
+  {name:'Pat's Peak',               lat:43.09, lon:-71.63, color:'#E8822A',  pass:'Indy',                          state:'NH'},
+  {name:'Tenney Mountain',           lat:43.84, lon:-71.86, color:'#E8822A',  pass:'Indy',                          state:'NH'},
+  {name:'Berkshire East',            lat:42.46, lon:-72.90, color:'#E67E22',  pass:'Indy',                          state:'MA'},
+  {name:'Bousquet Mountain',         lat:42.48, lon:-73.37, color:'#E67E22',  pass:'Indy',                          state:'MA'},
+  {name:'Jiminy Peak',               lat:42.57, lon:-73.30, color:'#E67E22',  pass:'Ikon 2 bonus days · Indy',      state:'MA'},
+  {name:'Butternut',                 lat:42.19, lon:-73.28, color:'#E67E22',  pass:'Ikon 2 bonus days',             state:'MA'},
+  {name:'Mohawk Mountain',           lat:41.85, lon:-73.25, color:'#C47FE8',  pass:'Indy',                          state:'CT'},
+  {name:'Mont-Tremblant',            lat:46.12, lon:-74.59, color:'#B27ED4',  pass:'Ikon Unlimited',                state:'QC'},
+  {name:'Le Massif de Charlevoix',   lat:47.25, lon:-70.78, color:'#B27ED4',  pass:'Ikon 7 days · Col',             state:'QC'},
+  {name:'Bromont',                   lat:45.32, lon:-72.65, color:'#B27ED4',  pass:'Mtn Collective · 2 days',       state:'QC'},
+  {name:'Mont-Sainte-Anne',          lat:47.07, lon:-70.91, color:'#B27ED4',  pass:'Epic · 5 days',                 state:'QC'},
+  {name:'Stoneham',                  lat:47.00, lon:-71.35, color:'#B27ED4',  pass:'Epic · 5 days',                 state:'QC'},
+  {name:'Mont Sutton',               lat:45.10, lon:-72.57, color:'#B27ED4',  pass:'Indy',                          state:'QC'},
+  {name:'Owl's Head',               lat:45.06, lon:-72.68, color:'#B27ED4',  pass:'Indy',                          state:'QC'},
 ];
 
-// Populate side list
 const mapList = document.getElementById('mapPinList');
 mapMountains.filter(m => !m.home).forEach(m => {
   const li = document.createElement('li');
-  li.innerHTML = `<div class="ml-dot" style="background:${m.color}"></div><span class="ml-name">${m.name}</span><span class="ml-region">${m.region}</span>`;
+  li.innerHTML = `<div class="ml-dot" style="background:${m.color}"></div><span class="ml-name">${m.name}</span><span class="ml-region">${m.state}</span>`;
   mapList.appendChild(li);
 });
 
+// Update legend
+const legendEl = document.querySelector('.map-legend');
+if (legendEl) {
+  legendEl.innerHTML = [
+    ['#FF4455','NJ · Home State'],['#5BB8D4','Vermont'],['#4A9FE0','New York'],
+    ['#F5C842','Pennsylvania'],['#E8822A','New Hampshire'],['#7DC242','Maine'],
+    ['#E67E22','Massachusetts'],['#C47FE8','Connecticut'],['#B27ED4','Canada (QC)'],
+    ['#D9001A','★ Home Base'],
+  ].map(([c,l]) => `<div class="map-legend-item"><div class="legend-dot" style="background:${c}"></div>${l}</div>`).join('');
+}
+
 const mapCanvas = document.getElementById('mapCanvas');
+mapCanvas.width = MAP_W; mapCanvas.height = MAP_H;
 const mCtx = mapCanvas.getContext('2d');
 const mapTooltip = document.getElementById('mapTooltip');
 
-function drawState(pts, fill, stroke) {
+function drawState(pts, id) {
+  const c = STATE_COLORS[id] || {fill:'rgba(200,200,200,0.08)',stroke:'rgba(200,200,200,0.2)'};
   mCtx.beginPath();
-  pts.forEach((p, i) => {
-    const [x, y] = toXY(p[1], p[0]);
-    i === 0 ? mCtx.moveTo(x, y) : mCtx.lineTo(x, y);
-  });
+  pts.forEach((p,i) => { const [x,y] = toXY(p[1],p[0]); i===0 ? mCtx.moveTo(x,y) : mCtx.lineTo(x,y); });
   mCtx.closePath();
-  mCtx.fillStyle = fill; mCtx.fill();
-  mCtx.strokeStyle = stroke; mCtx.lineWidth = 1.2; mCtx.stroke();
+  mCtx.fillStyle = c.fill; mCtx.fill();
+  mCtx.strokeStyle = c.stroke; mCtx.lineWidth = 1.4; mCtx.stroke();
 }
 
 function drawMapStar(x, y, r, color) {
-  const spikes = 5, outerR = r, innerR = r * 0.42;
-  let rot = -Math.PI / 2;
-  const step = Math.PI / spikes;
-  mCtx.beginPath(); mCtx.moveTo(x + Math.cos(rot)*outerR, y + Math.sin(rot)*outerR);
-  for (let i = 0; i < spikes; i++) {
-    rot += step; mCtx.lineTo(x + Math.cos(rot)*innerR, y + Math.sin(rot)*innerR);
-    rot += step; mCtx.lineTo(x + Math.cos(rot)*outerR, y + Math.sin(rot)*outerR);
-  }
+  const spikes=5, outerR=r, innerR=r*0.42;
+  let rot=-Math.PI/2, step=Math.PI/spikes;
+  mCtx.beginPath(); mCtx.moveTo(x+Math.cos(rot)*outerR, y+Math.sin(rot)*outerR);
+  for(let i=0;i<spikes;i++){rot+=step;mCtx.lineTo(x+Math.cos(rot)*innerR,y+Math.sin(rot)*innerR);rot+=step;mCtx.lineTo(x+Math.cos(rot)*outerR,y+Math.sin(rot)*outerR);}
   mCtx.closePath();
-  mCtx.fillStyle = color; mCtx.shadowColor = color; mCtx.shadowBlur = 18; mCtx.fill();
-  mCtx.shadowBlur = 0;
+  mCtx.fillStyle=color; mCtx.shadowColor=color; mCtx.shadowBlur=20; mCtx.fill(); mCtx.shadowBlur=0;
 }
 
-let hoveredMapPin = null;
-let mapMouseX = -999, mapMouseY = -999;
+let hoveredMapPin=null, mapMouseX=-999, mapMouseY=-999;
 
 function drawMap() {
-  mCtx.clearRect(0, 0, MAP_W, MAP_H);
+  mCtx.clearRect(0,0,MAP_W,MAP_H);
+  mCtx.fillStyle='#0E1217'; mCtx.fillRect(0,0,MAP_W,MAP_H);
 
-  // Background
-  mCtx.fillStyle = '#0E1217';
-  mCtx.fillRect(0, 0, MAP_W, MAP_H);
+  // Ocean fill
+  const wg = mCtx.createLinearGradient(0,0,MAP_W,MAP_H);
+  wg.addColorStop(0,'rgba(14,40,60,0.8)'); wg.addColorStop(1,'rgba(14,25,40,0.8)');
+  mCtx.fillStyle=wg; mCtx.fillRect(PAD,PAD,MAP_W-PAD*2,MAP_H-PAD*2);
 
-  // Subtle grid
-  mCtx.strokeStyle = 'rgba(91,184,212,0.05)';
-  mCtx.lineWidth = 0.5;
-  for (let lat = 39; lat <= 48; lat++) {
-    const [,y] = toXY(lat, LON_MIN);
-    mCtx.beginPath(); mCtx.moveTo(PAD, y); mCtx.lineTo(MAP_W-PAD, y); mCtx.stroke();
-  }
-  for (let lon = -80; lon <= -66; lon += 2) {
-    const [x] = toXY(LAT_MIN, lon);
-    mCtx.beginPath(); mCtx.moveTo(x, PAD); mCtx.lineTo(x, MAP_H-PAD); mCtx.stroke();
-  }
+  // Grid
+  mCtx.strokeStyle='rgba(91,184,212,0.05)'; mCtx.lineWidth=0.5;
+  for(let lat=39;lat<=48;lat++){const[,y]=toXY(lat,LON_MIN);mCtx.beginPath();mCtx.moveTo(PAD,y);mCtx.lineTo(MAP_W-PAD,y);mCtx.stroke();}
+  for(let lon=-80;lon<=-67;lon+=2){const[x]=toXY(LAT_MIN,lon);mCtx.beginPath();mCtx.moveTo(x,PAD);mCtx.lineTo(x,MAP_H-PAD);mCtx.stroke();}
 
-  // Draw states
-  states.forEach(s => drawState(s.pts, s.fill, s.stroke));
+  // States
+  states.forEach(s => drawState(s.pts, s.id));
 
   // State labels
-  mCtx.font = 'bold 9px Barlow Condensed, sans-serif';
-  mCtx.letterSpacing = '2px';
-  mCtx.textAlign = 'center';
-  const stateLabels = [
-    {t:'VT', lat:44.0, lon:-72.7}, {t:'NH', lat:43.8, lon:-71.5},
-    {t:'ME', lat:45.0, lon:-69.2}, {t:'MA', lat:42.4, lon:-71.8},
-    {t:'NY', lat:43.0, lon:-76.5}, {t:'PA', lat:41.2, lon:-77.5},
-    {t:'NJ', lat:40.1, lon:-74.5}, {t:'CT', lat:41.6, lon:-72.7},
-    {t:'QC', lat:47.0, lon:-73.0},
-  ];
-  stateLabels.forEach(l => {
-    const [x, y] = toXY(l.lat, l.lon);
-    mCtx.fillStyle = 'rgba(238,242,245,0.22)';
-    mCtx.fillText(l.t, x, y);
+  mCtx.textAlign='center';
+  [{t:'VT',lat:44.0,lon:-72.75,id:'VT'},{t:'NH',lat:43.8,lon:-71.55,id:'NH'},{t:'ME',lat:45.2,lon:-69.3,id:'ME'},
+   {t:'MA',lat:42.25,lon:-71.9,id:'MA'},{t:'NY',lat:43.1,lon:-76.3,id:'NY'},{t:'PA',lat:40.9,lon:-77.8,id:'PA'},
+   {t:'NJ',lat:40.2,lon:-74.55,id:'NJ'},{t:'CT',lat:41.6,lon:-72.7,id:'CT'},{t:'QC',lat:46.8,lon:-73.2,id:'QC'}
+  ].forEach(l => {
+    const [x,y]=toXY(l.lat,l.lon);
+    const c=STATE_COLORS[l.id];
+    mCtx.font='bold 10px "Barlow Condensed",sans-serif';
+    mCtx.fillStyle = c ? c.stroke : 'rgba(238,242,245,0.3)';
+    mCtx.fillText(l.t,x,y);
   });
 
   // Pins
-  hoveredMapPin = null;
+  hoveredMapPin=null;
   mapMountains.forEach(m => {
-    const [px, py] = toXY(m.lat, m.lon);
-    const dist = Math.hypot(mapMouseX - px, mapMouseY - py);
-    const isHover = dist < 12;
-    if (isHover) hoveredMapPin = {m, px, py};
-
-    if (m.home) {
-      drawMapStar(px, py, isHover ? 11 : 9, '#D9001A');
+    const [px,py]=toXY(m.lat,m.lon);
+    const dist=Math.hypot(mapMouseX-px,mapMouseY-py);
+    const isHover=dist<14;
+    if(isHover) hoveredMapPin={m,px,py};
+    if(m.home){
+      drawMapStar(px,py,isHover?12:10,'#D9001A');
+      mCtx.beginPath();mCtx.arc(px,py,isHover?18:15,0,Math.PI*2);
+      mCtx.strokeStyle='rgba(217,0,26,0.35)';mCtx.lineWidth=1.5;mCtx.stroke();
     } else {
-      const r = isHover ? 7 : 5;
-      mCtx.beginPath(); mCtx.arc(px, py, r, 0, Math.PI*2);
-      mCtx.fillStyle = isHover ? m.color : m.color+'BB';
-      mCtx.shadowColor = m.color; mCtx.shadowBlur = isHover ? 18 : 8;
-      mCtx.fill(); mCtx.shadowBlur = 0;
-      // Pin outline
-      mCtx.strokeStyle = 'rgba(14,18,23,0.6)'; mCtx.lineWidth = 1;
-      mCtx.stroke();
+      const r=isHover?8:5;
+      mCtx.beginPath();mCtx.arc(px,py,r,0,Math.PI*2);
+      mCtx.fillStyle=isHover?m.color:m.color+'BB';
+      mCtx.shadowColor=m.color;mCtx.shadowBlur=isHover?22:10;
+      mCtx.fill();mCtx.shadowBlur=0;
+      mCtx.strokeStyle='rgba(14,18,23,0.7)';mCtx.lineWidth=1.2;mCtx.stroke();
     }
   });
 
-  // Tooltip
-  if (hoveredMapPin) {
-    const {m, px, py} = hoveredMapPin;
-    const rect = mapCanvas.getBoundingClientRect();
-    const scaleX = rect.width / MAP_W;
-    mapTooltip.style.display = 'block';
-    mapTooltip.style.left = (rect.left + px * scaleX) + 'px';
-    mapTooltip.style.top = (rect.top + py * scaleX - 14 + window.scrollY) + 'px';
-    mapTooltip.style.transform = 'translate(-50%, -100%)';
-    mapTooltip.innerHTML = `<strong>${m.name}</strong><span>${m.region} · ${m.pass}</span>`;
-    mapCanvas.style.cursor = 'pointer';
+  if(hoveredMapPin){
+    const {m,px,py}=hoveredMapPin;
+    const rect=mapCanvas.getBoundingClientRect();
+    const sx=rect.width/MAP_W, sy=rect.height/MAP_H;
+    mapTooltip.style.display='block';
+    mapTooltip.style.left=(rect.left+px*sx+window.scrollX)+'px';
+    mapTooltip.style.top=(rect.top+py*sy+window.scrollY-14)+'px';
+    mapTooltip.innerHTML=`<strong>${m.name}</strong><span>${m.state} · ${m.pass}</span>`;
+    mapCanvas.style.cursor='pointer';
   } else {
-    mapTooltip.style.display = 'none';
-    mapCanvas.style.cursor = 'crosshair';
+    mapTooltip.style.display='none';
+    mapCanvas.style.cursor='crosshair';
   }
 }
 
 mapCanvas.addEventListener('mousemove', e => {
-  const rect = mapCanvas.getBoundingClientRect();
-  const scaleX = MAP_W / rect.width;
-  mapMouseX = (e.clientX - rect.left) * scaleX;
-  mapMouseY = (e.clientY - rect.top) * scaleX;
+  const rect=mapCanvas.getBoundingClientRect();
+  mapMouseX=(e.clientX-rect.left)*(MAP_W/rect.width);
+  mapMouseY=(e.clientY-rect.top)*(MAP_H/rect.height);
   drawMap();
 });
 mapCanvas.addEventListener('mouseleave', () => {
-  mapMouseX = -999; mapMouseY = -999;
-  mapTooltip.style.display = 'none';
+  mapMouseX=-999;mapMouseY=-999;
+  mapTooltip.style.display='none';
   drawMap();
 });
-
 drawMap();
 
 // FAQ
