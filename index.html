@@ -411,6 +411,46 @@ footer{background:var(--grey);padding:60px 60px 36px;display:grid;grid-template-
   .nav-links a{padding:10px 10px; border-radius:10px}
   .nav-cta{width:100%; text-align:center}
 }
+/* ===== iPhone / Mobile Fit Fix ===== */
+@media (max-width: 680px) {
+
+  /* Make sections use full screen width */
+  .hero-content {
+    padding: 110px 16px 64px !important; /* WAS 120px 60px 80px */
+    max-width: 100% !important;
+  }
+
+  /* Keep hero readable and not cramped */
+  .hero-sub {
+    max-width: 100% !important;
+    font-size: 16px;
+  }
+
+  /* Stack hero buttons nicely */
+  .hero-actions {
+    flex-direction: column;
+    gap: 12px;
+  }
+  .btn-primary,
+  .btn-outline {
+    width: 100%;
+    text-align: center;
+  }
+
+  /* Give all sections a sane mobile padding */
+  .section {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+
+  /* If you have stats on the hero, prevent overlap */
+  .hero-stats {
+    position: static !important;
+    margin-top: 22px;
+    padding: 0 16px;
+    gap: 12px;
+  }
+}
 </style>
 </head>
 <body>
