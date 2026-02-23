@@ -1612,9 +1612,10 @@ async function fetchOneMountainWeather(m) {
     const times    = r.hourly?.time ?? [];
     const snowfall = r.hourly?.snowfall ?? [];
     const cutoff = Date.now() - 48 * 3600 * 1000;
-    let snowMm = 0;
-    times.forEach((t, i) => { if (new Date(t).getTime() >= cutoff) snowMm += (snowfall[i] || 0); });
-    const newSnowIn = Math.round(snowMm / 25.4 * 10) / 10;
+    let snowCm = 0;
+    times.forEach((t, i) => { if (new Date(t).getTime() >= cutoff) snowCm += (snowfall[i] || 0); });
+    // Open-Meteo hourly snowfall is in cm — divide by 2.54 to get inches
+    const newSnowIn = Math.round(snowCm / 2.54 * 10) / 10;
 
     return { name: m.name, base: Math.max(baseIn, 0), temp: tempF, newSnow: Math.max(newSnowIn, 0) };
   } catch(e) {
@@ -1640,8 +1641,9 @@ async function fetchOneMountainSeason(m) {
     clearTimeout(timeout);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const r = await res.json();
-    const totalMm = (r.daily?.snowfall_sum ?? []).reduce((a, v) => a + (v ?? 0), 0);
-    return { name: m.name, season: Math.round(totalMm / 25.4) };
+    // Open-Meteo daily snowfall_sum is in cm — divide by 2.54 to get inches
+    const totalCm = (r.daily?.snowfall_sum ?? []).reduce((a, v) => a + (v ?? 0), 0);
+    return { name: m.name, season: Math.round(totalCm / 2.54) };
   } catch(e) {
     clearTimeout(timeout);
     throw e;
