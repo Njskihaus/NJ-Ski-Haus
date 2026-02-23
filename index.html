@@ -183,6 +183,28 @@ canvas#mapCanvas{display:block;width:100%;max-width:700px;cursor:crosshair}
 .report-section{background:var(--black)}
 .report-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:32px;flex-wrap:wrap;gap:20px}
 .report-live{display:flex;align-items:center;gap:8px;font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--text-dim)}
+
+/* ── Skeleton loading shimmer ── */
+.skel{border-radius:3px;background:linear-gradient(90deg,rgba(238,242,245,0.05) 25%,rgba(238,242,245,0.10) 50%,rgba(238,242,245,0.05) 75%);background-size:200% 100%;animation:shimmer 1.6s infinite}
+.skel-title{height:18px;width:70%;margin-bottom:8px}
+.skel-sub{height:11px;width:45%}
+.skel-badge{height:24px;width:80px;border-radius:2px}
+.skel-val{height:28px;width:60%;margin:0 auto 6px}
+.skel-lbl{height:9px;width:80%;margin:0 auto}
+.skel-bar{width:100%;background:rgba(238,242,245,0.06)!important}
+.skel-card{opacity:0.6;pointer-events:none}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+/* ── Live data source badge ── */
+.rc-src-badge{font-family:'Barlow Condensed',sans-serif;font-size:8px;font-weight:700;letter-spacing:1.5px;padding:1px 5px;border-radius:2px;text-transform:uppercase;vertical-align:middle;margin-left:6px}
+.rc-src-badge:has(+){} /* no-op selector guard */
+[data-status="great"] .rc-src-badge{background:rgba(91,184,212,0.2);color:var(--ice)}
+[data-status="good"]  .rc-src-badge{background:rgba(91,184,212,0.12);color:var(--ice)}
+[data-status="fair"]  .rc-src-badge{background:rgba(245,200,66,0.15);color:var(--yellow)}
+
+/* ── Refresh button ── */
+.btn-refresh{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:8px 16px;border:1px solid rgba(91,184,212,0.25);color:var(--ice);background:transparent;cursor:pointer;border-radius:2px;transition:all 0.2s;touch-action:manipulation}
+.btn-refresh:hover{background:rgba(91,184,212,0.1);border-color:rgba(91,184,212,0.5)}
 .live-dot{width:8px;height:8px;background:var(--green);border-radius:50%;animation:pulse 2s infinite}
 .report-updated{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:2px;color:var(--text-dim);opacity:0.5;margin-top:4px}
 .report-tabs{display:flex;gap:2px;margin-bottom:24px;flex-wrap:wrap}
@@ -1095,8 +1117,9 @@ html {
       <div class="report-updated" id="reportDate">Loading conditions...</div>
     </div>
     <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px">
-      <div class="report-live"><div class="live-dot"></div>Updated Daily</div>
-      <div style="font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:2px;color:var(--text-dim);opacity:0.5;text-transform:uppercase">Season Snowfall Tracked</div>
+      <div class="report-live"><div class="live-dot"></div>Live · Open-Meteo API</div>
+      <button class="btn-refresh" onclick="refreshConditions()" title="Clear cache and refetch live data">↻ REFRESH</button>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:2px;color:var(--text-dim);opacity:0.5;text-transform:uppercase">1hr cache · season from Nov 1</div>
     </div>
   </div>
   <div class="report-tabs">
@@ -1109,7 +1132,7 @@ html {
     <button class="report-tab" onclick="filterReport('ca',this)">Canada</button>
   </div>
   <div class="report-grid" id="reportGrid"></div>
-  <p class="report-disclaimer">★ Conditions are updated daily via the GitHub deploy pipeline — push updates to the repo and the site redeploys automatically. Season snowfall totals are cumulative from Nov 1. Always verify with official resort snow reports before hitting the road. NJ Ski Haus members receive real-time powder alerts via the newsletter.</p>
+  <p class="report-disclaimer">⚡ Base depth, temperature, and new snow are fetched live from <strong>Open-Meteo</strong> (open-meteo.com) — free, no API key required, updated hourly. Season snowfall totals are cumulative from Nov 1, 2025 via the Open-Meteo historical archive. Trail counts are manually maintained — always verify with official resort snow reports before hitting the road. Tap ↻ Refresh to force a new fetch. NJ Ski Haus members receive real-time powder alerts via the newsletter.</p>
 </section>
 
 <!-- MEMBER PERKS -->
@@ -1472,60 +1495,317 @@ const now = new Date();
 document.getElementById('reportDate').textContent =
   'Last updated: ' + now.toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
 
-// ── MOUNTAIN DATA ──
-// Update values below and push to GitHub — the site redeploys automatically each day.
+// ══════════════════════════════════════════════════════════════════════
+// NJ SKI HAUS — LIVE CONDITIONS ENGINE
+// Data source: Open-Meteo (open-meteo.com) — free, no API key required
+//
+// What it fetches per mountain:
+//   • Snow depth (base)      → snow_depth in meters × 39.37 = inches
+//   • New snow (48hr)        → hourly snowfall sum, past 2 days, in inches
+//   • Summit temperature     → temperature_2m Celsius → Fahrenheit
+//   • Season total           → archive API, Nov 1 → yesterday, daily snowfall_sum
+//
+// Static per mountain (can't be fetched from weather APIs):
+//   • trails / open          → update manually or via future resort API integration
+//   • seasonMax              → historical average, update each season
+//   • pass                   → set by season, update each fall
+//
+// Cache: 1 hour in localStorage (key: njskihaus_wx_v4)
+// Batching: mountains split into 3 batches of ~10 to keep URLs short
+// Season start: 2025-11-01 (update each October for new season)
+// ══════════════════════════════════════════════════════════════════════
+
+const SEASON_START = '2025-11-01';
+const CACHE_KEY    = 'njskihaus_wx_v4';
+const CACHE_TTL    = 60 * 60 * 1000; // 1 hour ms
+
+// ── Base mountain data — weather fields (base/newSnow/temp/season/surface/status)
+// are overwritten by live API. Static fields (trails/open/pass/seasonMax) are fixed.
 const mountains = [
   // ── NEW JERSEY ──
-  {name:'MOUNTAIN CREEK', loc:'New Jersey',       region:'nj', pass:'Indy',                  base:18, newSnow:0,  trails:46,  open:32,  temp:35, surface:'Machine Made + Groomed',       season:58,  seasonMax:120, status:'fair'},
+  {name:'MOUNTAIN CREEK', loc:'New Jersey',    region:'nj', pass:'Indy',                   lat:41.19,lon:-74.49, trails:46,  open:32,  seasonMax:120, base:18, newSnow:0,  temp:35, surface:'Machine Made + Groomed',   season:58,  status:'fair'},
   // ── VERMONT ──
-  {name:'KILLINGTON',     loc:'Vermont',           region:'vt', pass:'Ikon · 7 days',         base:58, newSnow:12, trails:142, open:116, temp:22, surface:'Groomed + Natural Pack',        season:198, seasonMax:250, status:'great'},
-  {name:'STOWE',          loc:'Vermont',           region:'vt', pass:'Epic · Unlimited',       base:72, newSnow:18, trails:116, open:98,  temp:18, surface:'Powder + Packed Powder',        season:222, seasonMax:250, status:'great'},
-  {name:'STRATTON',       loc:'Vermont',           region:'vt', pass:'Ikon · Unlimited',       base:42, newSnow:6,  trails:99,  open:94,  temp:27, surface:'Machine Groomed',               season:165, seasonMax:250, status:'good'},
-  {name:'SUGARBUSH',      loc:'Vermont',           region:'vt', pass:'Ikon · Unlimited',       base:52, newSnow:9,  trails:111, open:102, temp:24, surface:'Natural Pack + Groomed',        season:184, seasonMax:250, status:'great'},
-  {name:'PICO MTN',       loc:'Vermont',           region:'vt', pass:'Ikon · 7 days',          base:45, newSnow:9,  trails:58,  open:50,  temp:23, surface:'Natural Pack + Groomed',        season:178, seasonMax:250, status:'good'},
-  {name:'OKEMO',          loc:'Vermont',           region:'vt', pass:'Epic · Unlimited',       base:45, newSnow:4,  trails:121, open:88,  temp:26, surface:'Packed Powder',                 season:155, seasonMax:250, status:'good'},
-  {name:'MOUNT SNOW',     loc:'Vermont',           region:'vt', pass:'Epic · Unlimited',       base:38, newSnow:5,  trails:80,  open:72,  temp:27, surface:'Groomed Hardpack',              season:144, seasonMax:250, status:'good'},
-  {name:'JAY PEAK',       loc:'Vermont',           region:'vt', pass:'Indy',                   base:82, newSnow:22, trails:78,  open:76,  temp:16, surface:'Deep Powder + Natural',         season:246, seasonMax:300, status:'great'},
-  {name:'BURKE MTN',      loc:'Vermont',           region:'vt', pass:'Indy',                   base:44, newSnow:7,  trails:50,  open:45,  temp:21, surface:'Natural Pack + Groomed',        season:162, seasonMax:250, status:'good'},
-  {name:'BOLTON VALLEY',  loc:'Vermont',           region:'vt', pass:'Indy',                   base:62, newSnow:14, trails:71,  open:65,  temp:19, surface:'Powder + Packed Powder',        season:208, seasonMax:280, status:'great'},
-  {name:'MAGIC MTN',      loc:'Vermont',           region:'vt', pass:'Indy',                   base:55, newSnow:11, trails:52,  open:48,  temp:20, surface:'Natural Pack + Glades',         season:190, seasonMax:270, status:'great'},
+  {name:'KILLINGTON',     loc:'Vermont',        region:'vt', pass:'Ikon · 7 days',          lat:43.67,lon:-72.78, trails:142, open:116, seasonMax:250, base:58, newSnow:12, temp:22, surface:'Groomed + Natural Pack',   season:198, status:'great'},
+  {name:'STOWE',          loc:'Vermont',        region:'vt', pass:'Epic · Unlimited',        lat:44.53,lon:-72.78, trails:116, open:98,  seasonMax:250, base:72, newSnow:18, temp:18, surface:'Powder + Packed Powder',   season:222, status:'great'},
+  {name:'STRATTON',       loc:'Vermont',        region:'vt', pass:'Ikon · Unlimited',        lat:43.11,lon:-72.91, trails:99,  open:94,  seasonMax:250, base:42, newSnow:6,  temp:27, surface:'Machine Groomed',          season:165, status:'good'},
+  {name:'SUGARBUSH',      loc:'Vermont',        region:'vt', pass:'Ikon · Unlimited',        lat:44.14,lon:-72.90, trails:111, open:102, seasonMax:250, base:52, newSnow:9,  temp:24, surface:'Natural Pack + Groomed',   season:184, status:'great'},
+  {name:'PICO MTN',       loc:'Vermont',        region:'vt', pass:'Ikon · 7 days',           lat:43.66,lon:-72.83, trails:58,  open:50,  seasonMax:250, base:45, newSnow:9,  temp:23, surface:'Natural Pack + Groomed',   season:178, status:'good'},
+  {name:'OKEMO',          loc:'Vermont',        region:'vt', pass:'Epic · Unlimited',        lat:43.40,lon:-72.73, trails:121, open:88,  seasonMax:250, base:45, newSnow:4,  temp:26, surface:'Packed Powder',            season:155, status:'good'},
+  {name:'MOUNT SNOW',     loc:'Vermont',        region:'vt', pass:'Epic · Unlimited',        lat:42.96,lon:-72.92, trails:80,  open:72,  seasonMax:250, base:38, newSnow:5,  temp:27, surface:'Groomed Hardpack',         season:144, status:'good'},
+  {name:'JAY PEAK',       loc:'Vermont',        region:'vt', pass:'Indy',                    lat:44.92,lon:-72.52, trails:78,  open:76,  seasonMax:300, base:82, newSnow:22, temp:16, surface:'Deep Powder + Natural',    season:246, status:'great'},
+  {name:'BURKE MTN',      loc:'Vermont',        region:'vt', pass:'Indy',                    lat:44.60,lon:-71.87, trails:50,  open:45,  seasonMax:250, base:44, newSnow:7,  temp:21, surface:'Natural Pack + Groomed',   season:162, status:'good'},
+  {name:'BOLTON VALLEY',  loc:'Vermont',        region:'vt', pass:'Indy',                    lat:44.40,lon:-72.87, trails:71,  open:65,  seasonMax:280, base:62, newSnow:14, temp:19, surface:'Powder + Packed Powder',   season:208, status:'great'},
+  {name:'MAGIC MTN',      loc:'Vermont',        region:'vt', pass:'Indy',                    lat:43.35,lon:-72.76, trails:52,  open:48,  seasonMax:270, base:55, newSnow:11, temp:20, surface:'Natural Pack + Glades',    season:190, status:'great'},
   // ── NEW YORK ──
-  {name:'HUNTER MTN',     loc:'New York',          region:'ny', pass:'Epic · Unlimited',       base:36, newSnow:3,  trails:67,  open:58,  temp:29, surface:'Packed Powder',                 season:122, seasonMax:200, status:'good'},
-  {name:'WHITEFACE',      loc:'New York',          region:'ny', pass:'Mtn Collective · 2 days',base:44, newSnow:8,  trails:87,  open:72,  temp:21, surface:'Groomed + Natural',             season:168, seasonMax:200, status:'great'},
-  {name:'GORE MTN',       loc:'New York',          region:'ny', pass:'No major pass',          base:38, newSnow:5,  trails:109, open:88,  temp:24, surface:'Groomed + Natural Pack',        season:145, seasonMax:200, status:'good'},
-  {name:'BELLEAYRE',      loc:'New York',          region:'ny', pass:'No major pass',          base:30, newSnow:2,  trails:50,  open:38,  temp:30, surface:'Packed Powder + Groomed',       season:108, seasonMax:200, status:'good'},
-  {name:'CATAMOUNT',      loc:'New York',          region:'ny', pass:'Indy',                   base:28, newSnow:2,  trails:36,  open:28,  temp:30, surface:'Machine Made + Groomed',        season:96,  seasonMax:180, status:'fair'},
-  {name:'GREEK PEAK',     loc:'New York',          region:'ny', pass:'Indy',                   base:22, newSnow:1,  trails:32,  open:24,  temp:32, surface:'Packed Powder',                 season:82,  seasonMax:160, status:'fair'},
-  {name:'WEST MTN',       loc:'New York',          region:'ny', pass:'Indy',                   base:26, newSnow:2,  trails:26,  open:22,  temp:28, surface:'Groomed Hardpack',              season:94,  seasonMax:170, status:'fair'},
+  {name:'HUNTER MTN',     loc:'New York',       region:'ny', pass:'Epic · Unlimited',        lat:42.18,lon:-74.22, trails:67,  open:58,  seasonMax:200, base:36, newSnow:3,  temp:29, surface:'Packed Powder',            season:122, status:'good'},
+  {name:'WHITEFACE',      loc:'New York',       region:'ny', pass:'Mtn Collective · 2 days', lat:44.36,lon:-73.90, trails:87,  open:72,  seasonMax:200, base:44, newSnow:8,  temp:21, surface:'Groomed + Natural',        season:168, status:'great'},
+  {name:'GORE MTN',       loc:'New York',       region:'ny', pass:'No major pass',            lat:43.67,lon:-74.00, trails:109, open:88,  seasonMax:200, base:38, newSnow:5,  temp:24, surface:'Groomed + Natural Pack',   season:145, status:'good'},
+  {name:'BELLEAYRE',      loc:'New York',       region:'ny', pass:'No major pass',            lat:42.14,lon:-74.50, trails:50,  open:38,  seasonMax:200, base:30, newSnow:2,  temp:30, surface:'Packed Powder + Groomed',  season:108, status:'good'},
+  {name:'CATAMOUNT',      loc:'New York',       region:'ny', pass:'Indy',                    lat:42.10,lon:-73.43, trails:36,  open:28,  seasonMax:180, base:28, newSnow:2,  temp:30, surface:'Machine Made + Groomed',   season:96,  status:'fair'},
+  {name:'GREEK PEAK',     loc:'New York',       region:'ny', pass:'Indy',                    lat:42.54,lon:-76.16, trails:32,  open:24,  seasonMax:160, base:22, newSnow:1,  temp:32, surface:'Packed Powder',            season:82,  status:'fair'},
+  {name:'WEST MTN',       loc:'New York',       region:'ny', pass:'Indy',                    lat:43.36,lon:-73.72, trails:26,  open:22,  seasonMax:170, base:26, newSnow:2,  temp:28, surface:'Groomed Hardpack',         season:94,  status:'fair'},
   // ── EASTERN PA ──
-  {name:'CAMELBACK',      loc:'Pennsylvania',      region:'pa', pass:'No major pass',          base:24, newSnow:0,  trails:34,  open:33,  temp:32, surface:'Machine Made + Groomed',        season:88,  seasonMax:150, status:'fair'},
-  {name:'BLUE MTN PA',    loc:'Pennsylvania',      region:'pa', pass:'No major pass',          base:20, newSnow:0,  trails:40,  open:28,  temp:33, surface:'Packed Powder + Ice',           season:72,  seasonMax:150, status:'fair'},
-  {name:'SHAWNEE MTN',    loc:'Pennsylvania',      region:'pa', pass:'Indy',                   base:22, newSnow:0,  trails:23,  open:18,  temp:33, surface:'Machine Made',                  season:66,  seasonMax:140, status:'fair'},
+  {name:'CAMELBACK',      loc:'Pennsylvania',   region:'pa', pass:'No major pass',            lat:41.05,lon:-75.34, trails:34,  open:33,  seasonMax:150, base:24, newSnow:0,  temp:32, surface:'Machine Made + Groomed',   season:88,  status:'fair'},
+  {name:'BLUE MTN PA',    loc:'Pennsylvania',   region:'pa', pass:'No major pass',            lat:40.89,lon:-75.52, trails:40,  open:28,  seasonMax:150, base:20, newSnow:0,  temp:33, surface:'Packed Powder + Ice',      season:72,  status:'fair'},
+  {name:'SHAWNEE MTN',    loc:'Pennsylvania',   region:'pa', pass:'Indy',                    lat:41.02,lon:-75.09, trails:23,  open:18,  seasonMax:140, base:22, newSnow:0,  temp:33, surface:'Machine Made',             season:66,  status:'fair'},
   // ── NEW HAMPSHIRE & MAINE ──
-  {name:'SUNDAY RIVER',   loc:'Maine',             region:'ne', pass:'Ikon / Collective',      base:55, newSnow:10, trails:135, open:128, temp:20, surface:'Natural + Groomed',             season:192, seasonMax:250, status:'great'},
-  {name:'SUGARLOAF',      loc:'Maine',             region:'ne', pass:'Ikon / Collective',      base:60, newSnow:14, trails:162, open:150, temp:18, surface:'Powder + Natural Pack',         season:210, seasonMax:280, status:'great'},
-  {name:'SADDLEBACK',     loc:'Maine',             region:'ne', pass:'Indy',                   base:52, newSnow:11, trails:66,  open:58,  temp:19, surface:'Natural Pack + Glades',         season:188, seasonMax:260, status:'great'},
-  {name:'LOON MTN',       loc:'New Hampshire',     region:'ne', pass:'Ikon · 7 days',          base:48, newSnow:8,  trails:61,  open:60,  temp:23, surface:'Groomed Hardpack',              season:175, seasonMax:250, status:'good'},
-  {name:'ATTITASH',       loc:'New Hampshire',     region:'ne', pass:'Epic · Unlimited',       base:40, newSnow:5,  trails:68,  open:55,  temp:25, surface:'Groomed + Natural',             season:148, seasonMax:220, status:'good'},
-  {name:'WILDCAT',        loc:'New Hampshire',     region:'ne', pass:'Epic · Unlimited',       base:52, newSnow:10, trails:50,  open:44,  temp:20, surface:'Natural Pack + Groomed',        season:186, seasonMax:250, status:'great'},
-  {name:'CANNON MTN',     loc:'New Hampshire',     region:'ne', pass:'Indy',                   base:54, newSnow:9,  trails:72,  open:65,  temp:19, surface:'Natural Pack + Groomed',        season:194, seasonMax:250, status:'great'},
-  {name:'WATERVILLE VLY', loc:'New Hampshire',     region:'ne', pass:'Indy',                   base:44, newSnow:7,  trails:52,  open:46,  temp:22, surface:'Groomed Hardpack',              season:168, seasonMax:240, status:'good'},
+  {name:'SUNDAY RIVER',   loc:'Maine',          region:'ne', pass:'Ikon / Collective',        lat:44.47,lon:-70.85, trails:135, open:128, seasonMax:250, base:55, newSnow:10, temp:20, surface:'Natural + Groomed',        season:192, status:'great'},
+  {name:'SUGARLOAF',      loc:'Maine',          region:'ne', pass:'Ikon / Collective',        lat:45.03,lon:-70.31, trails:162, open:150, seasonMax:280, base:60, newSnow:14, temp:18, surface:'Powder + Natural Pack',    season:210, status:'great'},
+  {name:'SADDLEBACK',     loc:'Maine',          region:'ne', pass:'Indy',                    lat:44.86,lon:-70.45, trails:66,  open:58,  seasonMax:260, base:52, newSnow:11, temp:19, surface:'Natural Pack + Glades',    season:188, status:'great'},
+  {name:'LOON MTN',       loc:'New Hampshire',  region:'ne', pass:'Ikon · 7 days',           lat:44.03,lon:-71.62, trails:61,  open:60,  seasonMax:250, base:48, newSnow:8,  temp:23, surface:'Groomed Hardpack',         season:175, status:'good'},
+  {name:'ATTITASH',       loc:'New Hampshire',  region:'ne', pass:'Epic · Unlimited',        lat:44.07,lon:-71.22, trails:68,  open:55,  seasonMax:220, base:40, newSnow:5,  temp:25, surface:'Groomed + Natural',        season:148, status:'good'},
+  {name:'WILDCAT',        loc:'New Hampshire',  region:'ne', pass:'Epic · Unlimited',        lat:44.26,lon:-71.24, trails:50,  open:44,  seasonMax:250, base:52, newSnow:10, temp:20, surface:'Natural Pack + Groomed',   season:186, status:'great'},
+  {name:'CANNON MTN',     loc:'New Hampshire',  region:'ne', pass:'Indy',                    lat:44.16,lon:-71.70, trails:72,  open:65,  seasonMax:250, base:54, newSnow:9,  temp:19, surface:'Natural Pack + Groomed',   season:194, status:'great'},
+  {name:'WATERVILLE VLY', loc:'New Hampshire',  region:'ne', pass:'Indy',                    lat:43.97,lon:-71.52, trails:52,  open:46,  seasonMax:240, base:44, newSnow:7,  temp:22, surface:'Groomed Hardpack',         season:168, status:'good'},
   // ── CANADA ──
-  {name:'MONT-TREMBLANT', loc:'Québec, Canada',    region:'ca', pass:'Ikon · Unlimited',       base:64, newSnow:15, trails:102, open:102, temp:14, surface:'Powder + Packed Powder',        season:210, seasonMax:300, status:'great'},
-  {name:'LE MASSIF',      loc:'Québec, Canada',    region:'ca', pass:'Ikon / Collective',      base:70, newSnow:18, trails:52,  open:52,  temp:12, surface:'Powder + Natural Pack',         season:228, seasonMax:320, status:'great'},
-  {name:'MONT-STE-ANNE',  loc:'Québec, Canada',    region:'ca', pass:'Epic · 5 days',          base:55, newSnow:12, trails:66,  open:60,  temp:15, surface:'Groomed + Natural',             season:198, seasonMax:290, status:'great'},
+  {name:'MONT-TREMBLANT', loc:'Québec, Canada', region:'ca', pass:'Ikon · Unlimited',        lat:46.12,lon:-74.59, trails:102, open:102, seasonMax:300, base:64, newSnow:15, temp:14, surface:'Powder + Packed Powder',   season:210, status:'great'},
+  {name:'LE MASSIF',      loc:'Québec, Canada', region:'ca', pass:'Ikon / Collective',        lat:47.25,lon:-70.78, trails:52,  open:52,  seasonMax:320, base:70, newSnow:18, temp:12, surface:'Powder + Natural Pack',    season:228, status:'great'},
+  {name:'MONT-STE-ANNE',  loc:'Québec, Canada', region:'ca', pass:'Epic · 5 days',            lat:47.07,lon:-70.91, trails:66,  open:60,  seasonMax:290, base:55, newSnow:12, temp:15, surface:'Groomed + Natural',        season:198, status:'great'},
 ];
 
-function renderReportCards(filter){
+// ── SURFACE CONDITION DERIVATION from weather data ──
+function deriveSurface(baseIn, newSnowIn, tempF) {
+  if (newSnowIn >= 14) return 'Deep Powder + Natural';
+  if (newSnowIn >= 8)  return 'Powder + Packed Powder';
+  if (newSnowIn >= 3)  return 'Natural Pack + Groomed';
+  if (newSnowIn >= 1)  return 'Groomed + Natural Pack';
+  if (tempF < 24)      return 'Groomed Hardpack';
+  if (tempF < 30)      return 'Packed Powder + Groomed';
+  return 'Machine Made + Groomed';
+}
+
+// ── STATUS DERIVATION from live snow depth + new snow ──
+function deriveStatus(baseIn, newSnowIn) {
+  if (baseIn >= 54 || newSnowIn >= 12) return 'great';
+  if (baseIn >= 28 || newSnowIn >= 4)  return 'good';
+  return 'fair';
+}
+
+// ── OPEN-METEO: FETCH ONE MOUNTAIN (current conditions) ──
+// One clean URL per mountain — no multi-location ambiguity, no ordering issues.
+// Called in parallel via Promise.allSettled so individual failures don't block others.
+async function fetchOneMountainWeather(m) {
+  const url = [
+    'https://api.open-meteo.com/v1/forecast',
+    `?latitude=${m.lat}&longitude=${m.lon}`,
+    '&current=snow_depth,temperature_2m',
+    '&hourly=snowfall',
+    '&past_days=2&forecast_days=0',
+    '&timezone=auto'
+  ].join('');
+
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 8000); // 8s timeout
+  try {
+    const res = await fetch(url, { signal: controller.signal });
+    clearTimeout(timeout);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const r = await res.json();
+
+    // Snow depth: meters → inches
+    const baseIn = Math.round((r.current?.snow_depth ?? 0) * 39.37);
+
+    // Temperature: Celsius → Fahrenheit
+    const tempF = Math.round((r.current?.temperature_2m ?? 0) * 9/5 + 32);
+
+    // New snow past 48 hours: sum hourly snowfall (mm) → inches
+    const times    = r.hourly?.time ?? [];
+    const snowfall = r.hourly?.snowfall ?? [];
+    const cutoff = Date.now() - 48 * 3600 * 1000;
+    let snowMm = 0;
+    times.forEach((t, i) => { if (new Date(t).getTime() >= cutoff) snowMm += (snowfall[i] || 0); });
+    const newSnowIn = Math.round(snowMm / 25.4 * 10) / 10;
+
+    return { name: m.name, base: Math.max(baseIn, 0), temp: tempF, newSnow: Math.max(newSnowIn, 0) };
+  } catch(e) {
+    clearTimeout(timeout);
+    throw e;
+  }
+}
+
+// ── OPEN-METEO: FETCH ONE MOUNTAIN (season archive total) ──
+async function fetchOneMountainSeason(m) {
+  const yesterday = new Date(Date.now() - 2 * 24*3600*1000).toISOString().split('T')[0];
+  const url = [
+    'https://archive-api.open-meteo.com/v1/archive',
+    `?latitude=${m.lat}&longitude=${m.lon}`,
+    `&start_date=${SEASON_START}&end_date=${yesterday}`,
+    '&daily=snowfall_sum&timezone=auto'
+  ].join('');
+
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 10000);
+  try {
+    const res = await fetch(url, { signal: controller.signal });
+    clearTimeout(timeout);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const r = await res.json();
+    const totalMm = (r.daily?.snowfall_sum ?? []).reduce((a, v) => a + (v ?? 0), 0);
+    return { name: m.name, season: Math.round(totalMm / 25.4) };
+  } catch(e) {
+    clearTimeout(timeout);
+    throw e;
+  }
+}
+
+// ── CACHE HELPERS ──
+function loadCache() {
+  try {
+    const raw = localStorage.getItem(CACHE_KEY);
+    if (!raw) return null;
+    const { ts, data } = JSON.parse(raw);
+    if (Date.now() - ts > CACHE_TTL) return null;
+    return data;
+  } catch { return null; }
+}
+
+function saveCache(data) {
+  try {
+    localStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), data }));
+  } catch (e) { /* storage quota — ignore */ }
+}
+
+// ── APPLY LIVE DATA to mountains array ──
+function applyWeatherData(weatherMap) {
+  mountains.forEach(m => {
+    const w = weatherMap[m.name];
+    if (!w) return;
+    if (w.base    !== undefined) m.base    = w.base;
+    if (w.temp    !== undefined) m.temp    = w.temp;
+    if (w.newSnow !== undefined) m.newSnow = w.newSnow;
+    if (w.season  !== undefined) m.season  = w.season;
+    // Derive surface + status from live data
+    m.surface = deriveSurface(m.base, m.newSnow, m.temp);
+    m.status  = deriveStatus(m.base, m.newSnow);
+  });
+}
+
+// ── MAIN FETCH ORCHESTRATOR ──
+let currentFilter = 'all';
+let dataSource = 'static'; // 'static' | 'cached' | 'live'
+
+async function fetchLiveConditions() {
+
+  // ── 1. Serve from cache if fresh ──
+  const cached = loadCache();
+  if (cached) {
+    applyWeatherData(cached);
+    dataSource = 'cached';
+    try {
+      const cacheAge = Math.round((Date.now() - JSON.parse(localStorage.getItem(CACHE_KEY)).ts) / 60000);
+      updateStatusBar(`⚡ Live data — cached ${cacheAge}m ago · tap ↻ to refresh`);
+    } catch(_) { updateStatusBar('⚡ Serving cached conditions'); }
+    renderReportCards(currentFilter);
+    return;
+  }
+
+  // ── 2. Show skeleton while we fetch ──
+  renderSkeleton();
+  updateStatusBar('🌐 Fetching live conditions from Open-Meteo…');
+
+  const weatherMap = {};
+  let liveCount = 0;
+
+  // ── Phase 1: Current conditions — all mountains in parallel ──
+  // Promise.allSettled means one failure never kills the rest
+  const wxSettled = await Promise.allSettled(mountains.map(fetchOneMountainWeather));
+
+  wxSettled.forEach((result, i) => {
+    if (result.status === 'fulfilled') {
+      const r = result.value;
+      weatherMap[r.name] = { ...weatherMap[r.name], ...r };
+      liveCount++;
+    } else {
+      console.warn(`Weather fetch failed for ${mountains[i].name}:`, result.reason?.message);
+    }
+  });
+
+  if (liveCount === 0) {
+    // Every single call failed — likely a network/CORS issue
+    updateStatusBar('⚠️ Could not reach Open-Meteo — check connection. Showing static estimates.');
+    dataSource = 'static';
+    renderReportCards(currentFilter);
+    return;
+  }
+
+  // Render with current conditions immediately — fast visual feedback
+  applyWeatherData(weatherMap);
+  dataSource = 'live';
+  renderReportCards(currentFilter);
+  updateStatusBar(`🌡️ ${liveCount}/${mountains.length} mountains updated — loading season totals…`);
+
+  // ── Phase 2: Season archive — staggered to respect free API limits ──
+  // Run in groups of 6 with a small gap between groups
+  const GROUP = 6;
+  for (let i = 0; i < mountains.length; i += GROUP) {
+    const group = mountains.slice(i, i + GROUP);
+    const settled = await Promise.allSettled(group.map(fetchOneMountainSeason));
+    settled.forEach((result, j) => {
+      if (result.status === 'fulfilled') {
+        const r = result.value;
+        weatherMap[r.name] = { ...weatherMap[r.name], season: r.season };
+      } else {
+        console.warn(`Season fetch failed for ${group[j].name}:`, result.reason?.message);
+      }
+    });
+    // Re-render as each group completes so user sees season bars fill in
+    applyWeatherData(weatherMap);
+    renderReportCards(currentFilter);
+    // 500ms pause between groups — polite to free API
+    if (i + GROUP < mountains.length) await new Promise(res => setTimeout(res, 500));
+  }
+
+  // ── 4. Cache everything and show final status ──
+  saveCache(weatherMap);
+  const now = new Date().toLocaleTimeString('en-US', { hour:'2-digit', minute:'2-digit' });
+  updateStatusBar(`✅ Live · updated ${now} · Open-Meteo · cache 1hr`);
+}
+
+function updateStatusBar(msg) {
+  const el = document.getElementById('reportDate');
+  if (el) el.textContent = msg;
+}
+
+// ── SKELETON LOADING CARDS ──
+function renderSkeleton() {
   const grid = document.getElementById('reportGrid');
+  if (!grid) return;
+  const count = currentFilter === 'all' ? 9 : 4;
+  grid.innerHTML = Array(count).fill(`
+    <div class="report-card skel-card" aria-busy="true">
+      <div class="rc-header">
+        <div class="rc-name-block">
+          <div class="skel skel-title"></div>
+          <div class="skel skel-sub"></div>
+        </div>
+        <div class="skel skel-badge"></div>
+      </div>
+      <div class="rc-stats-primary">
+        <div class="rc-stat"><div class="skel skel-val"></div><div class="skel skel-lbl"></div></div>
+        <div class="rc-stat"><div class="skel skel-val"></div><div class="skel skel-lbl"></div></div>
+        <div class="rc-stat"><div class="skel skel-val"></div><div class="skel skel-lbl"></div></div>
+        <div class="rc-stat"><div class="skel skel-val"></div><div class="skel skel-lbl"></div></div>
+      </div>
+      <div class="rc-season" style="padding:14px 20px">
+        <div class="skel skel-bar" style="height:4px;border-radius:2px;margin-top:8px"></div>
+      </div>
+    </div>`).join('');
+}
+
+// ── RENDER REPORT CARDS ──
+function renderReportCards(filter) {
+  const grid = document.getElementById('reportGrid');
+  if (!grid) return;
   grid.innerHTML = '';
   const filtered = filter === 'all' ? mountains : mountains.filter(m => m.region === filter);
   filtered.forEach(m => {
-    const pct = Math.round((m.season / m.seasonMax) * 100);
+    const pct = Math.min(Math.round((m.season / m.seasonMax) * 100), 100);
     const statusLabel = m.status === 'great' ? 'GREAT ❄️' : m.status === 'good' ? 'GOOD ✓' : 'FAIR ⚠';
     const tempColor = m.temp <= 20 ? 'var(--ice)' : m.temp <= 30 ? '#81C9E8' : 'var(--yellow)';
+    const snowColor = m.newSnow >= 8 ? 'var(--ice)' : m.newSnow >= 2 ? '#A8E6FF' : 'rgba(238,242,245,0.4)';
+    const srcBadge = dataSource === 'live' ? '🟢 LIVE' : dataSource === 'cached' ? '⚡ CACHED' : '';
     grid.innerHTML += `
-    <div class="report-card">
+    <div class="report-card" data-status="${m.status}">
       <div class="rc-header">
         <div class="rc-name-block">
           <div class="rc-mountain">${m.name}</div>
@@ -1538,13 +1818,13 @@ function renderReportCards(filter){
       </div>
       <div class="rc-stats-primary">
         <div class="rc-stat"><div class="rc-stat-val snow">${m.base}"</div><div class="rc-stat-lbl">Base Depth</div></div>
-        <div class="rc-stat"><div class="rc-stat-val snow" style="color:#A8E6FF">+${m.newSnow}"</div><div class="rc-stat-lbl">New Snow (48hr)</div></div>
+        <div class="rc-stat"><div class="rc-stat-val" style="color:${snowColor}">+${m.newSnow}"</div><div class="rc-stat-lbl">New Snow (48hr)</div></div>
         <div class="rc-stat"><div class="rc-stat-val">${m.open}/${m.trails}</div><div class="rc-stat-lbl">Trails Open</div></div>
         <div class="rc-stat"><div class="rc-stat-val" style="color:${tempColor}">${m.temp}°F</div><div class="rc-stat-lbl">Summit Temp</div></div>
       </div>
       <div class="rc-season">
         <div class="rc-season-row">
-          <span class="rc-season-label">📊 Season Snowfall Total</span>
+          <span class="rc-season-label">📊 Season Snowfall${srcBadge ? ' <span class="rc-src-badge">'+srcBadge+'</span>' : ''}</span>
           <span class="rc-season-val">${m.season}" this season</span>
         </div>
         <div class="rc-season-bar"><div class="rc-season-fill" style="width:${pct}%"></div></div>
@@ -1555,21 +1835,34 @@ function renderReportCards(filter){
       </div>
     </div>`;
   });
-}
-renderReportCards('all');
-
-function filterReport(region, btn){
-  document.querySelectorAll('.report-tab').forEach(t => t.classList.remove('active'));
-  btn.classList.add('active');
-  renderReportCards(region);
-  // animate season bars after render
-  setTimeout(() => {
+  // Animate season bars
+  requestAnimationFrame(() => {
     document.querySelectorAll('.rc-season-fill').forEach(el => {
       const w = el.style.width; el.style.width = '0';
-      setTimeout(() => el.style.width = w, 50);
+      requestAnimationFrame(() => { el.style.width = w; });
     });
-  }, 50);
+  });
 }
+
+function filterReport(region, btn) {
+  document.querySelectorAll('.report-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  currentFilter = region;
+  renderReportCards(region);
+}
+
+// ── MANUAL REFRESH (clears cache) ──
+function refreshConditions() {
+  try { localStorage.removeItem(CACHE_KEY); } catch(e) {}
+  fetchLiveConditions();
+}
+
+// ── BOOT ──
+// Render static data immediately so page isn't blank
+renderReportCards('all');
+// Then kick off live fetch
+fetchLiveConditions();
+
 
 // ── NORTHEAST MAP — PER-STATE COLOR CODED ──
 const MAP_W = 700, MAP_H = 520;
