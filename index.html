@@ -1517,6 +1517,51 @@ const CONDITIONS_API_URL = 'https://njskihaus-api2-dq9h.vercel.app/api/condition
 const CACHE_KEY  = 'njskihaus_v6';
 const CACHE_TTL  = 60 * 60 * 1000; // 1 hour
 
+// ── SEASON TOTALS — update every Sunday morning ──
+// Last updated: March 1, 2026
+// These always override the API. Edit the numbers each Sunday, push to GitHub, done.
+const SEASON_TOTALS = {
+  // Vermont
+  'MOUNTAIN CREEK':    42,
+  'JAY PEAK':          358,
+  'STOWE':             254,
+  'BOLTON VALLEY':     254,
+  'KILLINGTON':        173,
+  'SUGARBUSH':         194,
+  'SUGARLOAF':         107,
+  'STRATTON':          120,
+  'OKEMO':              95,
+  'MOUNT SNOW':         99,
+  'PICO MTN':          130,
+  'MAGIC MTN':          84,
+  'BURKE MTN':         210,
+  // New Hampshire
+  'CANNON MTN':        155,
+  'LOON MTN':          110,
+  'ATTITASH':           70,
+  'WILDCAT':            93,
+  'WATERVILLE VLY':     95,
+  // Maine
+  'SUNDAY RIVER':       95,
+  'SADDLEBACK':        140,
+  // New York
+  'WHITEFACE':         170,
+  'HUNTER MTN':         76,
+  'GORE MTN':           78,
+  'BELLEAYRE':          89,
+  'CATAMOUNT':          70,
+  'GREEK PEAK':         75,
+  'WEST MTN':           72,
+  // Pennsylvania
+  'CAMELBACK':          55,
+  'BLUE MTN PA':        52,
+  'SHAWNEE MTN':        48,
+  // Canada
+  'MONT-TREMBLANT':    145,
+  'LE MASSIF':         215,
+  'MONT-STE-ANNE':     170,
+};
+
 // ── Base mountain data — live API overwrites: base/newSnow/trailsOpen/liftsOpen/surface/season/status ──
 // Static fields (trails total, pass, seasonMax, temp, region) stay fixed
 const mountains = [
@@ -1607,7 +1652,8 @@ function applyApiData(apiMountains) {
     if (live.base        != null) m.base    = live.base;
     if (live.newSnow24   != null) m.newSnow = live.newSnow24;
     if (live.trailsOpen  != null) m.open    = live.trailsOpen;
-    if (live.season      != null) m.season  = live.season;
+    // Season total: always use our verified weekly numbers — ignore API value
+    m.season = SEASON_TOTALS[m.name] ?? live.season ?? m.season;
     // Temperature: API returns summit temp or base temp
     const apiTemp = live.tempSummit ?? live.tempBase;
     if (apiTemp != null) m.temp = apiTemp;
@@ -1715,7 +1761,8 @@ function renderReportCards(filter) {
   grid.innerHTML = '';
   const filtered = filter === 'all' ? mountains : mountains.filter(m => m.region === filter);
   filtered.forEach(m => {
-    const pct = Math.min(Math.round((m.season / m.seasonMax) * 100), 100);
+    const season = SEASON_TOTALS[m.name] ?? m.season ?? null;
+    const pct = season ? Math.min(Math.round((season / m.seasonMax) * 100), 100) : 0;
     const statusLabel = m.status === 'great' ? 'GREAT ❄️' : m.status === 'good' ? 'GOOD ✓' : 'FAIR ⚠';
     const tempColor = m.temp <= 20 ? 'var(--ice)' : m.temp <= 30 ? '#81C9E8' : 'var(--yellow)';
     const snowColor = m.newSnow >= 8 ? 'var(--ice)' : m.newSnow >= 2 ? '#A8E6FF' : 'rgba(238,242,245,0.4)';
@@ -1741,7 +1788,7 @@ function renderReportCards(filter) {
       <div class="rc-season">
         <div class="rc-season-row">
           <span class="rc-season-label">📊 Season Snowfall${srcBadge ? ' <span class="rc-src-badge">'+srcBadge+'</span>' : ''}</span>
-          <span class="rc-season-val">${m.season}" this season</span>
+          <span class="rc-season-val">${season ?? '—'}" this season</span>
         </div>
         <div class="rc-season-bar"><div class="rc-season-fill" style="width:${pct}%"></div></div>
       </div>
