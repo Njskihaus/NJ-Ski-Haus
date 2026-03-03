@@ -1517,50 +1517,19 @@ const CONDITIONS_API_URL = 'https://njskihaus-api2-dq9h.vercel.app/api/condition
 const CACHE_KEY  = 'njskihaus_v6';
 const CACHE_TTL  = 60 * 60 * 1000; // 1 hour
 
-// ── SEASON TOTALS — update every Sunday morning ──
-// Last updated: March 1, 2026
-// These always override the API. Edit the numbers each Sunday, push to GitHub, done.
+
+// ── SEASON TOTAL OVERRIDES — only mountains where SnoCountry is wrong ──
+// Last updated: March 2, 2026
+// All other mountains pull the live API value automatically.
+// Epic resorts are consistently under-reported by SnoCountry (~18-22" behind).
+// To fix a new mountain: add it here with the correct value from the resort snow report page.
+// To stop overriding: delete its line and the API value takes over.
 const SEASON_TOTALS = {
-  // Vermont
-  'MOUNTAIN CREEK':    42,
-  'JAY PEAK':          358,
-  'STOWE':             254,
-  'BOLTON VALLEY':     254,
-  'KILLINGTON':        173,
-  'SUGARBUSH':         194,
-  'SUGARLOAF':         107,
-  'STRATTON':          120,
-  'OKEMO':              95,
-  'MOUNT SNOW':         99,
-  'PICO MTN':          130,
-  'MAGIC MTN':          84,
-  'BURKE MTN':         210,
-  // New Hampshire
-  'CANNON MTN':        155,
-  'LOON MTN':          110,
-  'ATTITASH':           70,
-  'WILDCAT':            93,
-  'WATERVILLE VLY':     95,
-  // Maine
-  'SUNDAY RIVER':       95,
-  'SADDLEBACK':        140,
-  // New York
-  'WHITEFACE':         170,
-  'HUNTER MTN':         76,
-  'GORE MTN':           78,
-  'BELLEAYRE':          89,
-  'CATAMOUNT':          70,
-  'GREEK PEAK':         75,
-  'WEST MTN':           72,
-  // Pennsylvania
-  'CAMELBACK':          55,
-  'BLUE MTN PA':        52,
-  'SHAWNEE MTN':        48,
-  // Canada
-  'MONT-TREMBLANT':    145,
-  'LE MASSIF':         215,
-  'MONT-STE-ANNE':     170,
+  'OKEMO':      112,   // Epic — API reports 95,  resort reports 112 (3/2/26)
+  'STRATTON':   142,   // Epic — API reports 120, resort reports 142 (3/2/26)
+  'MOUNT SNOW': 117,   // Epic — API reports 99,  resort reports 117 (3/2/26)
 };
+
 
 // ── Base mountain data — live API overwrites: base/newSnow/trailsOpen/liftsOpen/surface/season/status ──
 // Static fields (trails total, pass, seasonMax, temp, region) stay fixed
