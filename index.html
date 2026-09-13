@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#05080F">
 <title>NJ SKI HAUS — New Jersey's Premier Ski Club</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
@@ -55,7 +57,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;height:64px;display:flex;ali
 }
 
 /* PAGES */
-.page{display:none;padding-top:64px;min-height:100vh;position:relative;z-index:2}
+.page{display:none;padding-top:0;min-height:100vh;position:relative;z-index:2}
 .page.active{display:block}
 
 /* HERO */
@@ -323,6 +325,15 @@ footer{background:var(--bg2);padding:56px 60px 32px;display:grid;grid-template-c
 .pm-note{font-size:11px;font-weight:300;color:var(--dimmer);line-height:1.6}
 .pm-tracked{font-size:8px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--cyan);margin-top:8px;opacity:0.7}
 
+/* DEADLINE STRIP */
+.deadline-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;background:var(--bg);border-bottom:1px solid var(--border)}
+@media(max-width:900px){.deadline-strip{grid-template-columns:repeat(2,1fr)}}
+.dl-item{padding:14px 20px;background:rgba(0,207,255,0.04);display:flex;flex-direction:column;gap:3px}
+.dl-k{font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--cyan)}
+.dl-v{font-size:12px;font-weight:300;color:var(--dim)}
+.season-banner{background:linear-gradient(90deg,var(--red),#c41236);padding:10px 24px;text-align:center;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#fff;position:relative;z-index:2}
+.season-banner a{color:#fff;text-decoration:underline;cursor:pointer}
+
 /* SKELETON */
 .skel{border-radius:2px;background:linear-gradient(90deg,rgba(238,244,255,0.04) 25%,rgba(238,244,255,0.09) 50%,rgba(238,244,255,0.04) 75%);background-size:200% 100%;animation:shimmer 1.8s infinite}
 @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
@@ -342,12 +353,14 @@ footer{background:var(--bg2);padding:56px 60px 32px;display:grid;grid-template-c
     <li><a onclick="navigate('home')"       data-page="home">Home</a></li>
     <li><a onclick="navigate('mountains')"  data-page="mountains">Mountains</a></li>
     <li><a onclick="navigate('conditions')" data-page="conditions">Conditions</a></li>
+    <li><a onclick="navigate('map')"         data-page="map">Map</a></li>
     <li><a onclick="navigate('passes')"      data-page="passes">Passes</a></li>
     <li><a onclick="navigate('trips')"      data-page="trips">Trips</a></li>
     <li><a onclick="navigate('join')"       data-page="join" class="nav-cta">Join the Club</a></li>
   </ul>
 </nav>
 
+<div class="season-banner" style="margin-top:64px">❄ Founding season 26/27 is here · Indy fall sale is live · Epic &amp; Ikon prices rising · <a onclick="navigate('passes')">See the pass guide</a> · <a onclick="navigate('join')">Join the waitlist</a></div>
 <!-- ════════════════════════════════════
      HOME
 ════════════════════════════════════ -->
@@ -358,7 +371,7 @@ footer{background:var(--bg2);padding:56px 60px 32px;display:grid;grid-template-c
     <div class="hero-overlay"></div>
     <div class="hero-stripe"></div>
     <div class="hero-content">
-      <div class="eyebrow"><span class="pulse"></span>Old Bridge, NJ · Est. 2025 · Northeast's Crew</div>
+      <div class="eyebrow"><span class="pulse"></span>Old Bridge, NJ · Founding Season 26/27 · Passes On Sale Now</div>
       <h1 class="hero-title">
         <span class="t-cyan">RIDE</span><br>
         <span class="t-outline">THE</span><br>
@@ -372,7 +385,7 @@ footer{background:var(--bg2);padding:56px 60px 32px;display:grid;grid-template-c
         <button onclick="navigate('trips')"      class="btn btn-ghost">View Trips</button>
       </div>
       <div class="hero-stats">
-        <div class="hstat"><div class="hstat-num">32</div><div class="hstat-lbl">Mountains</div></div>
+        <div class="hstat"><div class="hstat-num">34</div><div class="hstat-lbl">Mountains</div></div>
         <div class="hstat"><div class="hstat-num">5</div><div class="hstat-lbl">Major Passes</div></div>
         <div class="hstat"><div class="hstat-num">NJ</div><div class="hstat-lbl">Roots</div></div>
       </div>
@@ -386,6 +399,7 @@ footer{background:var(--bg2);padding:56px 60px 32px;display:grid;grid-template-c
     <div class="mi"><span class="mi-state">Vermont</span><span class="mi-name">KILLINGTON</span></div><span class="mi-sep">✦</span>
     <div class="mi"><span class="mi-state">Vermont</span><span class="mi-name">JAY PEAK</span></div><span class="mi-sep">✦</span>
     <div class="mi"><span class="mi-state">Vermont</span><span class="mi-name">STOWE</span></div><span class="mi-sep">✦</span>
+    <div class="mi"><span class="mi-state">Vermont · New</span><span class="mi-name">SMUGGS</span></div><span class="mi-sep">✦</span>
     <div class="mi"><span class="mi-state">New York</span><span class="mi-name">WHITEFACE</span></div><span class="mi-sep">✦</span>
     <div class="mi"><span class="mi-state">Vermont</span><span class="mi-name">SUGARBUSH</span></div><span class="mi-sep">✦</span>
     <div class="mi"><span class="mi-state">Maine</span><span class="mi-name">SUNDAY RIVER</span></div><span class="mi-sep">✦</span>
@@ -398,6 +412,7 @@ footer{background:var(--bg2);padding:56px 60px 32px;display:grid;grid-template-c
     <div class="mi"><span class="mi-state">Vermont</span><span class="mi-name">KILLINGTON</span></div><span class="mi-sep">✦</span>
     <div class="mi"><span class="mi-state">Vermont</span><span class="mi-name">JAY PEAK</span></div><span class="mi-sep">✦</span>
     <div class="mi"><span class="mi-state">Vermont</span><span class="mi-name">STOWE</span></div><span class="mi-sep">✦</span>
+    <div class="mi"><span class="mi-state">Vermont · New</span><span class="mi-name">SMUGGS</span></div><span class="mi-sep">✦</span>
     <div class="mi"><span class="mi-state">New York</span><span class="mi-name">WHITEFACE</span></div><span class="mi-sep">✦</span>
     <div class="mi"><span class="mi-state">Vermont</span><span class="mi-name">SUGARBUSH</span></div><span class="mi-sep">✦</span>
     <div class="mi"><span class="mi-state">Maine</span><span class="mi-name">SUNDAY RIVER</span></div><span class="mi-sep">✦</span>
@@ -414,7 +429,7 @@ footer{background:var(--bg2);padding:56px 60px 32px;display:grid;grid-template-c
         <div class="sec-label">Live Mountain Conditions</div>
         <h2 class="sec-title">Today's <em>Highlights</em></h2>
       </div>
-      <button onclick="navigate('conditions')" class="btn btn-ghost">All 32 Mountains →</button>
+      <button onclick="navigate('conditions')" class="btn btn-ghost">All 34 Mountains →</button>
     </div>
     <div class="grid-4" id="home-cond-grid"></div>
   </div>
@@ -427,46 +442,36 @@ footer{background:var(--bg2);padding:56px 60px 32px;display:grid;grid-template-c
         <h2 class="sec-title">Born in <em>Jersey.</em><br>Built for the Mountain.</h2>
         <p class="sec-body">NJ Ski Haus started with a simple idea: New Jersey deserves a real ski community. No more solo missions. No more scrambling for last-minute lodging. We handle the logistics — you just show up and shred.</p>
         <div class="facts-grid">
-          <div class="fact"><div class="fact-num">32</div><div class="fact-lbl">Mountains tracked</div></div>
+          <div class="fact"><div class="fact-num">34</div><div class="fact-lbl">Mountains tracked</div></div>
           <div class="fact"><div class="fact-num">5</div><div class="fact-lbl">Major passes covered</div></div>
-          <div class="fact"><div class="fact-num">9</div><div class="fact-lbl">Trips planned</div></div>
+          <div class="fact"><div class="fact-num">10</div><div class="fact-lbl">Trips proposed</div></div>
           <div class="fact"><div class="fact-num">VT</div><div class="fact-lbl">Destination #1</div></div>
         </div>
         <button onclick="navigate('join')" class="btn btn-primary" style="margin-top:32px">Join the Waitlist</button>
       </div>
       <div>
         <img class="about-img" src="https://images.unsplash.com/photo-1548777123-e216912df7d8?w=800&q=80" alt="Skiing">
-        <div class="about-tag">EST. 2025 · OLD BRIDGE NJ</div>
+        <div class="about-tag">FOUNDING SEASON 26/27 · OLD BRIDGE NJ</div>
       </div>
     </div>
   </div>
 
   <!-- PASSES -->
   <div class="sec" style="background:var(--bg2)">
-    <div class="sec-label">Season Pass Coverage · 2025–26</div>
+    <div class="sec-label">Season Pass Coverage · 2026–27</div>
     <h2 class="sec-title">Your Pass. <em>More Mountains.</em></h2>
-    <p class="sec-body">Ikon, Epic, Collective, Indy, or Powder Alliance — you already have access to more peaks than you think.</p>
+    <p class="sec-body">Ikon, Epic, Collective, Indy, or Powder Alliance — you already have access to more peaks than you think. Verified for 2026–27; full breakdown on the <a onclick="navigate('passes')" style="color:var(--cyan);cursor:pointer">Passes page</a>.</p>
     <div class="pass-cards">
-      <div class="pcard ikon">
-        <div class="pcard-logo">IKON</div><div class="pcard-count">9</div><div class="pcard-lbl">NE Mountains</div>
-        <ul class="pcard-list"><li>Killington, VT</li><li>Stratton, VT</li><li>Sugarbush, VT</li><li>Loon Mtn, NH</li><li>Sunday River, ME</li><li>Sugarloaf, ME</li><li>Mont-Tremblant, QC</li><li>Le Massif, QC</li><li>Jiminy Peak, MA</li></ul>
-      </div>
-      <div class="pcard epic">
-        <div class="pcard-logo">EPIC</div><div class="pcard-count">9</div><div class="pcard-lbl">NE Mountains</div>
-        <ul class="pcard-list"><li>Stowe, VT</li><li>Okemo, VT</li><li>Mount Snow, VT</li><li>Hunter Mtn, NY</li><li>Attitash, NH</li><li>Wildcat, NH</li><li>Crotched Mtn, NH</li><li>Mt. Sunapee, NH</li><li>Mont-Ste-Anne, QC</li></ul>
-      </div>
-      <div class="pcard col">
-        <div class="pcard-logo">COLLECTIVE</div><div class="pcard-count">5</div><div class="pcard-lbl">NE Mountains</div>
-        <ul class="pcard-list"><li>Whiteface, NY</li><li>Sunday River, ME</li><li>Sugarloaf, ME</li><li>Le Massif, QC</li><li>Bromont, QC</li></ul>
-      </div>
-      <div class="pcard indy">
-        <div class="pcard-logo">INDY</div><div class="pcard-count">25+</div><div class="pcard-lbl">NE Mountains</div>
-        <ul class="pcard-list"><li>Jay Peak, VT</li><li>Bolton Valley, VT</li><li>Burke Mtn, VT</li><li>Magic Mtn, VT</li><li>Cannon Mtn, NH</li><li>Catamount, NY</li><li>Saddleback, ME</li></ul>
-      </div>
-      <div class="pcard pow">
-        <div class="pcard-logo">POWDER ALLIANCE</div><div class="pcard-count">3</div><div class="pcard-lbl">Free days / partner</div>
-        <ul class="pcard-list"><li>Jay Peak, VT</li><li>Magic Mtn, VT</li><li>Saddleback, ME</li></ul>
-      </div>
+      <div class="pcard ikon"><div class="pcard-logo">IKON</div><div class="pcard-count">11</div><div class="pcard-lbl">NE Mountains</div>
+        <ul class="pcard-list"><li>Stratton · Sugarbush · Tremblant (unl.)</li><li>Killington / Pico</li><li>Sunday River · Sugarloaf</li><li>Loon</li><li>Camelback · Blue Mtn PA</li><li>Le Massif</li></ul></div>
+      <div class="pcard epic"><div class="pcard-logo">EPIC</div><div class="pcard-count">18</div><div class="pcard-lbl">NE + PA Mountains</div>
+        <ul class="pcard-list"><li>Stowe · Okemo · Mount Snow</li><li>Hunter</li><li>Attitash · Wildcat · Crotched · Sunapee</li><li>8 Pennsylvania mountains</li><li>Mont-Ste-Anne · Stoneham</li></ul></div>
+      <div class="pcard col"><div class="pcard-logo">COLLECTIVE</div><div class="pcard-count">5</div><div class="pcard-lbl">NE Mountains</div>
+        <ul class="pcard-list"><li>Whiteface</li><li>Sunday River</li><li>Sugarloaf</li><li>Le Massif</li><li>Bromont</li></ul></div>
+      <div class="pcard indy"><div class="pcard-logo">INDY</div><div class="pcard-count">40+</div><div class="pcard-lbl">NE Mountains</div>
+        <ul class="pcard-list"><li>Smugglers' Notch (new)</li><li>Jay Peak · Bolton · Burke · Magic</li><li>Cannon · Waterville · Ragged</li><li>Saddleback</li><li>Catamount · Greek Peak · West</li><li>Shawnee · Bear Creek · Montage</li></ul></div>
+      <div class="pcard pow"><div class="pcard-logo">POWDER ALLIANCE</div><div class="pcard-count">3</div><div class="pcard-lbl">Free days / member</div>
+        <ul class="pcard-list"><li>Jay Peak</li><li>Magic Mtn</li><li>Saddleback</li></ul></div>
     </div>
   </div>
 
@@ -485,7 +490,7 @@ footer{background:var(--bg2);padding:56px 60px 32px;display:grid;grid-template-c
     <div><div class="ft-logo" onclick="navigate('home')"><span class="nj">NJ</span> SKI HAUS</div><p class="ft-tagline">New Jersey's premier ski & snowboard club. Vermont bound, Northeast obsessed.</p></div>
     <div class="ft-col"><h4>Navigate</h4><ul><li><a onclick="navigate('home')">Home</a></li><li><a onclick="navigate('mountains')">Mountains</a></li><li><a onclick="navigate('conditions')">Conditions</a></li><li><a onclick="navigate('trips')">Trips</a></li><li><a onclick="navigate('join')">Join</a></li></ul></div>
     <div class="ft-col"><h4>Contact</h4><ul><li><a>Instagram</a></li><li><a>TikTok</a></li><li><a>Discord</a></li><li><a>Email Us</a></li></ul></div>
-    <div class="ft-bottom"><p>© 2025–26 NJ Ski Haus · Old Bridge, NJ · All rights reserved</p><div class="social-row"><a>Instagram</a><a>TikTok</a><a>Discord</a></div></div>
+    <div class="ft-bottom"><p>© 2026–27 NJ Ski Haus · Old Bridge, NJ · All rights reserved</p><div class="social-row"><a>Instagram</a><a>TikTok</a><a>Discord</a></div></div>
   </footer>
 </div>
 
@@ -495,7 +500,7 @@ footer{background:var(--bg2);padding:56px 60px 32px;display:grid;grid-template-c
 <div id="page-mountains" class="page">
   <div class="page-hero">
     <div class="page-hero-row">
-      <div><div class="sec-label">Mountain Directory</div><h1 class="sec-title">32 Mountains. <em>One Crew.</em></h1></div>
+      <div><div class="sec-label">Mountain Directory</div><h1 class="sec-title">34 Mountains. <em>One Crew.</em></h1></div>
       <p class="sec-body" style="max-width:360px;margin-bottom:0">Every peak on our radar — from NJ to Québec. Pass coverage, region, and conditions at a glance.</p>
     </div>
     <div class="region-tabs" id="mtn-tabs">
@@ -521,7 +526,7 @@ footer{background:var(--bg2);padding:56px 60px 32px;display:grid;grid-template-c
     <div><div class="ft-logo" onclick="navigate('home')"><span class="nj">NJ</span> SKI HAUS</div><p class="ft-tagline">New Jersey's premier ski & snowboard club.</p></div>
     <div class="ft-col"><h4>Navigate</h4><ul><li><a onclick="navigate('home')">Home</a></li><li><a onclick="navigate('conditions')">Conditions</a></li><li><a onclick="navigate('trips')">Trips</a></li><li><a onclick="navigate('join')">Join</a></li></ul></div>
     <div class="ft-col"><h4>Contact</h4><ul><li><a>Instagram</a></li><li><a>Email Us</a></li></ul></div>
-    <div class="ft-bottom"><p>© 2025–26 NJ Ski Haus · Old Bridge, NJ</p></div>
+    <div class="ft-bottom"><p>© 2026–27 NJ Ski Haus · Old Bridge, NJ</p></div>
   </footer>
 </div>
 
@@ -558,7 +563,7 @@ footer{background:var(--bg2);padding:56px 60px 32px;display:grid;grid-template-c
     <div><div class="ft-logo" onclick="navigate('home')"><span class="nj">NJ</span> SKI HAUS</div><p class="ft-tagline">New Jersey's premier ski & snowboard club.</p></div>
     <div class="ft-col"><h4>Navigate</h4><ul><li><a onclick="navigate('home')">Home</a></li><li><a onclick="navigate('mountains')">Mountains</a></li><li><a onclick="navigate('trips')">Trips</a></li><li><a onclick="navigate('join')">Join</a></li></ul></div>
     <div class="ft-col"><h4>Contact</h4><ul><li><a>Instagram</a></li><li><a>Email Us</a></li></ul></div>
-    <div class="ft-bottom"><p>© 2025–26 NJ Ski Haus · Old Bridge, NJ</p></div>
+    <div class="ft-bottom"><p>© 2026–27 NJ Ski Haus · Old Bridge, NJ</p></div>
   </footer>
 </div>
 
@@ -569,11 +574,8 @@ footer{background:var(--bg2);padding:56px 60px 32px;display:grid;grid-template-c
 <div id="page-passes" class="page">
   <div class="page-hero">
     <div class="page-hero-row">
-      <div>
-        <div class="sec-label">Season Pass Guide · 2025–26</div>
-        <h1 class="sec-title">Northeast <em>Pass Coverage</em></h1>
-      </div>
-      <p class="sec-body" style="max-width:380px;margin-bottom:0">Every major pass decoded for the Northeast. Which mountains, how many days, and what the fine print means for your season.</p>
+      <div><div class="sec-label">Season Pass Guide · 2026–27 · Verified Sept 2026</div><h1 class="sec-title">Northeast <em>Pass Coverage</em></h1></div>
+      <p class="sec-body" style="max-width:380px;margin-bottom:0">Every major pass decoded for the Northeast — which mountains, how many days, what it costs right now, and when prices jump next.</p>
     </div>
     <div class="region-tabs" id="pass-tabs">
       <button class="rtab active" onclick="filterPasses('all',this)">All Passes</button>
@@ -585,204 +587,104 @@ footer{background:var(--bg2);padding:56px 60px 32px;display:grid;grid-template-c
     </div>
   </div>
 
+  <div class="deadline-strip">
+    <div class="dl-item"><span class="dl-k">Indy Pass</span><span class="dl-v">Fall sale LIVE — sells out when capacity hits</span></div>
+    <div class="dl-item"><span class="dl-k">Epic Pass</span><span class="dl-v">Rose Sept 7 · next bump ~Nov · off sale early Dec</span></div>
+    <div class="dl-item"><span class="dl-k">Ikon Pass</span><span class="dl-v">Rising through fall · off sale Dec</span></div>
+    <div class="dl-item"><span class="dl-k">Mtn Collective</span><span class="dl-v">$669 flat — no price increases</span></div>
+  </div>
+
   <div id="passes-content">
 
-  <!-- IKON -->
   <div class="pass-section" data-pass="ikon">
     <div class="pass-section-header" style="background:linear-gradient(135deg,#1a0e08,#2a1510);border-left:4px solid #E8522A">
-      <div class="psh-left">
-        <div class="psh-logo" style="color:#E8522A">IKON PASS</div>
-        <div class="psh-tagline">The independent mountain collective. Unlimited access at the best, days-based at the rest.</div>
-      </div>
-      <div class="psh-stats">
-        <div class="psh-stat"><div class="psh-num">12</div><div class="psh-lbl">NE Resorts</div></div>
-        <div class="psh-stat"><div class="psh-num">3</div><div class="psh-lbl">Unlimited</div></div>
-        <div class="psh-stat"><div class="psh-num">9</div><div class="psh-lbl">7-Day Limited</div></div>
-        <div class="psh-stat"><div class="psh-num">$1,519</div><div class="psh-lbl">Adult Full Pass</div></div>
-      </div>
-    </div>
-    <div class="pass-note" style="border-left-color:#E8522A">
-      <strong>Full vs Base:</strong> The Ikon Base Pass does NOT include Killington/Pico, Sugarloaf, or Sunday River. Get the Full Ikon Pass for Northeast coverage. Limited-access mountains have 5–7 day caps with some holiday blackout dates.
-    </div>
-    <div class="pass-mountains-grid">
-      <div class="pm-card tracked"><div class="pm-state">Vermont</div><div class="pm-name">KILLINGTON</div><div class="pm-access" style="color:#E8522A">7 days · blackouts apply</div><div class="pm-note">Full Pass only. New Superstar Six lift opening Dec 2025.</div><div class="pm-tracked">✓ On our tracker</div></div>
-      <div class="pm-card tracked"><div class="pm-state">Vermont</div><div class="pm-name">PICO MTN</div><div class="pm-access" style="color:#E8522A">7 days · bundled w/ Killington</div><div class="pm-note">Days count shared with Killington allocation.</div><div class="pm-tracked">✓ On our tracker</div></div>
-      <div class="pm-card tracked"><div class="pm-state">Vermont</div><div class="pm-name">STRATTON</div><div class="pm-access" style="color:#00E87A">Unlimited</div><div class="pm-note">No blackouts. One of only 3 unlimited Ikon NE resorts.</div><div class="pm-tracked">✓ On our tracker</div></div>
-      <div class="pm-card tracked"><div class="pm-state">Vermont</div><div class="pm-name">SUGARBUSH</div><div class="pm-access" style="color:#00E87A">Unlimited</div><div class="pm-note">No blackouts. Two interconnected mountains.</div><div class="pm-tracked">✓ On our tracker</div></div>
-      <div class="pm-card tracked"><div class="pm-state">Maine</div><div class="pm-name">SUNDAY RIVER</div><div class="pm-access" style="color:#E8522A">7 days · Full Pass only</div><div class="pm-note">Eight interconnected peaks. Base Pass excluded.</div><div class="pm-tracked">✓ On our tracker</div></div>
-      <div class="pm-card tracked"><div class="pm-state">Maine</div><div class="pm-name">SUGARLOAF</div><div class="pm-access" style="color:#E8522A">7 days · Full Pass only</div><div class="pm-note">Maine's largest. Base Pass excluded.</div><div class="pm-tracked">✓ On our tracker</div></div>
-      <div class="pm-card tracked"><div class="pm-state">New Hampshire</div><div class="pm-name">LOON MTN</div><div class="pm-access" style="color:#E8522A">7 days · blackouts apply</div><div class="pm-note">New carpet lift + snowmaking upgrades for 25-26.</div><div class="pm-tracked">✓ On our tracker</div></div>
-      <div class="pm-card tracked"><div class="pm-state">Québec</div><div class="pm-name">MONT-TREMBLANT</div><div class="pm-access" style="color:#00E87A">Unlimited</div><div class="pm-note">Biggest ski resort in eastern Canada.</div><div class="pm-tracked">✓ On our tracker</div></div>
-      <div class="pm-card tracked"><div class="pm-state">Québec · NEW 25-26</div><div class="pm-name">LE MASSIF</div><div class="pm-access" style="color:#00E87A">Unlimited</div><div class="pm-note">New to Ikon for 25-26. Also on Mountain Collective.</div><div class="pm-tracked">✓ On our tracker</div></div>
-      <div class="pm-card"><div class="pm-state">New Hampshire · NEW 25-26</div><div class="pm-name">CRANMORE</div><div class="pm-access" style="color:#E8522A">Limited days</div><div class="pm-note">New to Ikon for 25-26. North Conway, NH.</div></div>
-      <div class="pm-card"><div class="pm-state">Massachusetts · NEW 25-26</div><div class="pm-name">JIMINY PEAK</div><div class="pm-access" style="color:#00E87A">Unlimited</div><div class="pm-note">New to Ikon for 25-26. Berkshires, MA.</div></div>
-      <div class="pm-card"><div class="pm-state">Massachusetts · NEW 25-26</div><div class="pm-name">BUTTERNUT</div><div class="pm-access" style="color:#E8522A">Limited days</div><div class="pm-note">New to Ikon for 25-26. Great Barrington, MA.</div></div>
-    </div>
+      <div class="psh-left"><div class="psh-logo" style="color:#E8522A">IKON PASS</div><div class="psh-tagline">Alterra's flagship. Unlimited at Stratton, Sugarbush &amp; Tremblant; 7 days at the rest. Now includes Camelback and Blue Mountain PA — two mountains under 90 minutes from Old Bridge.</div></div>
+      <div class="psh-stats"><div class="psh-stat"><div class="psh-num">11</div><div class="psh-lbl">NE Resorts</div></div><div class="psh-stat"><div class="psh-num">3</div><div class="psh-lbl">Unlimited</div></div><div class="psh-stat"><div class="psh-num">$1,449+</div><div class="psh-lbl">Full Pass</div></div><div class="psh-stat"><div class="psh-num">$1,019+</div><div class="psh-lbl">Base Pass</div></div></div></div>
+    <div class="pass-note" style="border-left-color:#E8522A"><strong>What changed for 26-27:</strong> The Base Pass no longer excludes Killington, Sunday River, or Sugarloaf — it now gets 5 days at each with blackouts (Dec 26–30, Jan 16–17, Feb 13–14). New <strong>fully-refundable option</strong> for a 20% premium (full refund through Jan 15, 2027 if unused). <strong>Squad Pack:</strong> five 23–28 year-olds buying Base Passes together save $199 each — built for a ski club. Cranmore, Jiminy Peak, and Butternut are now "Bonus Mountains" (2 days each), not full partners.</div>
+    <div class="pass-mountains-grid"><div class="pm-card tracked"><div class="pm-state">Vermont</div><div class="pm-name">STRATTON</div><div class="pm-access" style="color:#00E87A">Unlimited · no blackouts</div><div class="pm-note">Base Pass: unlimited w/ holiday blackouts.</div><div class="pm-tracked">✓ On our tracker</div></div><div class="pm-card tracked"><div class="pm-state">Vermont</div><div class="pm-name">SUGARBUSH</div><div class="pm-access" style="color:#00E87A">Unlimited · no blackouts</div><div class="pm-note">Base Pass: unlimited w/ holiday blackouts.</div><div class="pm-tracked">✓ On our tracker</div></div><div class="pm-card tracked"><div class="pm-state">Vermont</div><div class="pm-name">KILLINGTON</div><div class="pm-access" style="color:#E8522A">7 days · shared w/ Pico</div><div class="pm-note">Base Pass: 5 days combined, blackouts apply.</div><div class="pm-tracked">✓ On our tracker</div></div><div class="pm-card tracked"><div class="pm-state">Vermont</div><div class="pm-name">PICO MTN</div><div class="pm-access" style="color:#E8522A">7 days · shared w/ Killington</div><div class="pm-note">One allocation covers both mountains.</div><div class="pm-tracked">✓ On our tracker</div></div><div class="pm-card tracked"><div class="pm-state">Maine</div><div class="pm-name">SUNDAY RIVER</div><div class="pm-access" style="color:#E8522A">7 days · no blackouts</div><div class="pm-note">Base Pass now gets 5 days here (new for 26-27).</div><div class="pm-tracked">✓ On our tracker</div></div><div class="pm-card tracked"><div class="pm-state">Maine</div><div class="pm-name">SUGARLOAF</div><div class="pm-access" style="color:#E8522A">7 days · no blackouts</div><div class="pm-note">Base Pass now gets 5 days here (new for 26-27).</div><div class="pm-tracked">✓ On our tracker</div></div><div class="pm-card tracked"><div class="pm-state">New Hampshire</div><div class="pm-name">LOON MTN</div><div class="pm-access" style="color:#E8522A">7 days · reservations req.</div><div class="pm-note">Lift reservations required on all Ikon products.</div><div class="pm-tracked">✓ On our tracker</div></div><div class="pm-card tracked"><div class="pm-state">Pennsylvania</div><div class="pm-name">CAMELBACK</div><div class="pm-access" style="color:#E8522A">7 days · no blackouts</div><div class="pm-note">Closest Ikon mountain to NJ — under 90 min from Old Bridge.</div><div class="pm-tracked">✓ On our tracker</div></div><div class="pm-card tracked"><div class="pm-state">Pennsylvania</div><div class="pm-name">BLUE MTN PA</div><div class="pm-access" style="color:#E8522A">7 days · no blackouts</div><div class="pm-note">PA's biggest vertical. ~90 min from Old Bridge.</div><div class="pm-tracked">✓ On our tracker</div></div><div class="pm-card tracked"><div class="pm-state">Québec</div><div class="pm-name">MONT-TREMBLANT</div><div class="pm-access" style="color:#00E87A">Unlimited · no blackouts</div><div class="pm-note">Unlimited on Base Pass too.</div><div class="pm-tracked">✓ On our tracker</div></div><div class="pm-card tracked"><div class="pm-state">Québec</div><div class="pm-name">LE MASSIF</div><div class="pm-access" style="color:#E8522A">7 days</div><div class="pm-note">Also on Mountain Collective.</div><div class="pm-tracked">✓ On our tracker</div></div></div>
+    <div class="pass-subtitle" style="margin-top:20px">Bonus Mountains · 2 days each on Ikon &amp; Ikon Base</div>
+    <div class="pass-mountains-grid"><div class="pm-card"><div class="pm-state">New Hampshire · Bonus</div><div class="pm-name">CRANMORE</div><div class="pm-access" style="color:#9CA3AF">2 days · select blackouts</div><div class="pm-note">Bonus Mountain — not a full Ikon partner.</div></div><div class="pm-card"><div class="pm-state">Massachusetts · Bonus</div><div class="pm-name">JIMINY PEAK</div><div class="pm-access" style="color:#9CA3AF">2 days · select blackouts</div><div class="pm-note">Bonus Mountain — not a full Ikon partner.</div></div><div class="pm-card"><div class="pm-state">Massachusetts · Bonus</div><div class="pm-name">BUTTERNUT</div><div class="pm-access" style="color:#9CA3AF">2 days · select blackouts</div><div class="pm-note">Bonus Mountain — not a full Ikon partner.</div></div></div>
   </div>
 
-  <!-- EPIC -->
   <div class="pass-section" data-pass="epic">
     <div class="pass-section-header" style="background:linear-gradient(135deg,#08101a,#0c1e30);border-left:4px solid #4A9FE0">
-      <div class="psh-left">
-        <div class="psh-logo" style="color:#4A9FE0">EPIC PASS</div>
-        <div class="psh-tagline">Vail Resorts' unlimited pass. Best NE deal if you're skiing PA, NH, or a Stowe/Okemo/Mt Snow mix.</div>
-      </div>
-      <div class="psh-stats">
-        <div class="psh-stat"><div class="psh-num">10</div><div class="psh-lbl">NE Ski Resorts</div></div>
-        <div class="psh-stat"><div class="psh-num">8</div><div class="psh-lbl">PA Mountains</div></div>
-        <div class="psh-stat"><div class="psh-num">8</div><div class="psh-lbl">Unlimited NE</div></div>
-        <div class="psh-stat"><div class="psh-num">$1,185</div><div class="psh-lbl">Adult Full Pass</div></div>
-      </div>
-    </div>
-    <div class="pass-note" style="border-left-color:#4A9FE0">
-      <strong>Heads up:</strong> Stowe has holiday blackout dates on the Epic Pass (Dec 25–Jan 1, Presidents' Week). All other NE Epic resorts are fully unlimited. Mont-Sainte-Anne is limited access (5 days). The Epic Local Pass cuts out Stowe, Heavenly and others — get the full Epic Pass for NE.
-    </div>
-    <div class="pass-subtitle">Vermont · New York · New Hampshire</div>
-    <div class="pass-mountains-grid">
-      <div class="pm-card tracked"><div class="pm-state">Vermont</div><div class="pm-name">STOWE</div><div class="pm-access" style="color:#4A9FE0">Unlimited · holiday blackouts</div><div class="pm-note">Holiday blackouts Dec 25–Jan 1 & Presidents' Week.</div><div class="pm-tracked">✓ On our tracker</div></div>
-      <div class="pm-card tracked"><div class="pm-state">Vermont</div><div class="pm-name">OKEMO</div><div class="pm-access" style="color:#00E87A">Unlimited</div><div class="pm-note">No blackouts. Best grooming in southern VT.</div><div class="pm-tracked">✓ On our tracker</div></div>
-      <div class="pm-card tracked"><div class="pm-state">Vermont</div><div class="pm-name">MOUNT SNOW</div><div class="pm-access" style="color:#00E87A">Unlimited</div><div class="pm-note">No blackouts. Home of Carinthia terrain parks.</div><div class="pm-tracked">✓ On our tracker</div></div>
-      <div class="pm-card tracked"><div class="pm-state">New York</div><div class="pm-name">HUNTER MTN</div><div class="pm-access" style="color:#00E87A">Unlimited</div><div class="pm-note">No blackouts. NYC's closest solid mountain.</div><div class="pm-tracked">✓ On our tracker</div></div>
-      <div class="pm-card tracked"><div class="pm-state">New Hampshire</div><div class="pm-name">ATTITASH</div><div class="pm-access" style="color:#00E87A">Unlimited</div><div class="pm-note">Two mountains, White Mountain views.</div><div class="pm-tracked">✓ On our tracker</div></div>
-      <div class="pm-card tracked"><div class="pm-state">New Hampshire</div><div class="pm-name">WILDCAT</div><div class="pm-access" style="color:#00E87A">Unlimited</div><div class="pm-note">Mt. Washington views. Most scenic in the East.</div><div class="pm-tracked">✓ On our tracker</div></div>
-      <div class="pm-card"><div class="pm-state">New Hampshire</div><div class="pm-name">CROTCHED MTN</div><div class="pm-access" style="color:#00E87A">Unlimited</div><div class="pm-note">Night skiing. Close to Boston.</div></div>
-      <div class="pm-card"><div class="pm-state">New Hampshire</div><div class="pm-name">MT. SUNAPEE</div><div class="pm-access" style="color:#00E87A">Unlimited</div><div class="pm-note">Southern NH. 233 acres, family friendly.</div></div>
-      <div class="pm-card tracked"><div class="pm-state">Québec</div><div class="pm-name">MONT-STE-ANNE</div><div class="pm-access" style="color:#4A9FE0">5 days · limited</div><div class="pm-note">World Cup downhill venue. Near Québec City.</div><div class="pm-tracked">✓ On our tracker</div></div>
-      <div class="pm-card"><div class="pm-state">Québec</div><div class="pm-name">STONEHAM</div><div class="pm-access" style="color:#00E87A">Unlimited</div><div class="pm-note">Near Québec City. Night skiing.</div></div>
-    </div>
-    <div class="pass-subtitle" style="margin-top:20px">Pennsylvania · Also included on Epic</div>
-    <div class="pass-mountains-grid">
-      <div class="pm-card"><div class="pm-state">Pennsylvania</div><div class="pm-name">BIG BOULDER</div><div class="pm-access" style="color:#00E87A">Unlimited</div><div class="pm-note">Poconos. Night skiing.</div></div>
-      <div class="pm-card"><div class="pm-state">Pennsylvania</div><div class="pm-name">JACK FROST</div><div class="pm-access" style="color:#00E87A">Unlimited</div><div class="pm-note">Poconos. Sister mountain to Big Boulder.</div></div>
-      <div class="pm-card"><div class="pm-state">Pennsylvania</div><div class="pm-name">LIBERTY MTN</div><div class="pm-access" style="color:#00E87A">Unlimited</div><div class="pm-note">South-central PA. Night skiing.</div></div>
-      <div class="pm-card"><div class="pm-state">Pennsylvania</div><div class="pm-name">ROUNDTOP</div><div class="pm-access" style="color:#00E87A">Unlimited</div><div class="pm-note">South-central PA. York/Harrisburg area.</div></div>
-      <div class="pm-card"><div class="pm-state">Pennsylvania</div><div class="pm-name">SEVEN SPRINGS</div><div class="pm-access" style="color:#00E87A">Unlimited</div><div class="pm-note">Largest ski area in PA. Western PA.</div></div>
-      <div class="pm-card"><div class="pm-state">Pennsylvania</div><div class="pm-name">WHITETAIL</div><div class="pm-access" style="color:#00E87A">Unlimited</div><div class="pm-note">Blue Ridge summit. South of Hagerstown.</div></div>
-      <div class="pm-card"><div class="pm-state">Pennsylvania</div><div class="pm-name">HIDDEN VALLEY</div><div class="pm-access" style="color:#00E87A">Unlimited</div><div class="pm-note">Western PA. Near Seven Springs.</div></div>
-      <div class="pm-card"><div class="pm-state">Pennsylvania</div><div class="pm-name">LAUREL MTN</div><div class="pm-access" style="color:#00E87A">Unlimited</div><div class="pm-note">Western PA. Laurel Highlands.</div></div>
-    </div>
+      <div class="psh-left"><div class="psh-logo" style="color:#4A9FE0">EPIC PASS</div><div class="psh-tagline">Vail Resorts' unlimited pass. Still the best value if Stowe/Okemo/Mount Snow is your core, or you ski the Poconos.</div></div>
+      <div class="psh-stats"><div class="psh-stat"><div class="psh-num">10</div><div class="psh-lbl">NE Ski Resorts</div></div><div class="psh-stat"><div class="psh-num">8</div><div class="psh-lbl">PA Mountains</div></div><div class="psh-stat"><div class="psh-num">$1,119+</div><div class="psh-lbl">Adult Full</div></div><div class="psh-stat"><div class="psh-num">$869+</div><div class="psh-lbl">Ages 13–30</div></div></div></div>
+    <div class="pass-note" style="border-left-color:#4A9FE0"><strong>What changed for 26-27:</strong> New <strong>20% off for ages 13–30</strong> — Epic Pass drops to ~$869, Epic Local to ~$649 for that age group. 10 Epic Friend Tickets (50% off lift tickets) come with every full pass. $175 credit if you bought a Vail lift ticket last season. Prices increased after Sept 7 and jump again in November; sales close early December. Northeast roster unchanged.</div>
+    <div class="pass-subtitle">Vermont · New York · New Hampshire · Québec</div>
+    <div class="pass-mountains-grid"><div class="pm-card tracked"><div class="pm-state">Vermont</div><div class="pm-name">STOWE</div><div class="pm-access" style="color:#4A9FE0">Unlimited · holiday blackouts</div><div class="pm-note">Blackouts on Epic Local; unrestricted on full Epic Pass.</div><div class="pm-tracked">✓ On our tracker</div></div><div class="pm-card tracked"><div class="pm-state">Vermont</div><div class="pm-name">OKEMO</div><div class="pm-access" style="color:#00E87A">Unlimited</div><div class="pm-note">No blackouts on any Epic product.</div><div class="pm-tracked">✓ On our tracker</div></div><div class="pm-card tracked"><div class="pm-state">Vermont</div><div class="pm-name">MOUNT SNOW</div><div class="pm-access" style="color:#00E87A">Unlimited</div><div class="pm-note">No blackouts. Carinthia parks.</div><div class="pm-tracked">✓ On our tracker</div></div><div class="pm-card tracked"><div class="pm-state">New York</div><div class="pm-name">HUNTER MTN</div><div class="pm-access" style="color:#00E87A">Unlimited</div><div class="pm-note">No blackouts. ~2.5 hrs from Old Bridge.</div><div class="pm-tracked">✓ On our tracker</div></div><div class="pm-card tracked"><div class="pm-state">New Hampshire</div><div class="pm-name">ATTITASH</div><div class="pm-access" style="color:#00E87A">Unlimited</div><div class="pm-note">No blackouts.</div><div class="pm-tracked">✓ On our tracker</div></div><div class="pm-card tracked"><div class="pm-state">New Hampshire</div><div class="pm-name">WILDCAT</div><div class="pm-access" style="color:#00E87A">Unlimited</div><div class="pm-note">No blackouts. Mt. Washington views.</div><div class="pm-tracked">✓ On our tracker</div></div><div class="pm-card"><div class="pm-state">New Hampshire</div><div class="pm-name">CROTCHED MTN</div><div class="pm-access" style="color:#00E87A">Unlimited</div><div class="pm-note">Night skiing.</div></div><div class="pm-card"><div class="pm-state">New Hampshire</div><div class="pm-name">MT. SUNAPEE</div><div class="pm-access" style="color:#00E87A">Unlimited</div><div class="pm-note">Southern NH.</div></div><div class="pm-card tracked"><div class="pm-state">Québec</div><div class="pm-name">MONT-STE-ANNE</div><div class="pm-access" style="color:#4A9FE0">Limited days</div><div class="pm-note">Then 50% off additional days.</div><div class="pm-tracked">✓ On our tracker</div></div><div class="pm-card"><div class="pm-state">Québec</div><div class="pm-name">STONEHAM</div><div class="pm-access" style="color:#4A9FE0">Limited days</div><div class="pm-note">Then 50% off additional days.</div></div></div>
+    <div class="pass-subtitle" style="margin-top:20px">Pennsylvania · Included on Epic &amp; Epic Local</div>
+    <div class="pass-mountains-grid"><div class="pm-card"><div class="pm-state">Pennsylvania</div><div class="pm-name">BIG BOULDER</div><div class="pm-access" style="color:#00E87A">Unlimited</div><div class="pm-note">Poconos. Night skiing.</div></div><div class="pm-card"><div class="pm-state">Pennsylvania</div><div class="pm-name">JACK FROST</div><div class="pm-access" style="color:#00E87A">Unlimited</div><div class="pm-note">Poconos. Sister to Big Boulder.</div></div><div class="pm-card"><div class="pm-state">Pennsylvania</div><div class="pm-name">LIBERTY MTN</div><div class="pm-access" style="color:#00E87A">Unlimited</div><div class="pm-note">South-central PA.</div></div><div class="pm-card"><div class="pm-state">Pennsylvania</div><div class="pm-name">ROUNDTOP</div><div class="pm-access" style="color:#00E87A">Unlimited</div><div class="pm-note">Harrisburg area.</div></div><div class="pm-card"><div class="pm-state">Pennsylvania</div><div class="pm-name">WHITETAIL</div><div class="pm-access" style="color:#00E87A">Unlimited</div><div class="pm-note">Near MD line.</div></div><div class="pm-card"><div class="pm-state">Pennsylvania</div><div class="pm-name">SEVEN SPRINGS</div><div class="pm-access" style="color:#00E87A">Unlimited</div><div class="pm-note">Largest in PA. Western PA.</div></div><div class="pm-card"><div class="pm-state">Pennsylvania</div><div class="pm-name">HIDDEN VALLEY</div><div class="pm-access" style="color:#00E87A">Unlimited</div><div class="pm-note">Laurel Highlands.</div></div><div class="pm-card"><div class="pm-state">Pennsylvania</div><div class="pm-name">LAUREL MTN</div><div class="pm-access" style="color:#00E87A">Unlimited</div><div class="pm-note">Laurel Highlands.</div></div></div>
   </div>
 
-  <!-- MOUNTAIN COLLECTIVE -->
   <div class="pass-section" data-pass="collective">
     <div class="pass-section-header" style="background:linear-gradient(135deg,#0a160a,#122012);border-left:4px solid #7DC242">
-      <div class="psh-left">
-        <div class="psh-logo" style="color:#7DC242">MOUNTAIN COLLECTIVE</div>
-        <div class="psh-tagline">The anti-corporate alternative. 2 free days at 27 elite destinations. No blackouts.</div>
-      </div>
-      <div class="psh-stats">
-        <div class="psh-stat"><div class="psh-num">5</div><div class="psh-lbl">NE Resorts</div></div>
-        <div class="psh-stat"><div class="psh-num">2</div><div class="psh-lbl">Days per resort</div></div>
-        <div class="psh-stat"><div class="psh-num">50%</div><div class="psh-lbl">Off additional days</div></div>
-        <div class="psh-stat"><div class="psh-num">$669</div><div class="psh-lbl">Adult Pass</div></div>
-      </div>
-    </div>
-    <div class="pass-note" style="border-left-color:#7DC242">
-      <strong>SKI3 Bonus:</strong> NY State's SKI3 Full Season Pass (Whiteface + Gore + Belleayre, unlimited) now includes 50% off at all 27 Mountain Collective resorts worldwide — a massive deal if you're an Adirondacks local. Mountain Collective pass holders get 2 days at Whiteface + 50% off additional days.
-    </div>
-    <div class="pass-mountains-grid">
-      <div class="pm-card tracked" style="border-top-color:#7DC242"><div class="pm-state">New York · NEW 25-26</div><div class="pm-name">WHITEFACE</div><div class="pm-access" style="color:#00E87A">2 days free · 50% off more</div><div class="pm-note">Greatest vertical drop in the East. 1980 Olympics venue. First NY resort on the Collective.</div><div class="pm-tracked">✓ On our tracker</div></div>
-      <div class="pm-card tracked" style="border-top-color:#7DC242"><div class="pm-state">Maine</div><div class="pm-name">SUNDAY RIVER</div><div class="pm-access" style="color:#00E87A">2 days free · 50% off more</div><div class="pm-note">Also on Ikon Pass. 8 interconnected peaks in western Maine.</div><div class="pm-tracked">✓ On our tracker</div></div>
-      <div class="pm-card tracked" style="border-top-color:#7DC242"><div class="pm-state">Maine</div><div class="pm-name">SUGARLOAF</div><div class="pm-access" style="color:#00E87A">2 days free · 50% off more</div><div class="pm-note">Also on Ikon Pass. Maine's largest resort. Above treeline terrain.</div><div class="pm-tracked">✓ On our tracker</div></div>
-      <div class="pm-card tracked" style="border-top-color:#7DC242"><div class="pm-state">Québec</div><div class="pm-name">LE MASSIF</div><div class="pm-access" style="color:#00E87A">2 days free · 50% off more</div><div class="pm-note">Also on Ikon Pass. Overlooking the St. Lawrence River. Stunning.</div><div class="pm-tracked">✓ On our tracker</div></div>
-      <div class="pm-card" style="border-top-color:#7DC242"><div class="pm-state">Québec</div><div class="pm-name">BROMONT</div><div class="pm-access" style="color:#00E87A">2 days free · 50% off more</div><div class="pm-note">Only 1 hour from Montreal. Night skiing, 141 trails.</div></div>
-    </div>
+      <div class="psh-left"><div class="psh-logo" style="color:#7DC242">MOUNTAIN COLLECTIVE</div><div class="psh-tagline">27 elite destinations, 2 days each, no blackouts, 50% off extra days. Roster unchanged for 26-27 and the price didn't move.</div></div>
+      <div class="psh-stats"><div class="psh-stat"><div class="psh-num">5</div><div class="psh-lbl">NE Resorts</div></div><div class="psh-stat"><div class="psh-num">2</div><div class="psh-lbl">Days each</div></div><div class="psh-stat"><div class="psh-num">50%</div><div class="psh-lbl">Off extra days</div></div><div class="psh-stat"><div class="psh-num">$669</div><div class="psh-lbl">Adult · flat</div></div></div></div>
+    <div class="pass-note" style="border-left-color:#7DC242"><strong>What changed for 26-27:</strong> New referral program — refer a new passholder, get a bonus day at any resort. Spring buyers got a bonus day too. Friends &amp; Family: 25% off up to 8 one-day tickets. The <strong>"Rite of the East"</strong> road trip (Whiteface → Sunday River → Sugarloaf → Le Massif → Bromont) is a natural club trip on this pass. SKI3 holders (Whiteface/Gore/Belleayre) still get 50% off at every MC resort.</div>
+    <div class="pass-mountains-grid"><div class="pm-card tracked" style="border-top-color:#7DC242"><div class="pm-state">New York</div><div class="pm-name">WHITEFACE</div><div class="pm-access" style="color:#00E87A">2 days free · 50% off more</div><div class="pm-note">Greatest vertical in the East. Benefits extend to Gore & Belleayre via SKI3.</div><div class="pm-tracked">✓ On our tracker</div></div><div class="pm-card tracked" style="border-top-color:#7DC242"><div class="pm-state">Maine</div><div class="pm-name">SUNDAY RIVER</div><div class="pm-access" style="color:#00E87A">2 days free · 50% off more</div><div class="pm-note">Also on Ikon. 10% off Sunday River lodging.</div><div class="pm-tracked">✓ On our tracker</div></div><div class="pm-card tracked" style="border-top-color:#7DC242"><div class="pm-state">Maine</div><div class="pm-name">SUGARLOAF</div><div class="pm-access" style="color:#00E87A">2 days free · 50% off more</div><div class="pm-note">Also on Ikon. West Mountain expansion — 12 new trails.</div><div class="pm-tracked">✓ On our tracker</div></div><div class="pm-card tracked" style="border-top-color:#7DC242"><div class="pm-state">Québec</div><div class="pm-name">LE MASSIF</div><div class="pm-access" style="color:#00E87A">2 days free · 50% off more</div><div class="pm-note">Also on Ikon. Above the St. Lawrence.</div><div class="pm-tracked">✓ On our tracker</div></div><div class="pm-card" style="border-top-color:#7DC242"><div class="pm-state">Québec</div><div class="pm-name">BROMONT</div><div class="pm-access" style="color:#00E87A">2 days free · 50% off more</div><div class="pm-note">1 hr from Montreal. Night skiing.</div></div></div>
   </div>
 
-  <!-- INDY -->
   <div class="pass-section" data-pass="indy">
     <div class="pass-section-header" style="background:linear-gradient(135deg,#151008,#22180a);border-left:4px solid #FFD200">
-      <div class="psh-left">
-        <div class="psh-logo" style="color:#FFD200">INDY PASS</div>
-        <div class="psh-tagline">The independent spirit. 2 days at 270+ uncrowded, authentic ski areas. Best value per dollar in the game.</div>
-      </div>
-      <div class="psh-stats">
-        <div class="psh-stat"><div class="psh-num">20+</div><div class="psh-lbl">NE Resorts</div></div>
-        <div class="psh-stat"><div class="psh-num">2</div><div class="psh-lbl">Days per resort</div></div>
-        <div class="psh-stat"><div class="psh-num">25%</div><div class="psh-lbl">Off 3rd day</div></div>
-        <div class="psh-stat"><div class="psh-num">$449</div><div class="psh-lbl">Base / $599 Indy+</div></div>
-      </div>
-    </div>
-    <div class="pass-note" style="border-left-color:#FFD200">
-      <strong>Base vs Indy+:</strong> The Base Pass ($449) has blackout dates on peak holiday weekends. Indy+ ($599) removes all blackouts. Burke Mountain is a new full partner for 25-26 (was Allied discount only). New additions: Tenney Mountain NH, Buffalo Ski Center NY.
-    </div>
-    <div class="pass-subtitle">Vermont</div>
-    <div class="pass-mountains-grid">
-      <div class="pm-card tracked" style="border-top-color:#FFD200"><div class="pm-state">Vermont</div><div class="pm-name">JAY PEAK</div><div class="pm-access" style="color:#FFD200">2 days · blackouts on Base</div><div class="pm-note">Most snowfall in the East. Remote, uncrowded, legendary glades.</div><div class="pm-tracked">✓ On our tracker</div></div>
-      <div class="pm-card tracked" style="border-top-color:#FFD200"><div class="pm-state">Vermont</div><div class="pm-name">BOLTON VALLEY</div><div class="pm-access" style="color:#FFD200">2 days · blackouts on Base</div><div class="pm-note">Intimate, high base elevation, great tree skiing.</div><div class="pm-tracked">✓ On our tracker</div></div>
-      <div class="pm-card tracked" style="border-top-color:#FFD200"><div class="pm-state">Vermont · Full partner 25-26</div><div class="pm-name">BURKE MTN</div><div class="pm-access" style="color:#FFD200">2 days · blackouts on Base</div><div class="pm-note">Home of Burke Mountain Academy. Northeast Kingdom, VT.</div><div class="pm-tracked">✓ On our tracker</div></div>
-      <div class="pm-card tracked" style="border-top-color:#FFD200"><div class="pm-state">Vermont</div><div class="pm-name">MAGIC MTN</div><div class="pm-access" style="color:#FFD200">2 days · blackouts on Base</div><div class="pm-note">Cult classic. Steeps, glades, zero crowds.</div><div class="pm-tracked">✓ On our tracker</div></div>
-      <div class="pm-card" style="border-top-color:#FFD200"><div class="pm-state">Vermont</div><div class="pm-name">MIDDLEBURY SNOWBOWL</div><div class="pm-access" style="color:#FFD200">2 days · blackouts on Base</div><div class="pm-note">College ski area. Middlebury, VT.</div></div>
-      <div class="pm-card" style="border-top-color:#FFD200"><div class="pm-state">Vermont</div><div class="pm-name">SASKADENA SIX</div><div class="pm-access" style="color:#FFD200">2 days · blackouts on Base</div><div class="pm-note">Formerly Suicide Six. Woodstock, VT.</div></div>
-    </div>
-    <div class="pass-subtitle" style="margin-top:20px">New Hampshire</div>
-    <div class="pass-mountains-grid">
-      <div class="pm-card tracked" style="border-top-color:#FFD200"><div class="pm-state">New Hampshire</div><div class="pm-name">CANNON MTN</div><div class="pm-access" style="color:#FFD200">2 days · blackouts on Base</div><div class="pm-note">State-owned. Franconia Notch. Serious terrain.</div><div class="pm-tracked">✓ On our tracker</div></div>
-      <div class="pm-card tracked" style="border-top-color:#FFD200"><div class="pm-state">New Hampshire</div><div class="pm-name">WATERVILLE VLY</div><div class="pm-access" style="color:#FFD200">2 days · blackouts on Base</div><div class="pm-note">White Mountains. Great intermediate terrain.</div><div class="pm-tracked">✓ On our tracker</div></div>
-      <div class="pm-card" style="border-top-color:#FFD200"><div class="pm-state">New Hampshire</div><div class="pm-name">BLACK MTN</div><div class="pm-access" style="color:#FFD200">2 days · blackouts on Base</div><div class="pm-note">Jackson, NH. Old-school New England charm.</div></div>
-      <div class="pm-card" style="border-top-color:#FFD200"><div class="pm-state">New Hampshire</div><div class="pm-name">PAT'S PEAK</div><div class="pm-access" style="color:#FFD200">2 days · blackouts on Base</div><div class="pm-note">Henniker, NH. Night skiing. Family friendly.</div></div>
-      <div class="pm-card" style="border-top-color:#FFD200"><div class="pm-state">New Hampshire · Full partner 25-26</div><div class="pm-name">MCINTYRE SKI AREA</div><div class="pm-access" style="color:#FFD200">2 days · blackouts on Base</div><div class="pm-note">Manchester, NH. Night skiing. New full partner 25-26.</div></div>
-      <div class="pm-card" style="border-top-color:#FFD200"><div class="pm-state">New Hampshire · NEW 25-26</div><div class="pm-name">TENNEY MTN</div><div class="pm-access" style="color:#FFD200">2 days · blackouts on Base</div><div class="pm-note">Plymouth, NH. New to Indy for 25-26.</div></div>
-    </div>
-    <div class="pass-subtitle" style="margin-top:20px">Maine</div>
-    <div class="pass-mountains-grid">
-      <div class="pm-card tracked" style="border-top-color:#FFD200"><div class="pm-state">Maine</div><div class="pm-name">SADDLEBACK</div><div class="pm-access" style="color:#FFD200">2 days · blackouts on Base</div><div class="pm-note">Rangeley, ME. High alpine, family owned.</div><div class="pm-tracked">✓ On our tracker</div></div>
-      <div class="pm-card" style="border-top-color:#FFD200"><div class="pm-state">Maine</div><div class="pm-name">BIG ROCK MTN</div><div class="pm-access" style="color:#FFD200">2 days · blackouts on Base</div><div class="pm-note">Mars Hill, ME. Aroostook County. Local favorite.</div></div>
-      <div class="pm-card" style="border-top-color:#FFD200"><div class="pm-state">Maine</div><div class="pm-name">MT. ABRAMS</div><div class="pm-access" style="color:#FFD200">2 days · blackouts on Base</div><div class="pm-note">Greenwood, ME. Lovell area. Glades and steeps.</div></div>
-    </div>
-    <div class="pass-subtitle" style="margin-top:20px">New York</div>
-    <div class="pass-mountains-grid">
-      <div class="pm-card tracked" style="border-top-color:#FFD200"><div class="pm-state">New York</div><div class="pm-name">CATAMOUNT</div><div class="pm-access" style="color:#FFD200">2 days · blackouts on Base</div><div class="pm-note">Hillsdale, NY / MA border. Night skiing. Close to NYC.</div><div class="pm-tracked">✓ On our tracker</div></div>
-      <div class="pm-card tracked" style="border-top-color:#FFD200"><div class="pm-state">New York</div><div class="pm-name">GREEK PEAK</div><div class="pm-access" style="color:#FFD200">2 days · blackouts on Base</div><div class="pm-note">Cortland, NY. Night skiing. Finger Lakes region.</div><div class="pm-tracked">✓ On our tracker</div></div>
-      <div class="pm-card tracked" style="border-top-color:#FFD200"><div class="pm-state">New York</div><div class="pm-name">WEST MTN</div><div class="pm-access" style="color:#FFD200">2 days · blackouts on Base</div><div class="pm-note">Queensbury, NY. Near Lake George. Night skiing.</div><div class="pm-tracked">✓ On our tracker</div></div>
-      <div class="pm-card" style="border-top-color:#FFD200"><div class="pm-state">New York · NEW 25-26</div><div class="pm-name">BUFFALO SKI CENTER</div><div class="pm-access" style="color:#FFD200">2 days · blackouts on Base</div><div class="pm-note">Colden, NY. New full partner for 25-26.</div></div>
-      <div class="pm-card" style="border-top-color:#FFD200"><div class="pm-state">New York · Full partner 25-26</div><div class="pm-name">DRY HILL</div><div class="pm-access" style="color:#FFD200">2 days · blackouts on Base</div><div class="pm-note">Watertown, NY. New full partner 25-26.</div></div>
-      <div class="pm-card" style="border-top-color:#FFD200"><div class="pm-state">New York</div><div class="pm-name">TITUS MTN</div><div class="pm-access" style="color:#FFD200">2 days · blackouts on Base</div><div class="pm-note">Malone, NY. North Country, near Jay Peak.</div></div>
-    </div>
-    <div class="pass-subtitle" style="margin-top:20px">Pennsylvania</div>
-    <div class="pass-mountains-grid">
-      <div class="pm-card tracked" style="border-top-color:#FFD200"><div class="pm-state">Pennsylvania</div><div class="pm-name">SHAWNEE MTN</div><div class="pm-access" style="color:#FFD200">2 days · blackouts on Base</div><div class="pm-note">Delaware Water Gap, PA. Easy from NJ.</div><div class="pm-tracked">✓ On our tracker</div></div>
-      <div class="pm-card" style="border-top-color:#FFD200"><div class="pm-state">Pennsylvania</div><div class="pm-name">BLUE KNOB</div><div class="pm-access" style="color:#FFD200">2 days · blackouts on Base</div><div class="pm-note">Claysburg, PA. Highest skiable elevation in PA.</div></div>
-      <div class="pm-card" style="border-top-color:#FFD200"><div class="pm-state">Pennsylvania</div><div class="pm-name">MONTAGE MTN</div><div class="pm-access" style="color:#FFD200">2 days · blackouts on Base</div><div class="pm-note">Scranton, PA. Night skiing.</div></div>
-      <div class="pm-card" style="border-top-color:#FFD200"><div class="pm-state">Pennsylvania</div><div class="pm-name">SKI BIG BEAR</div><div class="pm-access" style="color:#FFD200">2 days · blackouts on Base</div><div class="pm-note">Masthope Mtn, Poconos, PA.</div></div>
-      <div class="pm-card" style="border-top-color:#FFD200"><div class="pm-state">Pennsylvania</div><div class="pm-name">SKI SAWMILL</div><div class="pm-access" style="color:#FFD200">2 days · blackouts on Base</div><div class="pm-note">Morris, PA. Central PA.</div></div>
-    </div>
+      <div class="psh-left"><div class="psh-logo" style="color:#FFD200">INDY PASS</div><div class="psh-tagline">300+ independent ski areas, 2 days each. Cheapest pass in the game and the deepest Northeast bench — and Smugglers' Notch just joined.</div></div>
+      <div class="psh-stats"><div class="psh-stat"><div class="psh-num">40+</div><div class="psh-lbl">NE Resorts</div></div><div class="psh-stat"><div class="psh-num">2</div><div class="psh-lbl">Days each</div></div><div class="psh-stat"><div class="psh-num">$369</div><div class="psh-lbl">Base (waitlist)</div></div><div class="psh-stat"><div class="psh-num">$419</div><div class="psh-lbl">Indy+ no blackouts</div></div></div></div>
+    <div class="pass-note" style="border-left-color:#FFD200"><strong>What changed for 26-27:</strong> <strong>Smugglers' Notch</strong> joins — 2 days, no blackouts on either pass, reservations required. 60 new resorts total; sold out in 37 minutes in spring. A limited <strong>fall public sale is live now</strong> (opened Sept 8) and goes off sale when capacity is reached. Renewal pricing is $349 Base / $399 Indy+; waitlist and public is ~$20 more. Base has holiday blackouts; Indy+ has none. New Add-On pricing if you already hold an unlimited pass at any Indy resort.</div>
+    <div class="pass-subtitle">Vermont</div><div class="pass-mountains-grid"><div class="pm-card tracked" style="border-top-color:#FFD200"><div class="pm-state">Vermont · NEW 26-27</div><div class="pm-name">SMUGGLERS NOTCH</div><div class="pm-access" style="color:#FFD200">2 days + 3rd at 25% off</div><div class="pm-note">No blackouts on Base or Plus. Advance reservations required.</div><div class="pm-tracked">✓ On our tracker</div></div><div class="pm-card tracked" style="border-top-color:#FFD200"><div class="pm-state">Vermont</div><div class="pm-name">JAY PEAK</div><div class="pm-access" style="color:#FFD200">2 days + 3rd at 25% off</div><div class="pm-note">Most snow in the East. Blackouts on Base.</div><div class="pm-tracked">✓ On our tracker</div></div><div class="pm-card tracked" style="border-top-color:#FFD200"><div class="pm-state">Vermont</div><div class="pm-name">BOLTON VALLEY</div><div class="pm-access" style="color:#FFD200">2 days + 3rd at 25% off</div><div class="pm-note">High base elevation, great trees.</div><div class="pm-tracked">✓ On our tracker</div></div><div class="pm-card tracked" style="border-top-color:#FFD200"><div class="pm-state">Vermont</div><div class="pm-name">BURKE MTN</div><div class="pm-access" style="color:#FFD200">2 days + 3rd at 25% off</div><div class="pm-note">Northeast Kingdom. Bear Den Partners.</div><div class="pm-tracked">✓ On our tracker</div></div><div class="pm-card tracked" style="border-top-color:#FFD200"><div class="pm-state">Vermont</div><div class="pm-name">MAGIC MTN</div><div class="pm-access" style="color:#FFD200">2 days + 3rd at 25% off</div><div class="pm-note">Steeps, glades, zero crowds.</div><div class="pm-tracked">✓ On our tracker</div></div><div class="pm-card" style="border-top-color:#FFD200"><div class="pm-state">Vermont</div><div class="pm-name">MIDDLEBURY SNOWBOWL</div><div class="pm-access" style="color:#FFD200">2 days + 3rd at 25% off</div><div class="pm-note">College ski area.</div></div><div class="pm-card" style="border-top-color:#FFD200"><div class="pm-state">Vermont</div><div class="pm-name">SASKADENA SIX</div><div class="pm-access" style="color:#FFD200">2 days + 3rd at 25% off</div><div class="pm-note">Woodstock, VT.</div></div></div>
+    <div class="pass-subtitle" style="margin-top:20px">New Hampshire</div><div class="pass-mountains-grid"><div class="pm-card tracked" style="border-top-color:#FFD200"><div class="pm-state">New Hampshire</div><div class="pm-name">CANNON MTN</div><div class="pm-access" style="color:#FFD200">2 days + 3rd at 25% off</div><div class="pm-note">Franconia Notch. Serious terrain.</div><div class="pm-tracked">✓ On our tracker</div></div><div class="pm-card tracked" style="border-top-color:#FFD200"><div class="pm-state">New Hampshire</div><div class="pm-name">WATERVILLE VLY</div><div class="pm-access" style="color:#FFD200">2 days + 3rd at 25% off</div><div class="pm-note">White Mountains.</div><div class="pm-tracked">✓ On our tracker</div></div><div class="pm-card" style="border-top-color:#FFD200"><div class="pm-state">New Hampshire</div><div class="pm-name">BLACK MTN</div><div class="pm-access" style="color:#FFD200">2 days + 3rd at 25% off</div><div class="pm-note">Jackson, NH. Indy Pass HQ mountain.</div></div><div class="pm-card" style="border-top-color:#FFD200"><div class="pm-state">New Hampshire</div><div class="pm-name">PAT'S PEAK</div><div class="pm-access" style="color:#FFD200">2 days + 3rd at 25% off</div><div class="pm-note">Night skiing.</div></div><div class="pm-card" style="border-top-color:#FFD200"><div class="pm-state">New Hampshire</div><div class="pm-name">RAGGED MTN</div><div class="pm-access" style="color:#FFD200">2 days + 3rd at 25% off</div><div class="pm-note">Danbury, NH. 57 trails.</div></div><div class="pm-card" style="border-top-color:#FFD200"><div class="pm-state">New Hampshire</div><div class="pm-name">DARTMOUTH SKIWAY</div><div class="pm-access" style="color:#FFD200">2 days + 3rd at 25% off</div><div class="pm-note">Lyme, NH.</div></div><div class="pm-card" style="border-top-color:#FFD200"><div class="pm-state">New Hampshire</div><div class="pm-name">WHALEBACK</div><div class="pm-access" style="color:#FFD200">2 days + 3rd at 25% off</div><div class="pm-note">Enfield, NH.</div></div><div class="pm-card" style="border-top-color:#FFD200"><div class="pm-state">New Hampshire</div><div class="pm-name">MCINTYRE</div><div class="pm-access" style="color:#FFD200">2 days + 3rd at 25% off</div><div class="pm-note">Manchester, NH. Night skiing.</div></div><div class="pm-card" style="border-top-color:#FFD200"><div class="pm-state">New Hampshire</div><div class="pm-name">TENNEY MTN</div><div class="pm-access" style="color:#FFD200">2 days + 3rd at 25% off</div><div class="pm-note">Plymouth, NH.</div></div></div>
+    <div class="pass-subtitle" style="margin-top:20px">Maine</div><div class="pass-mountains-grid"><div class="pm-card tracked" style="border-top-color:#FFD200"><div class="pm-state">Maine</div><div class="pm-name">SADDLEBACK</div><div class="pm-access" style="color:#FFD200">2 days + 3rd at 25% off</div><div class="pm-note">Rangeley. Also Powder Alliance.</div><div class="pm-tracked">✓ On our tracker</div></div><div class="pm-card" style="border-top-color:#FFD200"><div class="pm-state">Maine</div><div class="pm-name">BIG ROCK MTN</div><div class="pm-access" style="color:#FFD200">2 days + 3rd at 25% off</div><div class="pm-note">Mars Hill, ME.</div></div><div class="pm-card" style="border-top-color:#FFD200"><div class="pm-state">Maine</div><div class="pm-name">MT. ABRAM</div><div class="pm-access" style="color:#FFD200">2 days + 3rd at 25% off</div><div class="pm-note">Greenwood, ME.</div></div></div>
+    <div class="pass-subtitle" style="margin-top:20px">New York</div><div class="pass-mountains-grid"><div class="pm-card tracked" style="border-top-color:#FFD200"><div class="pm-state">New York</div><div class="pm-name">CATAMOUNT</div><div class="pm-access" style="color:#FFD200">2 days + 3rd at 25% off</div><div class="pm-note">Hillsdale, NY. Close to NJ.</div><div class="pm-tracked">✓ On our tracker</div></div><div class="pm-card tracked" style="border-top-color:#FFD200"><div class="pm-state">New York</div><div class="pm-name">GREEK PEAK</div><div class="pm-access" style="color:#FFD200">2 days + 3rd at 25% off</div><div class="pm-note">Cortland, NY.</div><div class="pm-tracked">✓ On our tracker</div></div><div class="pm-card tracked" style="border-top-color:#FFD200"><div class="pm-state">New York</div><div class="pm-name">WEST MTN</div><div class="pm-access" style="color:#FFD200">2 days + 3rd at 25% off</div><div class="pm-note">Queensbury, NY.</div><div class="pm-tracked">✓ On our tracker</div></div><div class="pm-card" style="border-top-color:#FFD200"><div class="pm-state">New York · NEW 26-27</div><div class="pm-name">MT. PISGAH</div><div class="pm-access" style="color:#FFD200">2 days + 3rd at 25% off</div><div class="pm-note">Saranac Lake, NY.</div></div><div class="pm-card" style="border-top-color:#FFD200"><div class="pm-state">New York</div><div class="pm-name">PEEK 'N PEAK</div><div class="pm-access" style="color:#FFD200">2 days + 3rd at 25% off</div><div class="pm-note">Clymer, NY.</div></div><div class="pm-card" style="border-top-color:#FFD200"><div class="pm-state">New York</div><div class="pm-name">SNOW RIDGE</div><div class="pm-access" style="color:#FFD200">2 days + 3rd at 25% off</div><div class="pm-note">Turin, NY. Tug Hill lake-effect.</div></div><div class="pm-card" style="border-top-color:#FFD200"><div class="pm-state">New York</div><div class="pm-name">SWAIN</div><div class="pm-access" style="color:#FFD200">2 days + 3rd at 25% off</div><div class="pm-note">Swain, NY.</div></div><div class="pm-card" style="border-top-color:#FFD200"><div class="pm-state">New York</div><div class="pm-name">TITUS MTN</div><div class="pm-access" style="color:#FFD200">2 days + 3rd at 25% off</div><div class="pm-note">Malone, NY.</div></div><div class="pm-card" style="border-top-color:#FFD200"><div class="pm-state">New York</div><div class="pm-name">DRY HILL</div><div class="pm-access" style="color:#FFD200">2 days + 3rd at 25% off</div><div class="pm-note">Watertown, NY.</div></div><div class="pm-card" style="border-top-color:#FFD200"><div class="pm-state">New York</div><div class="pm-name">BUFFALO SKI CLUB</div><div class="pm-access" style="color:#FFD200">2 days + 3rd at 25% off</div><div class="pm-note">Colden, NY.</div></div></div>
+    <div class="pass-subtitle" style="margin-top:20px">Massachusetts</div><div class="pass-mountains-grid"><div class="pm-card" style="border-top-color:#FFD200"><div class="pm-state">Massachusetts</div><div class="pm-name">BERKSHIRE EAST</div><div class="pm-access" style="color:#FFD200">2 days + 3rd at 25% off</div><div class="pm-note">Charlemont, MA. Bear Den Partners.</div></div><div class="pm-card" style="border-top-color:#FFD200"><div class="pm-state">Massachusetts</div><div class="pm-name">BOUSQUET</div><div class="pm-access" style="color:#FFD200">2 days + 3rd at 25% off</div><div class="pm-note">Pittsfield, MA. Night skiing.</div></div></div>
+    <div class="pass-subtitle" style="margin-top:20px">Pennsylvania</div><div class="pass-mountains-grid"><div class="pm-card tracked" style="border-top-color:#FFD200"><div class="pm-state">Pennsylvania</div><div class="pm-name">SHAWNEE MTN</div><div class="pm-access" style="color:#FFD200">2 days + 3rd at 25% off</div><div class="pm-note">Delaware Water Gap. ~75 min from Old Bridge.</div><div class="pm-tracked">✓ On our tracker</div></div><div class="pm-card" style="border-top-color:#FFD200"><div class="pm-state">Pennsylvania</div><div class="pm-name">BEAR CREEK</div><div class="pm-access" style="color:#FFD200">2 days + 3rd at 25% off</div><div class="pm-note">Macungie, PA. Lehigh Valley.</div></div><div class="pm-card" style="border-top-color:#FFD200"><div class="pm-state">Pennsylvania</div><div class="pm-name">BLUE KNOB</div><div class="pm-access" style="color:#FFD200">2 days + 3rd at 25% off</div><div class="pm-note">Highest skiable in PA.</div></div><div class="pm-card" style="border-top-color:#FFD200"><div class="pm-state">Pennsylvania</div><div class="pm-name">MONTAGE MTN</div><div class="pm-access" style="color:#FFD200">2 days + 3rd at 25% off</div><div class="pm-note">Scranton, PA. Night skiing.</div></div><div class="pm-card" style="border-top-color:#FFD200"><div class="pm-state">Pennsylvania</div><div class="pm-name">SKI BIG BEAR</div><div class="pm-access" style="color:#FFD200">2 days + 3rd at 25% off</div><div class="pm-note">Masthope, Poconos.</div></div><div class="pm-card" style="border-top-color:#FFD200"><div class="pm-state">Pennsylvania</div><div class="pm-name">SKI SAWMILL</div><div class="pm-access" style="color:#FFD200">2 days + 3rd at 25% off</div><div class="pm-note">Morris, PA.</div></div><div class="pm-card" style="border-top-color:#FFD200"><div class="pm-state">Pennsylvania</div><div class="pm-name">TUSSEY MTN</div><div class="pm-access" style="color:#FFD200">2 days + 3rd at 25% off</div><div class="pm-note">State College, PA.</div></div></div>
   </div>
 
-  <!-- POWDER ALLIANCE -->
   <div class="pass-section" data-pass="powder">
     <div class="pass-section-header" style="background:linear-gradient(135deg,#0d0814,#160f22);border-left:4px solid #B27ED4">
-      <div class="psh-left">
-        <div class="psh-logo" style="color:#B27ED4">POWDER ALLIANCE</div>
-        <div class="psh-tagline">Buy a season pass at any member resort. Get 3 free days at every other member resort. No extra cost.</div>
-      </div>
-      <div class="psh-stats">
-        <div class="psh-stat"><div class="psh-num">3</div><div class="psh-lbl">NE Resorts</div></div>
-        <div class="psh-stat"><div class="psh-num">3</div><div class="psh-lbl">Free days each</div></div>
-        <div class="psh-stat"><div class="psh-num">Free</div><div class="psh-lbl">Included w/ season pass</div></div>
-        <div class="psh-stat"><div class="psh-num">$0</div><div class="psh-lbl">Extra cost</div></div>
-      </div>
-    </div>
-    <div class="pass-note" style="border-left-color:#B27ED4">
-      <strong>How it works:</strong> Buy a full-season pass at Jay Peak, Magic Mountain, or Saddleback. You automatically get 3 free days at the other two Powder Alliance member mountains in the Northeast — no add-on cost, no extra purchase. Blackout dates apply on peak holiday weekends.
-    </div>
-    <div class="pass-mountains-grid">
-      <div class="pm-card tracked" style="border-top-color:#B27ED4"><div class="pm-state">Vermont</div><div class="pm-name">JAY PEAK</div><div class="pm-access" style="color:#B27ED4">3 free days (hold Jay pass)</div><div class="pm-note">Also on Indy Pass. Most snow in the East. Buy Jay pass → get 3 days at Magic + Saddleback free.</div><div class="pm-tracked">✓ On our tracker</div></div>
-      <div class="pm-card tracked" style="border-top-color:#B27ED4"><div class="pm-state">Vermont</div><div class="pm-name">MAGIC MTN</div><div class="pm-access" style="color:#B27ED4">3 free days (hold Magic pass)</div><div class="pm-note">Also on Indy Pass. Cult classic, zero crowds, serious terrain. Buy Magic pass → get 3 days at Jay + Saddleback free.</div><div class="pm-tracked">✓ On our tracker</div></div>
-      <div class="pm-card tracked" style="border-top-color:#B27ED4"><div class="pm-state">Maine</div><div class="pm-name">SADDLEBACK</div><div class="pm-access" style="color:#B27ED4">3 free days (hold Saddleback pass)</div><div class="pm-note">Also on Indy Pass. Rangeley, ME. Family owned. Buy Saddleback pass → get 3 days at Jay + Magic free.</div><div class="pm-tracked">✓ On our tracker</div></div>
-    </div>
+      <div class="psh-left"><div class="psh-logo" style="color:#B27ED4">POWDER ALLIANCE</div><div class="psh-tagline">Buy a season pass at any member resort, get 3 free days at every other member. No add-on cost.</div></div>
+      <div class="psh-stats"><div class="psh-stat"><div class="psh-num">3</div><div class="psh-lbl">NE Resorts</div></div><div class="psh-stat"><div class="psh-num">3</div><div class="psh-lbl">Free days each</div></div><div class="psh-stat"><div class="psh-num">$0</div><div class="psh-lbl">Extra cost</div></div><div class="psh-stat"><div class="psh-num">Holiday</div><div class="psh-lbl">Blackouts</div></div></div></div>
+    <div class="pass-note" style="border-left-color:#B27ED4"><strong>How it works:</strong> A full-season pass at Jay Peak, Magic, or Saddleback automatically includes 3 days at the other two. Stack it with Indy (all three are Indy partners) and a Jay Peak pass covers a lot of Vermont.</div>
+    <div class="pass-mountains-grid"><div class="pm-card tracked" style="border-top-color:#B27ED4"><div class="pm-state">Vermont</div><div class="pm-name">JAY PEAK</div><div class="pm-access" style="color:#B27ED4">3 free days w/ any member pass</div><div class="pm-note">Also on Indy. Buy Jay → 3 days each at Magic + Saddleback.</div><div class="pm-tracked">✓ On our tracker</div></div><div class="pm-card tracked" style="border-top-color:#B27ED4"><div class="pm-state">Vermont</div><div class="pm-name">MAGIC MTN</div><div class="pm-access" style="color:#B27ED4">3 free days w/ any member pass</div><div class="pm-note">Also on Indy. Buy Magic → 3 days each at Jay + Saddleback.</div><div class="pm-tracked">✓ On our tracker</div></div><div class="pm-card tracked" style="border-top-color:#B27ED4"><div class="pm-state">Maine</div><div class="pm-name">SADDLEBACK</div><div class="pm-access" style="color:#B27ED4">3 free days w/ any member pass</div><div class="pm-note">Also on Indy. Buy Saddleback → 3 days each at Jay + Magic.</div><div class="pm-tracked">✓ On our tracker</div></div></div>
   </div>
 
-  </div><!-- end passes-content -->
+  </div>
 
-  <div class="disclaimer" style="padding:20px 60px">⚠️ Pass coverage verified for the 2025-26 season. Always confirm access details directly with the resort and pass provider before purchasing — terms, day limits, and blackout dates can change. Links: <a href="https://ikonpass.com" target="_blank" style="color:var(--cyan)">ikonpass.com</a> · <a href="https://epicpass.com" target="_blank" style="color:var(--cyan)">epicpass.com</a> · <a href="https://mountaincollective.com" target="_blank" style="color:var(--cyan)">mountaincollective.com</a> · <a href="https://indyskipass.com" target="_blank" style="color:var(--cyan)">indyskipass.com</a></div>
+  <div class="disclaimer" style="padding:20px 60px">⚠️ Verified against pass-provider announcements as of September 2026. Prices rise through the fall and vary by age/renewal status — confirm at <a href="https://ikonpass.com" target="_blank" style="color:var(--cyan)">ikonpass.com</a> · <a href="https://epicpass.com" target="_blank" style="color:var(--cyan)">epicpass.com</a> · <a href="https://mountaincollective.com" target="_blank" style="color:var(--cyan)">mountaincollective.com</a> · <a href="https://indyskipass.com" target="_blank" style="color:var(--cyan)">indyskipass.com</a> before buying.</div>
 
   <footer>
-    <div><div class="ft-logo" onclick="navigate('home')"><span class="nj">NJ</span> SKI HAUS</div><p class="ft-tagline">New Jersey's premier ski & snowboard club.</p></div>
-    <div class="ft-col"><h4>Navigate</h4><ul><li><a onclick="navigate('home')">Home</a></li><li><a onclick="navigate('mountains')">Mountains</a></li><li><a onclick="navigate('conditions')">Conditions</a></li><li><a onclick="navigate('trips')">Trips</a></li><li><a onclick="navigate('join')">Join</a></li></ul></div>
+    <div><div class="ft-logo" onclick="navigate('home')"><span class="nj">NJ</span> SKI HAUS</div><p class="ft-tagline">New Jersey's premier ski &amp; snowboard club.</p></div>
+    <div class="ft-col"><h4>Navigate</h4><ul><li><a onclick="navigate('home')">Home</a></li><li><a onclick="navigate('mountains')">Mountains</a></li><li><a onclick="navigate('conditions')">Conditions</a></li><li><a onclick="navigate('map')">Map</a></li><li><a onclick="navigate('trips')">Trips</a></li><li><a onclick="navigate('join')">Join</a></li></ul></div>
     <div class="ft-col"><h4>Contact</h4><ul><li><a>Instagram</a></li><li><a>TikTok</a></li><li><a>Discord</a></li><li><a>Email Us</a></li></ul></div>
-    <div class="ft-bottom"><p>© 2025–26 NJ Ski Haus · Old Bridge, NJ · All rights reserved</p><div class="social-row"><a>Instagram</a><a>TikTok</a><a>Discord</a></div></div>
+    <div class="ft-bottom"><p>© 2026–27 NJ Ski Haus · Old Bridge, NJ · All rights reserved</p><div class="social-row"><a>Instagram</a><a>TikTok</a><a>Discord</a></div></div>
   </footer>
+</div>
+
+<!-- ════════════════════════════
+     MAP
+════════════════════════════ -->
+<div id="page-map" class="page">
+  <div class="map-shell">
+    <div class="map-topbar">
+      <div class="map-topbar-left">
+        <span class="sec-label" style="margin:0;font-size:9px">Northeast Mountains</span>
+        <span class="map-counter" id="map-counter">34 peaks</span>
+      </div>
+      <div class="map-topbar-right">
+        <button class="map-pill active"       onclick="mapFilter('all',this)">All</button>
+        <button class="map-pill"              onclick="mapFilter('nj',this)">NJ</button>
+        <button class="map-pill"              onclick="mapFilter('vt',this)">Vermont</button>
+        <button class="map-pill"              onclick="mapFilter('ny',this)">New York</button>
+        <button class="map-pill"              onclick="mapFilter('pa',this)">Pennsylvania</button>
+        <button class="map-pill"              onclick="mapFilter('ne',this)">NH &amp; Maine</button>
+        <button class="map-pill"              onclick="mapFilter('ca',this)">Canada</button>
+        <span style="width:1px;height:18px;background:var(--border);margin:0 4px"></span>
+        <button class="map-pill ikon-pill"    onclick="mapFilter('ikon',this)">Ikon</button>
+        <button class="map-pill epic-pill"    onclick="mapFilter('epic',this)">Epic</button>
+        <button class="map-pill col-pill"     onclick="mapFilter('collective',this)">Collective</button>
+        <button class="map-pill indy-pill"    onclick="mapFilter('indy',this)">Indy</button>
+      </div>
+    </div>
+    <div id="leaflet-map"></div>
+  </div>
 </div>
 
 <!-- ════════════════════════════════════
@@ -791,81 +693,32 @@ footer{background:var(--bg2);padding:56px 60px 32px;display:grid;grid-template-c
 <div id="page-trips" class="page">
   <div class="page-hero">
     <div class="page-hero-row">
-      <div><div class="sec-label">Trip Calendar · 2025–26 Season</div><h1 class="sec-title">Upcoming <em>Expeditions</em></h1></div>
-      <p class="sec-body" style="max-width:360px;margin-bottom:0">Group-rate lodging, charter buses from Old Bridge — members always pay less than going solo.</p>
+      <div><div class="sec-label">Trip Calendar · 2026–27 Founding Season</div><h1 class="sec-title">Proposed <em>Expeditions</em></h1></div>
+      <p class="sec-body" style="max-width:380px;margin-bottom:0">This is our first season. Dates below are proposed — founding members vote on the final calendar in October. Join the waitlist to get a vote.</p>
     </div>
   </div>
-  <div class="trips-grid">
-    <div class="trip-card">
-      <div class="trip-bg" style="background-image:url('https://images.unsplash.com/photo-1551524559-8af4e6624178?w=800&q=80')"></div>
-      <div class="trip-overlay"></div>
-      <div class="trip-content">
-        <span class="trip-badge tb-vt">Vermont</span>
-        <div class="trip-date">Jan 10–12, 2026</div>
-        <div class="trip-name">KILLINGTON</div>
-        <div class="trip-sub">The Beast of the East. 142 trails, 1,509 acres — biggest in the East.</div>
-        <div class="trip-meta"><span class="spots spots-filling">6 Spots Left</span><span class="pass-chip chip-ikon">Ikon</span></div>
-      </div>
-    </div>
-    <div class="trip-card">
-      <div class="trip-bg" style="background-image:url('https://images.unsplash.com/photo-1516298773066-c48f8e9bd92b?w=800&q=80')"></div>
-      <div class="trip-overlay"></div>
-      <div class="trip-content">
-        <span class="trip-badge tb-vt">Vermont</span>
-        <div class="trip-date">Feb 14–16, 2026</div>
-        <div class="trip-name">STOWE</div>
-        <div class="trip-sub">Vermont's crown jewel. Mt. Mansfield, legendary terrain, iconic après.</div>
-        <div class="trip-meta"><span class="spots spots-filling">4 Spots Left</span><span class="pass-chip chip-epic">Epic</span></div>
-      </div>
-    </div>
-    <div class="trip-card">
-      <div class="trip-bg" style="background-image:url('https://images.unsplash.com/photo-1548777123-e216912df7d8?w=800&q=80')"></div>
-      <div class="trip-overlay"></div>
-      <div class="trip-content">
-        <span class="trip-badge tb-me">Maine</span>
-        <div class="trip-date">Mar 7–9, 2026</div>
-        <div class="trip-name">SUNDAY RIVER</div>
-        <div class="trip-sub">Eight interconnected peaks, 135 trails, consistent grooming. Maine's crown.</div>
-        <div class="trip-meta"><span class="spots spots-open">Open</span><span class="pass-chip chip-ikon">Ikon</span><span class="pass-chip chip-col">Collective</span></div>
-      </div>
-    </div>
-    <div class="trip-card">
-      <div class="trip-bg" style="background-image:url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80')"></div>
-      <div class="trip-overlay"></div>
-      <div class="trip-content">
-        <span class="trip-badge tb-ca">Canada</span>
-        <div class="trip-date">Apr TBD, 2026</div>
-        <div class="trip-name">MONT-TREMBLANT</div>
-        <div class="trip-sub">Québec's #1. Ski-in/ski-out village, late-season powder, French vibes.</div>
-        <div class="trip-meta"><span class="spots spots-tba">TBA</span><span class="pass-chip chip-ikon">Ikon</span></div>
-      </div>
-    </div>
-  </div>
+  <div class="trips-grid"><div class="trip-card"><div class="trip-bg" style="background-image:url('https://images.unsplash.com/photo-1551524559-8af4e6624178?w=800&q=80')"></div><div class="trip-overlay"></div>
+      <div class="trip-content"><span class="trip-badge tb-pa">Pennsylvania</span><div class="trip-date">Sat Dec 19, 2026 · Day Trip</div><div class="trip-name">CAMELBACK</div><div class="trip-sub">Season kickoff. Ikon day-trip under 90 min from Old Bridge — the easiest first meetup.</div>
+      <div class="trip-meta"><span class="spots spots-open">Founding Trip</span><span class="pass-chip chip-ikon">Ikon</span></div></div></div><div class="trip-card"><div class="trip-bg" style="background-image:url('https://images.unsplash.com/photo-1516298773066-c48f8e9bd92b?w=800&q=80')"></div><div class="trip-overlay"></div>
+      <div class="trip-content"><span class="trip-badge tb-vt">Vermont</span><div class="trip-date">Jan 15–17, 2027 · MLK Wknd</div><div class="trip-name">KILLINGTON</div><div class="trip-sub">The Beast. 3-day weekend, group lodging in Rutland. Ikon 7-day.</div>
+      <div class="trip-meta"><span class="spots spots-filling">Planning</span><span class="pass-chip chip-ikon">Ikon</span></div></div></div><div class="trip-card"><div class="trip-bg" style="background-image:url('https://images.unsplash.com/photo-1548777123-e216912df7d8?w=800&q=80')"></div><div class="trip-overlay"></div>
+      <div class="trip-content"><span class="trip-badge tb-vt">Vermont</span><div class="trip-date">Feb 12–15, 2027 · Presidents</div><div class="trip-name">SMUGGLERS' NOTCH + JAY</div><div class="trip-sub">First Indy trip. Two of Vermont's snowiest mountains, one Indy Pass. Reservations required at Smuggs.</div>
+      <div class="trip-meta"><span class="spots spots-open">Planning</span><span class="pass-chip chip-indy">Indy</span></div></div></div><div class="trip-card"><div class="trip-bg" style="background-image:url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80')"></div><div class="trip-overlay"></div>
+      <div class="trip-content"><span class="trip-badge tb-vt">Vermont</span><div class="trip-date">Mar 5–7, 2027</div><div class="trip-name">STOWE</div><div class="trip-sub">Spring conditions, no holiday blackouts. Epic unlimited.</div>
+      <div class="trip-meta"><span class="spots spots-open">Planning</span><span class="pass-chip chip-epic">Epic</span></div></div></div></div>
   <div class="cal-wrap">
-    <div class="sec-label">Full Season Schedule</div>
+    <div class="sec-label">Full Season Schedule · Proposed</div>
     <h2 class="sec-title" style="margin-top:10px">All <em>Trips</em></h2>
-    <div style="overflow-x:auto;margin-top:28px">
-      <table class="cal-table">
-        <thead><tr><th>Date</th><th>Mountain</th><th>Region</th><th>Pass</th><th>Pickup</th><th>Status</th></tr></thead>
-        <tbody>
-          <tr><td>Jan 10–12</td><td><span class="cal-mt">Killington</span>, VT</td><td>Vermont</td><td><span class="pass-chip chip-ikon">Ikon</span></td><td>Old Bridge, NJ</td><td><span class="spots spots-filling" style="font-size:9px;padding:4px 10px">6 Left</span></td></tr>
-          <tr><td>Jan 25</td><td><span class="cal-mt">Hunter Mountain</span>, NY</td><td>Catskills</td><td><span class="pass-chip chip-epic">Epic</span></td><td>Old Bridge + Woodbridge</td><td><span class="spots spots-open" style="font-size:9px;padding:4px 10px">Open</span></td></tr>
-          <tr><td>Feb 1</td><td><span class="cal-mt">Camelback</span>, PA</td><td>Poconos</td><td><span class="pass-chip chip-indy">Indy</span></td><td>Old Bridge, NJ</td><td><span class="spots spots-open" style="font-size:9px;padding:4px 10px">Open</span></td></tr>
-          <tr><td>Feb 7–9</td><td><span class="cal-mt">Stratton</span>, VT</td><td>Vermont</td><td><span class="pass-chip chip-ikon">Ikon</span></td><td>Old Bridge, NJ</td><td><span class="spots spots-open" style="font-size:9px;padding:4px 10px">Open</span></td></tr>
-          <tr><td>Feb 14–16</td><td><span class="cal-mt">Stowe</span>, VT</td><td>Vermont</td><td><span class="pass-chip chip-epic">Epic</span></td><td>Old Bridge, NJ</td><td><span class="spots spots-filling" style="font-size:9px;padding:4px 10px">4 Left</span></td></tr>
-          <tr><td>Feb 28</td><td><span class="cal-mt">Sugarbush</span>, VT</td><td>Vermont</td><td><span class="pass-chip chip-ikon">Ikon</span></td><td>Old Bridge + Princeton</td><td><span class="spots spots-open" style="font-size:9px;padding:4px 10px">Open</span></td></tr>
-          <tr><td>Mar 7–9</td><td><span class="cal-mt">Sunday River</span>, ME</td><td>Maine</td><td><span class="pass-chip chip-ikon">Ikon</span></td><td>Old Bridge, NJ</td><td><span class="spots spots-open" style="font-size:9px;padding:4px 10px">Open</span></td></tr>
-          <tr><td>Mar 21–23</td><td><span class="cal-mt">Killington</span>, VT</td><td>Vermont</td><td><span class="pass-chip chip-ikon">Ikon</span></td><td>Old Bridge + Woodbridge</td><td><span class="spots spots-open" style="font-size:9px;padding:4px 10px">Open</span></td></tr>
-          <tr><td>Apr TBD</td><td><span class="cal-mt">Mont-Tremblant</span>, QC</td><td>Canada</td><td><span class="pass-chip chip-ikon">Ikon</span></td><td>Old Bridge, NJ</td><td><span class="spots spots-tba" style="font-size:9px;padding:4px 10px">TBA</span></td></tr>
-        </tbody>
-      </table>
-    </div>
+    <p class="sec-body" style="max-width:560px">Built around holiday weekends and pass blackouts: Ikon Base blackouts are Dec 26–30, Jan 16–17, Feb 13–14 — so MLK and Presidents' trips target full-pass or Indy+ mountains. Every trip departs Old Bridge.</p>
+    <div style="overflow-x:auto;margin-top:28px"><table class="cal-table">
+      <thead><tr><th>Date</th><th>Mountain</th><th>Region</th><th>Pass</th><th>Pickup</th><th>Status</th></tr></thead>
+      <tbody><tr><td>Dec 19</td><td><span class="cal-mt">Camelback</span>, PA</td><td>Poconos</td><td><span class="pass-chip chip-ikon">Ikon</span></td><td>Old Bridge, NJ</td><td><span class="spots spots-open" style="font-size:9px;padding:4px 10px">Founding Trip</span></td></tr><tr><td>Jan 9</td><td><span class="cal-mt">Hunter Mountain</span>, NY</td><td>Catskills</td><td><span class="pass-chip chip-epic">Epic</span></td><td>Old Bridge + Woodbridge</td><td><span class="spots spots-open" style="font-size:9px;padding:4px 10px">Proposed</span></td></tr><tr><td>Jan 15–17</td><td><span class="cal-mt">Killington</span>, VT</td><td>Vermont</td><td><span class="pass-chip chip-ikon">Ikon</span></td><td>Old Bridge, NJ</td><td><span class="spots spots-filling" style="font-size:9px;padding:4px 10px">Planning</span></td></tr><tr><td>Jan 30</td><td><span class="cal-mt">Shawnee Mountain</span>, PA</td><td>Poconos</td><td><span class="pass-chip chip-indy">Indy</span></td><td>Old Bridge, NJ</td><td><span class="spots spots-open" style="font-size:9px;padding:4px 10px">Proposed</span></td></tr><tr><td>Feb 6–7</td><td><span class="cal-mt">Stratton</span>, VT</td><td>Vermont</td><td><span class="pass-chip chip-ikon">Ikon</span></td><td>Old Bridge, NJ</td><td><span class="spots spots-open" style="font-size:9px;padding:4px 10px">Proposed</span></td></tr><tr><td>Feb 12–15</td><td><span class="cal-mt">Smuggs + Jay Peak</span>, VT</td><td>Vermont</td><td><span class="pass-chip chip-indy">Indy</span></td><td>Old Bridge, NJ</td><td><span class="spots spots-open" style="font-size:9px;padding:4px 10px">Planning</span></td></tr><tr><td>Feb 27</td><td><span class="cal-mt">Blue Mountain</span>, PA</td><td>Poconos</td><td><span class="pass-chip chip-ikon">Ikon</span></td><td>Old Bridge + Princeton</td><td><span class="spots spots-open" style="font-size:9px;padding:4px 10px">Proposed</span></td></tr><tr><td>Mar 5–7</td><td><span class="cal-mt">Stowe</span>, VT</td><td>Vermont</td><td><span class="pass-chip chip-epic">Epic</span></td><td>Old Bridge, NJ</td><td><span class="spots spots-open" style="font-size:9px;padding:4px 10px">Planning</span></td></tr><tr><td>Mar 19–21</td><td><span class="cal-mt">Sunday River</span>, ME</td><td>Maine</td><td><span class="pass-chip chip-ikon">Ikon / MC</span></td><td>Old Bridge, NJ</td><td><span class="spots spots-open" style="font-size:9px;padding:4px 10px">Proposed</span></td></tr><tr><td>Apr TBD</td><td><span class="cal-mt">Mont-Tremblant</span>, QC</td><td>Canada</td><td><span class="pass-chip chip-ikon">Ikon</span></td><td>Old Bridge, NJ</td><td><span class="spots spots-tba" style="font-size:9px;padding:4px 10px">TBA</span></td></tr></tbody></table></div>
   </div>
   <footer>
-    <div><div class="ft-logo" onclick="navigate('home')"><span class="nj">NJ</span> SKI HAUS</div><p class="ft-tagline">New Jersey's premier ski & snowboard club.</p></div>
-    <div class="ft-col"><h4>Navigate</h4><ul><li><a onclick="navigate('home')">Home</a></li><li><a onclick="navigate('mountains')">Mountains</a></li><li><a onclick="navigate('conditions')">Conditions</a></li><li><a onclick="navigate('join')">Join</a></li></ul></div>
+    <div><div class="ft-logo" onclick="navigate('home')"><span class="nj">NJ</span> SKI HAUS</div><p class="ft-tagline">New Jersey's premier ski &amp; snowboard club.</p></div>
+    <div class="ft-col"><h4>Navigate</h4><ul><li><a onclick="navigate('home')">Home</a></li><li><a onclick="navigate('mountains')">Mountains</a></li><li><a onclick="navigate('conditions')">Conditions</a></li><li><a onclick="navigate('passes')">Passes</a></li><li><a onclick="navigate('join')">Join</a></li></ul></div>
     <div class="ft-col"><h4>Contact</h4><ul><li><a>Instagram</a></li><li><a>Email Us</a></li></ul></div>
-    <div class="ft-bottom"><p>© 2025–26 NJ Ski Haus · Old Bridge, NJ</p></div>
+    <div class="ft-bottom"><p>© 2026–27 NJ Ski Haus · Old Bridge, NJ</p></div>
   </footer>
 </div>
 
@@ -874,9 +727,9 @@ footer{background:var(--bg2);padding:56px 60px 32px;display:grid;grid-template-c
 ════════════════════════════════════ -->
 <div id="page-join" class="page">
   <div class="join-hero">
-    <div class="sec-label" style="margin-bottom:14px">Membership · 2025–26</div>
+    <div class="sec-label" style="margin-bottom:14px">Founding Season · 2026–27 · Waitlist Open</div>
     <h1 class="sec-title">Join the <em>Haus</em></h1>
-    <p class="sec-body" style="margin:14px auto 0;max-width:460px;text-align:center">Founding member pricing coming soon. Get on the waitlist to lock in the best rates.</p>
+    <p class="sec-body" style="margin:14px auto 0;max-width:520px;text-align:center">We launch this winter. Founding members lock a lifetime rate, vote on the trip calendar in October, and get first seat on every bus. Passes are on sale now and prices only go up — <a onclick="navigate('passes')" style="color:var(--cyan);cursor:pointer">check the pass guide</a> before you buy.</p>
     <div class="waitlist-wrap">
       <p style="font-size:14px;color:var(--dim);line-height:1.75">Drop your email — we'll reach out when spots open.</p>
       <div class="form-row">
@@ -889,7 +742,7 @@ footer{background:var(--bg2);padding:56px 60px 32px;display:grid;grid-template-c
   <div class="plans-grid">
     <div class="plan">
       <div class="plan-tier">Day Tripper</div>
-      <div class="plan-price">Pricing Coming Soon</div>
+      <div class="plan-price">Founding rate announced Oct 2026</div>
       <ul class="plan-features">
         <li>Access to all group day trips</li><li>Member pricing on bus transport</li>
         <li>NJ Ski Haus Discord community</li><li>Daily mountain conditions newsletter</li>
@@ -900,7 +753,7 @@ footer{background:var(--bg2);padding:56px 60px 32px;display:grid;grid-template-c
     <div class="plan featured">
       <div class="plan-badge">MOST POPULAR</div>
       <div class="plan-tier">Full Member</div>
-      <div class="plan-price">Pricing Coming Soon</div>
+      <div class="plan-price">Founding rate announced Oct 2026</div>
       <ul class="plan-features">
         <li>Everything in Day Tripper</li><li>Priority booking on all overnight trips</li>
         <li>Après-ski events & member meetups</li><li>Vote on seasonal trip destinations</li>
@@ -911,7 +764,7 @@ footer{background:var(--bg2);padding:56px 60px 32px;display:grid;grid-template-c
     </div>
     <div class="plan">
       <div class="plan-tier">Lodge Founding Member</div>
-      <div class="plan-price">Pricing Coming Soon</div>
+      <div class="plan-price">Limited · Founding Season Only</div>
       <ul class="plan-features">
         <li>Everything in Full Member — forever</li><li>Founding member plaque at the lodge</li>
         <li>Vote on lodge location & build decisions</li><li>First dibs on lodge weekends, always</li>
@@ -927,8 +780,7 @@ footer{background:var(--bg2);padding:56px 60px 32px;display:grid;grid-template-c
     <div class="support-grid">
       <div class="scard btc">
         <div class="scard-icon">₿</div><div class="scard-name">Bitcoin</div>
-        <div class="scard-handle">bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh</div>
-        <button class="btn-sm" onclick="navigator.clipboard.writeText('bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh')">Copy Address</button>
+        <div class="scard-handle">Address coming soon</div>
         <div class="scard-desc">Preferred for larger contributions. No fees.</div>
       </div>
       <div class="scard venmo">
@@ -949,7 +801,7 @@ footer{background:var(--bg2);padding:56px 60px 32px;display:grid;grid-template-c
     <div><div class="ft-logo" onclick="navigate('home')"><span class="nj">NJ</span> SKI HAUS</div><p class="ft-tagline">New Jersey's premier ski & snowboard club. Vermont bound, Northeast obsessed.</p></div>
     <div class="ft-col"><h4>Navigate</h4><ul><li><a onclick="navigate('home')">Home</a></li><li><a onclick="navigate('mountains')">Mountains</a></li><li><a onclick="navigate('conditions')">Conditions</a></li><li><a onclick="navigate('trips')">Trips</a></li></ul></div>
     <div class="ft-col"><h4>Contact</h4><ul><li><a>Instagram</a></li><li><a>TikTok</a></li><li><a>Discord</a></li><li><a>Email Us</a></li></ul></div>
-    <div class="ft-bottom"><p>© 2025–26 NJ Ski Haus · Old Bridge, NJ · All rights reserved</p><div class="social-row"><a>Instagram</a><a>TikTok</a><a>Discord</a></div></div>
+    <div class="ft-bottom"><p>© 2026–27 NJ Ski Haus · Old Bridge, NJ · All rights reserved</p><div class="social-row"><a>Instagram</a><a>TikTok</a><a>Discord</a></div></div>
   </footer>
 </div>
 
@@ -1000,6 +852,7 @@ function navigate(page){
   if(page === 'conditions') renderConditions('all');
   if(page === 'home')       renderHomeConditions();
   if(page === 'passes')     { document.querySelectorAll('.pass-section').forEach(s => s.style.display='block'); }
+  if(page === 'map')        { setTimeout(initMap, 80); }
 }
 function toggleNav(){ document.getElementById('main-nav').classList.toggle('open'); }
 
@@ -1011,18 +864,16 @@ const CACHE_TTL = 60 * 60 * 1000;
 // Overrides for mountains where SnoCountry under-reports (Epic resorts)
 // Last updated: March 2, 2026
 const SEASON_TOTALS = {
-  'OKEMO':      112,
-  'STRATTON':   142,
-  'MOUNT SNOW': 117,
+  // 26-27 season: no overrides yet. Add 'NAME': inches here only when SnoCountry is clearly wrong.
 };
 
 // The 8 mountains shown on the homepage conditions section
-const HOME_FEATURED = ['MOUNTAIN CREEK','KILLINGTON','STRATTON','STOWE','JAY PEAK','GORE MTN','BLUE MTN PA','CAMELBACK'];
+const HOME_FEATURED = ['MOUNTAIN CREEK','KILLINGTON','STRATTON','STOWE','JAY PEAK','SMUGGLERS NOTCH','GORE MTN','CAMELBACK'];
 
 // ══════════════════ MOUNTAIN DATA ══════════════════
 const mountains = [
   // NJ
-  {name:'MOUNTAIN CREEK', loc:'New Jersey',    region:'nj', pass:'Indy',              trails:46,  open:32,  seasonMax:120, base:18, newSnow:0,  temp:35, surface:'Machine Made + Groomed',   season:42,  status:'fair'},
+  {name:'MOUNTAIN CREEK', loc:'New Jersey',    region:'nj', pass:'Local pass only',              trails:46,  open:32,  seasonMax:120, base:18, newSnow:0,  temp:35, surface:'Machine Made + Groomed',   season:42,  status:'fair'},
   // Vermont
   {name:'KILLINGTON',     loc:'Vermont',        region:'vt', pass:'Ikon · 7 days',     trails:142, open:116, seasonMax:250, base:58, newSnow:12, temp:22, surface:'Groomed + Natural Pack',   season:173, status:'great'},
   {name:'STOWE',          loc:'Vermont',        region:'vt', pass:'Epic · Unlimited',  trails:116, open:98,  seasonMax:250, base:72, newSnow:18, temp:18, surface:'Powder + Packed Powder',   season:254, status:'great'},
@@ -1035,6 +886,7 @@ const mountains = [
   {name:'BURKE MTN',      loc:'Vermont',        region:'vt', pass:'Indy',              trails:50,  open:45,  seasonMax:250, base:44, newSnow:7,  temp:21, surface:'Natural Pack + Groomed',   season:210, status:'good'},
   {name:'BOLTON VALLEY',  loc:'Vermont',        region:'vt', pass:'Indy',              trails:71,  open:65,  seasonMax:280, base:62, newSnow:14, temp:19, surface:'Powder + Packed Powder',   season:254, status:'great'},
   {name:'MAGIC MTN',      loc:'Vermont',        region:'vt', pass:'Indy',              trails:52,  open:48,  seasonMax:270, base:55, newSnow:11, temp:20, surface:'Natural Pack + Glades',    season:84,  status:'great'},
+  {name:'SMUGGLERS NOTCH',loc:'Vermont',        region:'vt', pass:'Indy · NEW',        trails:78,  open:70,  seasonMax:300, base:60, newSnow:12, temp:18, surface:'Natural Pack + Glades',    season:0,   status:'good'},
   // New York
   {name:'HUNTER MTN',     loc:'New York',       region:'ny', pass:'Epic · Unlimited',  trails:67,  open:58,  seasonMax:200, base:36, newSnow:3,  temp:29, surface:'Packed Powder',            season:76,  status:'good'},
   {name:'WHITEFACE',      loc:'New York',       region:'ny', pass:'Mtn Collective',    trails:87,  open:72,  seasonMax:200, base:44, newSnow:8,  temp:21, surface:'Groomed + Natural',        season:170, status:'great'},
@@ -1044,8 +896,8 @@ const mountains = [
   {name:'GREEK PEAK',     loc:'New York',       region:'ny', pass:'Indy',              trails:32,  open:24,  seasonMax:160, base:22, newSnow:1,  temp:32, surface:'Packed Powder',            season:75,  status:'fair'},
   {name:'WEST MTN',       loc:'New York',       region:'ny', pass:'Indy',              trails:26,  open:22,  seasonMax:170, base:26, newSnow:2,  temp:28, surface:'Groomed Hardpack',         season:72,  status:'fair'},
   // Pennsylvania
-  {name:'CAMELBACK',      loc:'Pennsylvania',   region:'pa', pass:'No major pass',     trails:34,  open:33,  seasonMax:150, base:24, newSnow:0,  temp:32, surface:'Machine Made + Groomed',   season:55,  status:'fair'},
-  {name:'BLUE MTN PA',    loc:'Pennsylvania',   region:'pa', pass:'No major pass',     trails:40,  open:28,  seasonMax:150, base:20, newSnow:0,  temp:33, surface:'Packed Powder + Ice',      season:52,  status:'fair'},
+  {name:'CAMELBACK',      loc:'Pennsylvania',   region:'pa', pass:'Ikon · 7 days',     trails:34,  open:33,  seasonMax:150, base:24, newSnow:0,  temp:32, surface:'Machine Made + Groomed',   season:55,  status:'fair'},
+  {name:'BLUE MTN PA',    loc:'Pennsylvania',   region:'pa', pass:'Ikon · 7 days',     trails:40,  open:28,  seasonMax:150, base:20, newSnow:0,  temp:33, surface:'Packed Powder + Ice',      season:52,  status:'fair'},
   {name:'SHAWNEE MTN',    loc:'Pennsylvania',   region:'pa', pass:'Indy',              trails:23,  open:18,  seasonMax:140, base:22, newSnow:0,  temp:33, surface:'Machine Made',             season:48,  status:'fair'},
   // NH + Maine
   {name:'SUNDAY RIVER',   loc:'Maine',          region:'ne', pass:'Ikon / Collective', trails:135, open:128, seasonMax:250, base:55, newSnow:10, temp:20, surface:'Natural + Groomed',        season:98,  status:'great'},
@@ -1119,6 +971,7 @@ function rerenderAll(){
   renderHomeConditions();
   if(currentPage === 'mountains')  renderMountains('all');
   if(currentPage === 'conditions') renderConditions('all');
+  refreshMapPopups();
 }
 
 // ══════════════════ CARD BUILDER ══════════════════
@@ -1203,6 +1056,219 @@ function filterPasses(filter, btn){
     s.style.display = filter === 'all' || s.dataset.pass === filter ? 'block' : 'none';
   });
 }
+
+
+// ══════════════════ MAP ══════════════════
+let leafletMap = null;
+let mapMarkers = [];
+
+const MAP_MOUNTAINS = [
+  // NJ
+  {name:'MOUNTAIN CREEK', loc:'Vernon, NJ',         region:'nj', pass:'Local pass only',  lat:41.154, lng:-74.528, passkey:'none'},
+  // Vermont
+  {name:'KILLINGTON',     loc:'Killington, VT',      region:'vt', pass:'Ikon · 7 days',    lat:43.604, lng:-72.820, passkey:'ikon'},
+  {name:'STOWE',          loc:'Stowe, VT',           region:'vt', pass:'Epic · Unlimited',  lat:44.526, lng:-72.783, passkey:'epic'},
+  {name:'STRATTON',       loc:'Stratton, VT',        region:'vt', pass:'Ikon · Unlimited',  lat:43.109, lng:-72.908, passkey:'ikon'},
+  {name:'SUGARBUSH',      loc:'Warren, VT',          region:'vt', pass:'Ikon · Unlimited',  lat:44.137, lng:-72.914, passkey:'ikon'},
+  {name:'PICO MTN',       loc:'Mendon, VT',          region:'vt', pass:'Ikon · 7 days',    lat:43.671, lng:-72.860, passkey:'ikon'},
+  {name:'OKEMO',          loc:'Ludlow, VT',          region:'vt', pass:'Epic · Unlimited',  lat:43.403, lng:-72.717, passkey:'epic'},
+  {name:'MOUNT SNOW',     loc:'West Dover, VT',      region:'vt', pass:'Epic · Unlimited',  lat:42.961, lng:-72.922, passkey:'epic'},
+  {name:'JAY PEAK',       loc:'Jay, VT',             region:'vt', pass:'Indy',              lat:44.926, lng:-72.524, passkey:'indy'},
+  {name:'BURKE MTN',      loc:'East Burke, VT',      region:'vt', pass:'Indy',              lat:44.579, lng:-71.901, passkey:'indy'},
+  {name:'BOLTON VALLEY',  loc:'Bolton Valley, VT',   region:'vt', pass:'Indy',              lat:44.396, lng:-72.856, passkey:'indy'},
+  {name:'MAGIC MTN',      loc:'Londonderry, VT',     region:'vt', pass:'Indy',              lat:43.355, lng:-72.813, passkey:'indy'},
+  {name:'SMUGGLERS NOTCH',loc:'Jeffersonville, VT',  region:'vt', pass:'Indy · NEW',        lat:44.588, lng:-72.788, passkey:'indy'},
+  // New York
+  {name:'HUNTER MTN',     loc:'Hunter, NY',          region:'ny', pass:'Epic · Unlimited',  lat:42.178, lng:-74.217, passkey:'epic'},
+  {name:'WHITEFACE',      loc:'Wilmington, NY',      region:'ny', pass:'Mtn Collective',    lat:44.365, lng:-73.902, passkey:'collective'},
+  {name:'GORE MTN',       loc:'North Creek, NY',     region:'ny', pass:'No major pass',     lat:43.675, lng:-74.007, passkey:'none'},
+  {name:'BELLEAYRE',      loc:'Highmount, NY',       region:'ny', pass:'No major pass',     lat:42.139, lng:-74.504, passkey:'none'},
+  {name:'CATAMOUNT',      loc:'Hillsdale, NY',       region:'ny', pass:'Indy',              lat:42.107, lng:-73.479, passkey:'indy'},
+  {name:'GREEK PEAK',     loc:'Cortland, NY',        region:'ny', pass:'Indy',              lat:42.541, lng:-76.172, passkey:'indy'},
+  {name:'WEST MTN',       loc:'Queensbury, NY',      region:'ny', pass:'Indy',              lat:43.388, lng:-73.729, passkey:'indy'},
+  // Pennsylvania
+  {name:'CAMELBACK',      loc:'Tannersville, PA',    region:'pa', pass:'Ikon · 7 days',    lat:41.042, lng:-75.351, passkey:'ikon'},
+  {name:'BLUE MTN PA',    loc:'Palmerton, PA',       region:'pa', pass:'Ikon · 7 days',    lat:40.787, lng:-75.503, passkey:'ikon'},
+  {name:'SHAWNEE MTN',    loc:'Shawnee-on-Del, PA',  region:'pa', pass:'Indy',              lat:41.000, lng:-75.118, passkey:'indy'},
+  // NH + Maine
+  {name:'SUNDAY RIVER',   loc:'Newry, ME',           region:'ne', pass:'Ikon / Collective', lat:44.477, lng:-70.856, passkey:'ikon'},
+  {name:'SUGARLOAF',      loc:'Carrabassett, ME',    region:'ne', pass:'Ikon / Collective', lat:45.031, lng:-70.313, passkey:'ikon'},
+  {name:'SADDLEBACK',     loc:'Rangeley, ME',        region:'ne', pass:'Indy',              lat:44.720, lng:-70.540, passkey:'indy'},
+  {name:'LOON MTN',       loc:'Lincoln, NH',         region:'ne', pass:'Ikon · 7 days',    lat:44.029, lng:-71.624, passkey:'ikon'},
+  {name:'ATTITASH',       loc:'Bartlett, NH',        region:'ne', pass:'Epic · Unlimited',  lat:44.076, lng:-71.230, passkey:'epic'},
+  {name:'WILDCAT',        loc:'Jackson, NH',         region:'ne', pass:'Epic · Unlimited',  lat:44.263, lng:-71.229, passkey:'epic'},
+  {name:'CANNON MTN',     loc:'Franconia, NH',       region:'ne', pass:'Indy',              lat:44.159, lng:-71.700, passkey:'indy'},
+  {name:'WATERVILLE VLY', loc:'Waterville Valley, NH',region:'ne', pass:'Indy',             lat:43.968, lng:-71.511, passkey:'indy'},
+  // Canada
+  {name:'MONT-TREMBLANT', loc:'Québec, Canada',      region:'ca', pass:'Ikon · Unlimited',  lat:46.119, lng:-74.596, passkey:'ikon'},
+  {name:'LE MASSIF',      loc:'Petite-Rivière, QC',  region:'ca', pass:'Ikon / Collective', lat:47.167, lng:-70.667, passkey:'ikon'},
+  {name:'MONT-STE-ANNE',  loc:'Beaupré, QC',         region:'ca', pass:'Epic · 5 days',     lat:47.067, lng:-70.911, passkey:'epic'},
+];
+
+function getPassColor(passkey) {
+  switch(passkey) {
+    case 'ikon':       return '#E8522A';
+    case 'epic':       return '#4A9FE0';
+    case 'collective': return '#7DC242';
+    case 'indy':       return '#FFD200';
+    default:           return '#9CA3AF';
+  }
+}
+
+function getStatusColor(name) {
+  const m = mountains.find(x => x.name === name);
+  if (!m) return '#9CA3AF';
+  if (m.status === 'great')  return '#00CFFF';
+  if (m.status === 'good')   return '#00E87A';
+  if (m.status === 'closed') return '#FF2244';
+  return '#FFD200';
+}
+
+function makePinSvg(passkey, size) {
+  const c = getPassColor(passkey);
+  const r = size / 2;
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size+8}" viewBox="0 0 ${size} ${size+8}">
+    <defs>
+      <radialGradient id="glow-${passkey}">
+        <stop offset="0%" stop-color="${c}" stop-opacity="0.5"/>
+        <stop offset="100%" stop-color="${c}" stop-opacity="0"/>
+      </radialGradient>
+      <filter id="blur-${passkey}">
+        <feGaussianBlur stdDeviation="2.5"/>
+      </filter>
+    </defs>
+    <circle cx="${r}" cy="${r}" r="${r}" fill="${c}" fill-opacity="0.18" filter="url(#blur-${passkey})"/>
+    <circle cx="${r}" cy="${r}" r="${r*0.55}" fill="${c}" fill-opacity="0.9"/>
+    <circle cx="${r}" cy="${r}" r="${r*0.3}" fill="#fff" fill-opacity="0.9"/>
+    <line x1="${r}" y1="${r*1.55}" x2="${r}" y2="${size+6}" stroke="${c}" stroke-width="1.5" stroke-opacity="0.7"/>
+  </svg>`;
+}
+
+function makeIcon(passkey, size) {
+  return L.divIcon({
+    html: makePinSvg(passkey, size),
+    className: '',
+    iconSize:   [size, size+8],
+    iconAnchor: [size/2, size+6],
+    popupAnchor:[0, -(size+8)]
+  });
+}
+
+function buildPopup(m) {
+  const mtn = mountains.find(x => x.name === m.name) || {};
+  const base     = mtn.base     ?? '—';
+  const newSnow  = mtn.newSnow  ?? '—';
+  const trails   = mtn.open && mtn.trails ? `${mtn.open}/${mtn.trails}` : '—';
+  const temp     = mtn.temp     ?? '—';
+  const bc = mtn.status==='great'?'bg-great':mtn.status==='good'?'bg-good':mtn.status==='closed'?'bg-closed':'bg-fair';
+  const bl = mtn.status==='great'?'GREAT ❄️':mtn.status==='good'?'GOOD ✓':mtn.status==='closed'?'CLOSED':'FAIR ⚠';
+  const c = getPassColor(m.passkey);
+  return `<div class="mp-inner">
+    <div class="mp-region">${m.loc}</div>
+    <div class="mp-name">${m.name}</div>
+    <div class="mp-stats">
+      <div class="mp-stat"><div class="mp-sv">${base}"</div><div class="mp-sl">Base</div></div>
+      <div class="mp-stat"><div class="mp-sv" style="color:#A8E6FF">+${newSnow}"</div><div class="mp-sl">New 48hr</div></div>
+      <div class="mp-stat"><div class="mp-sv" style="color:var(--cyan)">${trails}</div><div class="mp-sl">Trails</div></div>
+      <div class="mp-stat"><div class="mp-sv">${temp}°</div><div class="mp-sl">Temp</div></div>
+    </div>
+    <div class="mp-foot">
+      <span class="mp-badge ${bc}">${bl}</span>
+      <span class="mp-pass" style="color:${c}">${m.pass.split('·')[0].trim()}</span>
+    </div>
+  </div>`;
+}
+
+let activeFilter = 'all';
+
+function initMap() {
+  if (leafletMap) return;
+
+  leafletMap = L.map('leaflet-map', {
+    center: [44.2, -71.8],
+    zoom: 7,
+    zoomControl: true,
+    attributionControl: false,
+    minZoom: 5,
+    maxZoom: 13
+  });
+
+  // Dark CartoDB tiles — no API key needed
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+    subdomains: 'abcd',
+    maxZoom: 19
+  }).addTo(leafletMap);
+
+  // Build markers
+  MAP_MOUNTAINS.forEach(m => {
+    const marker = L.marker([m.lat, m.lng], { icon: makeIcon(m.passkey, 22) })
+      .bindPopup(buildPopup(m), {
+        className: 'mtn-popup',
+        maxWidth: 220,
+        offset: [0, 0]
+      });
+
+    marker._mtnData = m;
+    marker.addTo(leafletMap);
+    mapMarkers.push(marker);
+
+    // hover open
+    marker.on('mouseover', function() { this.openPopup(); });
+  });
+
+  updateMapCounter();
+}
+
+function mapFilter(filter, btn) {
+  document.querySelectorAll('.map-pill').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  activeFilter = filter;
+
+  const passKeys = { ikon:'ikon', epic:'epic', collective:'collective', indy:'indy' };
+  const regions  = ['nj','vt','ny','pa','ne','ca'];
+
+  mapMarkers.forEach(marker => {
+    const m = marker._mtnData;
+    let show = false;
+    if (filter === 'all') {
+      show = true;
+    } else if (regions.includes(filter)) {
+      show = m.region === filter;
+    } else if (passKeys[filter]) {
+      show = m.passkey === passKeys[filter];
+    }
+
+    if (show) {
+      if (!leafletMap.hasLayer(marker)) marker.addTo(leafletMap);
+    } else {
+      if (leafletMap.hasLayer(marker)) leafletMap.removeLayer(marker);
+    }
+  });
+
+  // Fit bounds to visible markers
+  const visible = mapMarkers.filter(mk => leafletMap.hasLayer(mk));
+  if (visible.length > 0) {
+    const group = L.featureGroup(visible);
+    leafletMap.fitBounds(group.getBounds().pad(0.15), { maxZoom: 9 });
+  }
+
+  updateMapCounter();
+}
+
+function updateMapCounter() {
+  const count = mapMarkers.filter(mk => leafletMap && leafletMap.hasLayer(mk)).length;
+  const el = document.getElementById('map-counter');
+  if (el) el.textContent = count + ' peak' + (count !== 1 ? 's' : '');
+}
+
+// Rebuild popups after API data loads
+function refreshMapPopups() {
+  if (!leafletMap) return;
+  mapMarkers.forEach(marker => {
+    marker.setPopupContent(buildPopup(marker._mtnData));
+  });
+}
+
 
 // ══════════════════ INIT ══════════════════
 navigate('home');
